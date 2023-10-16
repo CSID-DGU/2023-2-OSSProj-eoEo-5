@@ -25,5 +25,5 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
-        working-directory: {{ env.working-directory }}
+        working-directory: ${{ env.working-directory }}
       
