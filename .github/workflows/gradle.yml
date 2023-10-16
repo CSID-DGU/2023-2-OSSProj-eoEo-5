@@ -40,5 +40,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "./build/libs/*.jar"
           target: "/home/eoeo/api_server"
-          strip_conponents: 2
       
