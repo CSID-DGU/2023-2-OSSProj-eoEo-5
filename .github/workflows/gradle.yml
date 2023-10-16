@@ -26,11 +26,26 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
         working-directory: ${{ env.working-directory }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: "./build/libs/*.jar"
         
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Create distribute
+        run: mkdir ~/dist
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+  
       - name: Deploy use SCP
         uses: appleboy/scp-action@master
         with:
@@ -38,7 +53,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          source: "build/libs/*.jar"
+          rm: true
+          source: "dist/*.jar"
           target: "/home/eoeo/api_server/"
           strip_components: 1
       
