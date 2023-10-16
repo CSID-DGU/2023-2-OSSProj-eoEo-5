@@ -26,4 +26,17 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
         working-directory: ${{ env.working-directory }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artivact@v2
+        with:
+          name: eoeo_backend_deploy
+
+      - name: Setup SSH
+        uses: appleboy/ssh-action@v1.0.0
+  
       
