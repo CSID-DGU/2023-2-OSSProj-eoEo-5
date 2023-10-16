@@ -28,5 +28,4 @@ jobs:
         with:
           arguments: build
           run: ./gradlew clean build
-          working-directory: ${{ env.working-directory }}
       
