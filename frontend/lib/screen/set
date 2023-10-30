@@ -1,0 +1,14 @@
+class SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // 환경 설정 페이지의 내용을 구성하세요.
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('환경 설정'), // 페이지 제목
+      ),
+      body: Center(
+        child: Text('환경 설정 페이지 내용이 여기에 들어갑니다.'),
+      ),
+    );
+  }
+}
