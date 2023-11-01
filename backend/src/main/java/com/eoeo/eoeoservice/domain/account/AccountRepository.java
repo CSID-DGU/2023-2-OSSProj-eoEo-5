@@ -1,4 +1,4 @@
-package com.eoeo.eoeoservice.domain.user;
+package com.eoeo.eoeoservice.domain.account;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
