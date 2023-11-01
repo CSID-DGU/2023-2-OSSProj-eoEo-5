@@ -14,10 +14,10 @@ class TextWriter extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        bottom: width * 0.012,
-        top: width * 0.012,
-        left: width * 0.024,
-        right: width * 0.024,
+        bottom: width * 0.006,
+        top: width * 0.006,
+        left: width * 0.012,
+        right: width * 0.012,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +30,7 @@ class TextWriter extends StatelessWidget{
           ),
 */
           Padding(
-            padding: EdgeInsets.only(right: width * 0.024),
+            padding: EdgeInsets.only(right: width * 0.048),
           ),
           Text(contents,
             style: TextStyle(

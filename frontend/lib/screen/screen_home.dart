@@ -21,15 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Scaffold(
-        //backgroundColor: Colors.grey[900],
         backgroundColor: Colors.white,
+
         appBar: AppBar(
-          //backgroundColor: Colors.grey[900],
           backgroundColor: Colors.white,
           title: Text(
             'Team eoEo',
             style: TextStyle(
-              //color: Colors.white,
               color: Colors.black,
             ),
           ),
@@ -45,14 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.black, // 아이콘 색상
                 ),
                 onPressed: () {
-                  // 검색 버튼 클릭 시 수행할 동작 추가
-                  /*
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => cont NextScreen())
-          );
-
-           */
                 },
               ),
             ),
@@ -71,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             TextWriter(width:width, fontSize:20, contents: "윤영헌님은", textColor: Colors.black, fontWeight: FontWeight.bold),
             TextWriter(width: width, fontSize: 18, contents:"융합소프트웨어 전공입니다.", fontWeight:FontWeight.bold, textColor: Colors.black),
             Container(
-              padding: EdgeInsets.only(bottom: width * 0.003),
+              padding: EdgeInsets.only(bottom: width * 0.001),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end, // 오른쪽 정렬
                 children: <Widget>[
@@ -101,9 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+            Divider(),
             Container( // 차트 들어갈 공간
               child: ChartWidget(title: '',),
             ),
+            /*
             Padding(
               padding: EdgeInsets.only(
                 bottom: width * 0.00,
@@ -112,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 right: width * 0.00,
               ),
             ),
+             */
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
               children: <Widget>[
@@ -152,40 +145,46 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             // 가로로 배치된 Elevated 버튼
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    // 버튼 1 클릭 시 수행할 동작
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
-                  },
-                  child: Text('FAQ'),
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    // 버튼 2 클릭 시 수행할 동작
-                  },
-                  child: Text('Home'),
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    // 버튼 3 클릭 시 수행할 동작
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
-                  },
-                  child: Text('SET'),
-                ),
-              ],
+            Divider(),
+          ],
+        ),
+
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+
+            IconButton(
+              icon: Icon(
+                Icons.question_mark_rounded, // 검색 아이콘
+                color: Colors.lightBlueAccent,
+                size: 40,// 아이콘 색상
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
+              },
             ),
+
+            IconButton(
+              icon: Icon(
+                Icons.home_rounded, // 검색 아이콘
+                color: Colors.lightBlueAccent,
+                size: 40,// 아이콘 색상
+              ),
+              onPressed: () {
+              },
+            ),
+
+            IconButton(
+              icon: Icon(
+                Icons.settings_rounded, // 검색 아이콘
+                color: Colors.lightBlueAccent,
+                size: 40,// 아이콘 색상
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+              },
+            ),
+
           ],
         ),
       ),

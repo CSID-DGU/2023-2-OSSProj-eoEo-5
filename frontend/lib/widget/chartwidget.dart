@@ -23,23 +23,12 @@ late List<data> _chartData;
     super.initState();
   }
 
-  // 리스트 데이터, DB에서 받야와야 함
-  List<data> getChartData(){
-    final List<data> chartData = [
-      data('major', 50),
-      data('double major', 30),
-      data('liberal arts', 33),
-    ];
-
-    return chartData;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Container(
-            width: 370,
-            height: 370,
+            width: 380,
+            height: 380,
             child: SfCircularChart(
               series: <CircularSeries>[
                 //DoughnutSeries<data, String>(
@@ -49,17 +38,33 @@ late List<data> _chartData;
                     yValueMapper: (data data, _) => data.credit,
                     pointColorMapper: (data data, _) {
                       if (data.section == "major") {
-                        return Colors.lightBlue;
+                        return Colors.blueAccent;
                     } else if (data.section == "double major") {
                         return Colors.greenAccent;
                     } else if (data.section == "liberal arts") {
                         return Colors.yellowAccent;
                     }
                   },
-                    maximumValue: 90
+                   cornerStyle: CornerStyle.bothCurve,
+                   //radius: BorderRadius.all(Radius.circuler(15)),
+                   //borderRadius: BorderRadius.all(Radius.circular(15)),
+                   maximumValue: 90
 
                     )
               ],
-            )));
+            )
+        )
+    );
+  }
+
+  // 리스트 데이터, DB에서 받야와야 함
+  List<data> getChartData(){
+    final List<data> chartData = [
+      data('major', 50),
+      data('double major', 30),
+      data('liberal arts', 33),
+    ];
+
+    return chartData;
   }
 }
