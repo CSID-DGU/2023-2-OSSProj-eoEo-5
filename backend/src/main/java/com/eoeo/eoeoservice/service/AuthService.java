@@ -6,6 +6,7 @@ import com.eoeo.eoeoservice.dto.auth.UserLoginRequestDto;
 import com.eoeo.eoeoservice.dto.auth.UserLoginResponseDto;
 import com.eoeo.eoeoservice.dto.auth.UserRegisterRequestDto;
 import com.eoeo.eoeoservice.dto.auth.UserRegisterResponseDto;
+import com.eoeo.eoeoservice.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class AuthService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public UserRegisterResponseDto register(UserRegisterRequestDto request) throws Exception{
@@ -50,6 +52,7 @@ public class AuthService {
 
     }
 
+    @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto request) throws Exception{
         Account account = accountRepository.findByUsername(request.getUsername()).orElseThrow(() -> new IllegalArgumentException());
 
@@ -58,8 +61,15 @@ public class AuthService {
             throw new IllegalArgumentException();
         }
 
+        String validationToken = jwtProvider.createValidationToken();
+        account.setValidationToken(passwordEncoder.encode(validationToken));
+
         return UserLoginResponseDto.builder()
                 .id(account.getId())
+                .name(account.getName())
+                .username(account.getUsername())
+                .accessToken(jwtProvider.createAccessToken(account.getUsername()))
+                .refreshToken(jwtProvider.createRefreshToken(account.getUsername(), validationToken))
                 .build();
     }
 

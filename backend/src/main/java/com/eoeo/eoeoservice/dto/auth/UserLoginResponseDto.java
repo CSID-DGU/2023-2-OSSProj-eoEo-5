@@ -13,4 +13,29 @@ public class UserLoginResponseDto {
 
     private Long id;
 
+    private String username;
+
+    private String name;
+
+    private long schoolId;
+
+    private String schoolName;
+
+    private long majorId;
+
+    private String majorName;
+
+    private long coreCourseId;
+
+    private long requiredCourseId;
+
+    private long selectiveCourseId;
+
+    private long selectiveCredit;
+
+    private String accessToken;
+
+    private String refreshToken;
+
+
 }
