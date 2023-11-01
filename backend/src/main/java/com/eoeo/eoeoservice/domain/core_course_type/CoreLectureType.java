@@ -1,6 +1,5 @@
-package com.eoeo.eoeoservice.domain.course;
+package com.eoeo.eoeoservice.domain.core_course_type;
 
-import com.eoeo.eoeoservice.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-public class Course extends BaseEntity {
+public class CoreLectureType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

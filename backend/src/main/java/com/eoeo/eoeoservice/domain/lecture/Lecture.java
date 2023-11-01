@@ -1,15 +1,14 @@
 package com.eoeo.eoeoservice.domain.lecture;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
+import com.eoeo.eoeoservice.domain.core_course.CoreCourse;
+import com.eoeo.eoeoservice.domain.course.Course;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Entity
@@ -22,5 +21,23 @@ public class Lecture extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String lectureId;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private boolean isCoreLecture;
+
+    @ManyToOne
+    @JoinColumn(name="course_id")
+    private Course course;
+
+    @ManyToOne
+    @JoinColumn(name="core_course_id")
+    private CoreCourse coreCourse;
+
 
 }
