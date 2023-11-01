@@ -7,4 +7,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtProvider {
 
+    private String tokenKey;
+
+
+
+
 }
