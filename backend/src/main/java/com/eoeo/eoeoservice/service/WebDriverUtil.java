@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
-@Component
+/*@Component
 public class WebDriverUtil {
 
     private static String WEB_DRIVER_PATH; // WebDriver 경로
@@ -49,4 +49,4 @@ public class WebDriverUtil {
             driver.close();
         }
     }
-}
+}*/
