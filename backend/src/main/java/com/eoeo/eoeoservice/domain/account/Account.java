@@ -1,6 +1,8 @@
 package com.eoeo.eoeoservice.domain.account;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
+import com.eoeo.eoeoservice.domain.lecture.Lecture;
+import com.eoeo.eoeoservice.domain.major.Major;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -34,6 +37,15 @@ public class Account extends BaseEntity implements UserDetails{
     @Column(nullable = false)
     private String salt;
 
+    @ManyToOne
+    @JoinColumn(name = "major_id")
+    private Major major;
+
+    @ManyToOne
+    @JoinColumn(name = "secound_major_id")
+    private Major secondMajor;
+
+    private String validationToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,5 +70,9 @@ public class Account extends BaseEntity implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setValidationToken(String validationToken){
+        this.validationToken = validationToken;
     }
 }
