@@ -1,5 +1,6 @@
 package com.eoeo.eoeoservice.security;
 
+import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.dto.auth.RefreshTokenValidationDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -53,6 +55,23 @@ public class JwtProvider {
                 .signWith(SignatureAlgorithm.HS256, tokenKey)
                 .compact();
 
+    }
+
+    public Boolean validateRefreshToken(RefreshTokenValidationDto dto, Account account, PasswordEncoder passwordEncoder){
+        Claims claims = dto.getClaims();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+        if(claims.getExpiration().before(new Date()) || claims.getIssuedAt().after(new Date())){
+            return false;
+        }
+
+        if(!passwordEncoder.matches(claims.get("validationToken").toString(), account.getValidationToken())){
+            return false;
+        }
+
+        if(!validateUserDetails(userDetails)){
+            return false;
+        }
+        return true;
     }
 
     public Authentication authenticate(String token) throws Exception{

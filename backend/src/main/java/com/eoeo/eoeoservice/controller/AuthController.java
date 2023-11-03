@@ -1,9 +1,6 @@
 package com.eoeo.eoeoservice.controller;
 
-import com.eoeo.eoeoservice.dto.auth.UserLoginRequestDto;
-import com.eoeo.eoeoservice.dto.auth.UserLoginResponseDto;
-import com.eoeo.eoeoservice.dto.auth.UserRegisterRequestDto;
-import com.eoeo.eoeoservice.dto.auth.UserRegisterResponseDto;
+import com.eoeo.eoeoservice.dto.auth.*;
 import com.eoeo.eoeoservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -27,6 +24,11 @@ public class AuthController {
     @PostMapping("/login")
     public UserLoginResponseDto login(@RequestBody UserLoginRequestDto request) throws Exception {
         return authService.login(request);
+    }
+
+    @PostMapping("/newtoken")
+    public RequestNewTokenResponseDto requestNewToken(@RequestBody RequestNewTokenRequestDto request){
+        return authService.requestNewToken(request);
     }
 
 }
