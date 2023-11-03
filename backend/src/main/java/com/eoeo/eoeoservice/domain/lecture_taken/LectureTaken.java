@@ -37,5 +37,4 @@ public class LectureTaken extends BaseEntity {
     @JoinColumn(name = "prerequisite_id")
     private Prerequisite prerequisite;
 
-
 }
