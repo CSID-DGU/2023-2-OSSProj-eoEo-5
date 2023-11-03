@@ -1,4 +1,4 @@
-package com.eoeo.eoeoservice.domain.class_taken;
+package com.eoeo.eoeoservice.domain.lecture_taken;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
 import com.eoeo.eoeoservice.domain.account.Account;
@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-public class ClassTaken extends BaseEntity {
+public class LectureTaken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
