@@ -25,6 +25,10 @@ public class UserLoginResponseDto {
 
     private String majorName;
 
+    private long secondMajorId;
+
+    private String secondMajorName;
+
     private long coreCourseId;
 
     private long requiredCourseId;
