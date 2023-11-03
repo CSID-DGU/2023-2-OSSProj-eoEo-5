@@ -23,7 +23,7 @@ public class Lecture extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String lectureId;
+    private String lectureNumber;
 
     @Column(nullable = false)
     private String name;
