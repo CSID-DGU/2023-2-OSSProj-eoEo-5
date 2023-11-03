@@ -39,5 +39,8 @@ public class Lecture extends BaseEntity {
     @JoinColumn(name="core_lecture_type")
     private CoreLectureType coreLectureType;
 
+    @Column(nullable = false)
+    private Long credit;
+
 
 }
