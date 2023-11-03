@@ -41,6 +41,9 @@ public class Account extends BaseEntity implements UserDetails{
     @JoinColumn(name = "major_id", nullable = true)
     private Major major;
 
+    @Column(nullable = false)
+    private Boolean isSecondMajor;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "secound_major_id", nullable = true)
     private Major secondMajor;
@@ -74,5 +77,9 @@ public class Account extends BaseEntity implements UserDetails{
 
     public void setValidationToken(String validationToken){
         this.validationToken = validationToken;
+    }
+
+    public void setSecondMajor(Major major){
+        secondMajor = major;
     }
 }
