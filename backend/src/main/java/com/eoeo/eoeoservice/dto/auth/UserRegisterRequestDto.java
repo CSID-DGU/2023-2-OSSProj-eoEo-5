@@ -13,4 +13,10 @@ public class UserRegisterRequestDto {
 
     private String name;
 
+    private Long majorId;
+
+    private Long secondMajorId;
+
+    private Boolean isSecondMajor;
+
 }

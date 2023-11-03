@@ -1,5 +1,6 @@
 package com.eoeo.eoeoservice.dto.auth;
 
+import com.eoeo.eoeoservice.domain.major.Major;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,11 @@ public class UserLoginResponseDto {
     private String accessToken;
 
     private String refreshToken;
+
+    public void setSecondMajor(Major major){
+        secondMajorId = major.getId();
+        secondMajorName = major.getName();
+    }
 
 
 }
