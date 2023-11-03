@@ -21,11 +21,11 @@ public class CoreCourseCredit extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "core_course_id", nullable = false)
     private CoreCourse coreCourse;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "core_lecture_type", nullable = false)
     private CoreLectureType coreLectureType;
 

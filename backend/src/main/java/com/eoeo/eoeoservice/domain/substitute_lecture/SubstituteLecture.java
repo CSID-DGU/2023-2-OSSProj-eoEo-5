@@ -21,11 +21,11 @@ public class SubstituteLecture extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "original_lecture_id", nullable = false)
     private Lecture originalLecture;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "substitute_lecture_id", nullable = false)
     private Lecture substituteLecture;
 

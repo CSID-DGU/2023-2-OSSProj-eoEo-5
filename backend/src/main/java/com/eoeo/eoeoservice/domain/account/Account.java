@@ -37,12 +37,12 @@ public class Account extends BaseEntity implements UserDetails{
     @Column(nullable = false)
     private String salt;
 
-    @ManyToOne
-    @JoinColumn(name = "major_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id", nullable = true)
     private Major major;
 
-    @ManyToOne
-    @JoinColumn(name = "secound_major_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "secound_major_id", nullable = true)
     private Major secondMajor;
 
     private String validationToken;

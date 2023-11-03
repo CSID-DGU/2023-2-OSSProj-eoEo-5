@@ -31,12 +31,12 @@ public class Lecture extends BaseEntity {
     @Column(nullable = false)
     private boolean isCoreLecture;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="course_id")
     private Course course;
 
-    @ManyToOne
-    @JoinColumn(name="core_lecture_type")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="core_lecture_type_id")
     private CoreLectureType coreLectureType;
 
     @Column(nullable = false)
