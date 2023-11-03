@@ -22,11 +22,11 @@ public class CoreCourseCredit extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "core_course_id")
+    @JoinColumn(name = "core_course_id", nullable = false)
     private CoreCourse coreCourse;
 
     @ManyToOne
-    @JoinColumn(name = "core_lecture_type")
+    @JoinColumn(name = "core_lecture_type", nullable = false)
     private CoreLectureType coreLectureType;
 
     @Column(nullable = false)

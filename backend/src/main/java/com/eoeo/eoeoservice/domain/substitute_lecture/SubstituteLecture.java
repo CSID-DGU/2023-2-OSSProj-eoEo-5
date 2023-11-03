@@ -22,11 +22,11 @@ public class SubstituteLecture extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "original_lecture_id")
+    @JoinColumn(name = "original_lecture_id", nullable = false)
     private Lecture originalLecture;
 
     @ManyToOne
-    @JoinColumn(name = "substitute_lecture_id")
+    @JoinColumn(name = "substitute_lecture_id", nullable = false)
     private Lecture substituteLecture;
 
 }

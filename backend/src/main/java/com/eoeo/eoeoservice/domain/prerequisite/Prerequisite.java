@@ -22,11 +22,11 @@ public class Prerequisite extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="lecture_id")
+    @JoinColumn(name="lecture_id", nullable = false)
     private Lecture lecture;
 
     @ManyToOne
-    @JoinColumn(name="prerequisite_id")
+    @JoinColumn(name="prerequisite_id", nullable = false)
     private Lecture prerequisite;
 
 }

@@ -27,19 +27,19 @@ public class Major extends BaseEntity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "school_id")
+    @JoinColumn(name = "school_id", nullable = false)
     private School school;
 
     @ManyToOne
-    @JoinColumn(name = "core_course_id")
+    @JoinColumn(name = "core_course_id", nullable = false)
     private CoreCourse coreCourse;
 
     @ManyToOne
-    @JoinColumn(name = "required_course_id")
+    @JoinColumn(name = "required_course_id", nullable = false)
     private Course requiredCourse;
 
     @ManyToOne
-    @JoinColumn(name = "selective_course_id")
+    @JoinColumn(name = "selective_course_id", nullable = false)
     private Course selectiveCourse;
 
     @Column(nullable = false)

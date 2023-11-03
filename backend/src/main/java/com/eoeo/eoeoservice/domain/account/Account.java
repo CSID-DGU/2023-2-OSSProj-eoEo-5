@@ -38,11 +38,11 @@ public class Account extends BaseEntity implements UserDetails{
     private String salt;
 
     @ManyToOne
-    @JoinColumn(name = "major_id")
+    @JoinColumn(name = "major_id", nullable = false)
     private Major major;
 
     @ManyToOne
-    @JoinColumn(name = "secound_major_id")
+    @JoinColumn(name = "secound_major_id", nullable = false)
     private Major secondMajor;
 
     private String validationToken;

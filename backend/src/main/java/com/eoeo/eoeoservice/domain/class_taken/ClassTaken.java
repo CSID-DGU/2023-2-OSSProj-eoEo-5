@@ -22,13 +22,14 @@ public class ClassTaken extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "lecture_id")
+    @JoinColumn(name = "lecture_id", nullable = false)
     private Lecture lecture;
 
+    @Column(nullable = false)
     private boolean isSubstitute;
 
     @ManyToOne
