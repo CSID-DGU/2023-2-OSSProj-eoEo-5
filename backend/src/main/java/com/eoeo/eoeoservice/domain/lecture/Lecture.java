@@ -1,7 +1,7 @@
 package com.eoeo.eoeoservice.domain.lecture;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
-import com.eoeo.eoeoservice.domain.core_course.CoreCourse;
+import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureType;
 import com.eoeo.eoeoservice.domain.course.Course;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +36,8 @@ public class Lecture extends BaseEntity {
     private Course course;
 
     @ManyToOne
-    @JoinColumn(name="core_course_id")
-    private CoreCourse coreCourse;
+    @JoinColumn(name="core_lecture_type")
+    private CoreLectureType coreLectureType;
 
 
 }
