@@ -9,8 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddCourseRequestDto {
+public class AddCoreCourseCreditRequestDto {
 
-    private String name;
+    private Long coreCourseId;
+
+    private Long coreLectureTypeId;
+
+    private Long credit;
 
 }
