@@ -1,9 +1,7 @@
 package com.eoeo.eoeoservice.service;
 
-import com.eoeo.eoeoservice.domain.core_course.CoreCourseRepository;
 import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureType;
 import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureTypeRepository;
-import com.eoeo.eoeoservice.domain.course.CourseRepository;
 import com.eoeo.eoeoservice.domain.school.School;
 import com.eoeo.eoeoservice.domain.school.SchoolRepository;
 import com.eoeo.eoeoservice.dto.core_management.AddCoreLectureTypeRequestDto;
@@ -17,14 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CoreManagementService {
 
     private final SchoolRepository schoolRepository;
-    private final CourseRepository courseRepository;
     private final CoreLectureTypeRepository coreLectureTypeRepository;
-    private final CoreCourseRepository coreCourseRepository;
 
     @Transactional
     public Long addSchool(AddSchoolRequestDto request){
         School school = School.builder()
-                .name(request.getSchoolName())
+                .name(request.getName())
                 .build();
 
         schoolRepository.save(school);
