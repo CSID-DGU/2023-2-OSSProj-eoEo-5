@@ -60,7 +60,7 @@ public class AuthService {
                 .build();
 
         if(request.getIsSecondMajor()){
-            secondMajor = majorRepository.findById(request.getSecondMajorId())
+            secondMajor = majorRepository.findByIdAndIsDeleted(request.getSecondMajorId(), false)
                     .orElseThrow(() -> new NoSuchElementException("No such major"));
 
             account.setSecondMajor(secondMajor);
