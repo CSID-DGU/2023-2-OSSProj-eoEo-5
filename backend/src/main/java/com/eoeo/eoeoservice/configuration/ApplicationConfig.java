@@ -17,7 +17,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> accountRepository.findByUsername(username)
+        return username -> accountRepository.findByUsernameAndIsDeleted(username, false)
                 .orElseThrow(() -> new UsernameNotFoundException("No such user"));
     }
 

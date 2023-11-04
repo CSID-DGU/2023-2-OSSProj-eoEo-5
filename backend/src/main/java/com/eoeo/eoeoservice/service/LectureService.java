@@ -65,12 +65,12 @@ public class LectureService {
 
     public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
 
-        Account account = accountRepository.findById(request.getUserId())
+        Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
 
         List<GetTakenLectureResponseDto> response = new LinkedList<>();
 
-        List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccount(account);
+        List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccountAndIsDeleted(account, false);
 
         for(LectureTaken takenLecture : takenLectures){
             Lecture lecture = takenLecture.getLecture();

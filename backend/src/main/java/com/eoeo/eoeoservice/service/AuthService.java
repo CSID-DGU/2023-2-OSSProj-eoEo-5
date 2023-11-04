@@ -35,7 +35,7 @@ public class AuthService {
         Major major;
         Major secondMajor;
 
-        if(!accountRepository.findByUsername(request.getUsername()).isEmpty()){
+        if(!accountRepository.findByUsernameAndIsDeleted(request.getUsername(), false).isEmpty()){
             throw new IllegalArgumentException();
         }
 
@@ -77,7 +77,7 @@ public class AuthService {
 
     @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto request) {
-        Account account = accountRepository.findByUsername(request.getUsername()).orElseThrow(() -> new IllegalArgumentException());
+        Account account = accountRepository.findByUsernameAndIsDeleted(request.getUsername(), false).orElseThrow(() -> new IllegalArgumentException());
 
 
         if(!passwordEncoder.matches(account.getSalt()+request.getPassword(), account.getPassword())){
@@ -113,7 +113,7 @@ public class AuthService {
         Account account;
         try{
             validationDto = jwtProvider.extractClaimAndUsername(request.getRefreshToken());
-            account = accountRepository.findByUsername(validationDto.getUsername())
+            account = accountRepository.findByUsernameAndIsDeleted(validationDto.getUsername(), false)
                     .orElseThrow(() -> new UsernameNotFoundException("No such user."));
 
         } catch(Exception e){
