@@ -6,6 +6,8 @@ import '../widget/barchart.dart';
 import 'FAQ.dart';
 import 'login.dart';
 import 'subject_taken.dart'; //기수강과목 불러오기
+import 'main_major_course.dart'; //주전공 이수체계도 불러오기
+import 'double_major_course.dart'; //주전공 이수체계도 불러오기
 class HomeScreen extends StatefulWidget {
 
   @override
@@ -85,7 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       onPressed: () {
-                        // 왼쪽 버튼을 눌렀을 때 수행할 작업을 여기에 추가
+                        // 'Main_major_course' 페이지로 이동하는 코드
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Main_major_course()),
+                        );
                       },
                     ),
                   ),
@@ -108,6 +114,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       onPressed: () {
+                        // 'subject_takenScreen' 페이지로 이동하는 코드
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => double_major_course()),
+                        );
+                        // 중앙 버튼을 눌렀을 때 수행할 작업을 여기에 추가
                       },
                     ),
                   ),
@@ -137,6 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                         // 중앙 버튼을 눌렀을 때 수행할 작업을 여기에 추가
                       },
+
                     ),
                   ),
                 ],
