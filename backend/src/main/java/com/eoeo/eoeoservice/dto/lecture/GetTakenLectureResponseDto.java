@@ -23,7 +23,7 @@ public class GetTakenLectureResponseDto {
 
     private Long coreLectureTypeId;
 
-    private Long courseId;
+    private Long courseTypeId;
 
     private Long credit;
 
@@ -48,6 +48,6 @@ public class GetTakenLectureResponseDto {
     }
 
     public void setCourseId(Lecture lecture){
-        courseId = lecture.getCourse().getId();
+        courseTypeId = lecture.getCourseType().getId();
     }
 }
