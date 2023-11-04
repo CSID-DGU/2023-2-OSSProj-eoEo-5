@@ -9,10 +9,14 @@ import com.eoeo.eoeoservice.domain.lecture_taken.LectureTakenRepository;
 import com.eoeo.eoeoservice.domain.prerequisite.Prerequisite;
 import com.eoeo.eoeoservice.domain.prerequisite.PrerequisiteRepository;
 import com.eoeo.eoeoservice.dto.lecture.AddTakenLectureRequestDto;
+import com.eoeo.eoeoservice.dto.lecture.GetTakenLectureRequestDto;
+import com.eoeo.eoeoservice.dto.lecture.GetTakenLectureResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -59,5 +63,40 @@ public class LectureService {
         lectureTakenRepository.save(lectureTaken);
 
         return lectureTaken.getId();
+    }
+
+    public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
+
+        Account account = accountRepository.findById(request.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
+
+        List<GetTakenLectureResponseDto> response = new LinkedList<>();
+
+        List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccount(account);
+
+        for(LectureTaken takenLecture : takenLectures){
+            Lecture lecture = takenLecture.getLecture();
+            GetTakenLectureResponseDto getTakenLectureResponseDto = GetTakenLectureResponseDto.builder()
+                    .id(takenLecture.getId())
+                    .name(lecture.getName())
+                    .lectureNumber(lecture.getLectureNumber())
+                    .credit(lecture.getCredit())
+                    .build();
+
+            if(lecture.isCoreLecture()){
+                getTakenLectureResponseDto.setCoreCourse(lecture);
+            } else{
+                getTakenLectureResponseDto.setCourseId(lecture);
+            }
+
+            if(takenLecture.isSubstitute()){
+                getTakenLectureResponseDto.setOriginalLecture(takenLecture.getPrerequisite());
+            }
+
+            response.add(getTakenLectureResponseDto);
+
+        }
+
+        return response;
     }
 }
