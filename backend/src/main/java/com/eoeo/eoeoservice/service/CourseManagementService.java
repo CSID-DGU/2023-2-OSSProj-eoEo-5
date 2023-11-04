@@ -6,11 +6,16 @@ import com.eoeo.eoeoservice.domain.core_course_credit.CoreCourseCredit;
 import com.eoeo.eoeoservice.domain.core_course_credit.CoreCourseCreditRepository;
 import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureType;
 import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureTypeRepository;
-import com.eoeo.eoeoservice.domain.course.Course;
-import com.eoeo.eoeoservice.domain.course.CourseRepository;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLectures;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLecturesRepository;
+import com.eoeo.eoeoservice.domain.course_type.CourseType;
+import com.eoeo.eoeoservice.domain.course_type.CourseTypeRepository;
+import com.eoeo.eoeoservice.domain.lecture.Lecture;
+import com.eoeo.eoeoservice.domain.lecture.LectureRepository;
 import com.eoeo.eoeoservice.dto.course_management.AddCoreCourseCreditRequestDto;
 import com.eoeo.eoeoservice.dto.course_management.AddCoreCourseRequestDto;
-import com.eoeo.eoeoservice.dto.course_management.AddCourseRequestDto;
+import com.eoeo.eoeoservice.dto.course_management.AddCourseTypeRequestDto;
+import com.eoeo.eoeoservice.dto.course_management.AddLectureToCourseRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,22 +26,25 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class CourseManagementService {
 
-    private final CourseRepository courseRepository;
+    private final CourseTypeRepository courseTypeRepository;
     private final CoreCourseRepository coreCourseRepository;
     private final CoreLectureTypeRepository coreLectureTypeRepository;
     private final CoreCourseCreditRepository coreCourseCreditRepository;
+    private final LectureRepository lectureRepository;
+    private final CourseLecturesRepository courseLecturesRepository;
 
 
 
     @Transactional
-    public Long addCourse(AddCourseRequestDto request){
-        Course course = Course.builder()
+    public Long addCourseType(AddCourseTypeRequestDto request){
+        CourseType courseType = CourseType.builder()
                 .name(request.getName())
+                .isRequired(request.getIsRequired())
                 .build();
 
-        courseRepository.save(course);
+        courseTypeRepository.save(courseType);
 
-        return course.getId();
+        return courseType.getId();
 
     }
 
@@ -68,6 +76,24 @@ public class CourseManagementService {
         coreCourseCreditRepository.save(coreCourseCredit);
 
         return coreCourseCredit.getId();
+    }
+
+    @Transactional
+    public Long addLectureToCourse(AddLectureToCourseRequestDto request){
+        CourseType courseType = courseTypeRepository.findById(request.getCourseId())
+                .orElseThrow(() -> new NoSuchElementException("No such course type"));
+
+        Lecture lecture = lectureRepository.findById(request.getLectureId())
+                .orElseThrow(() -> new NoSuchElementException("No such lecture"));
+
+        CourseLectures courseLectures = CourseLectures.builder()
+                .courseType(courseType)
+                .lecture(lecture)
+                .build();
+
+        courseLecturesRepository.save(courseLectures);
+
+        return courseLectures.getId();
     }
 
 }

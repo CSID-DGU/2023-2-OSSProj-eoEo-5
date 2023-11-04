@@ -41,7 +41,7 @@ public class LectureService {
         Lecture lecture = lectureRepository.findById(request.getLectureId())
                 .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
 
-        if(request.isSubstitute()){
+        if(request.getIsSubstitute()){
 
             Prerequisite prerequisite = prerequisiteRepository.findById(request.getPrerequisiteId())
                     .orElseThrow(() -> new NoSuchElementException("No such prerequisite"));

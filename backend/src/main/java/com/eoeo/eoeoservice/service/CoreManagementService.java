@@ -4,8 +4,8 @@ import com.eoeo.eoeoservice.domain.core_course.CoreCourse;
 import com.eoeo.eoeoservice.domain.core_course.CoreCourseRepository;
 import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureType;
 import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureTypeRepository;
-import com.eoeo.eoeoservice.domain.course.Course;
-import com.eoeo.eoeoservice.domain.course.CourseRepository;
+import com.eoeo.eoeoservice.domain.course_type.CourseType;
+import com.eoeo.eoeoservice.domain.course_type.CourseTypeRepository;
 import com.eoeo.eoeoservice.domain.major.Major;
 import com.eoeo.eoeoservice.domain.major.MajorRepository;
 import com.eoeo.eoeoservice.domain.school.School;
@@ -26,7 +26,7 @@ public class CoreManagementService {
     private final SchoolRepository schoolRepository;
     private final CoreLectureTypeRepository coreLectureTypeRepository;
     private final CoreCourseRepository coreCourseRepository;
-    private final CourseRepository courseRepository;
+    private final CourseTypeRepository courseTypeRepository;
     private final MajorRepository majorRepository;
 
 
@@ -60,10 +60,10 @@ public class CoreManagementService {
         CoreCourse coreCourse = coreCourseRepository.findById(request.getCoreCourseId())
                 .orElseThrow(() -> new NoSuchElementException("No such core course"));
 
-        Course requiredCourse = courseRepository.findById(request.getRequiredCourseId())
+        CourseType requiredCourse = courseTypeRepository.findById(request.getRequiredCourseId())
                 .orElseThrow(() -> new NoSuchElementException("No such course"));
 
-        Course selectiveCourse = courseRepository.findById(request.getRequiredCourseId())
+        CourseType selectiveCourse = courseTypeRepository.findById(request.getRequiredCourseId())
                 .orElseThrow(() -> new NoSuchElementException("No such course"));
 
         Major major = Major.builder()
