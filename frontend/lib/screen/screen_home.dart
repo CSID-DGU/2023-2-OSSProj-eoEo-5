@@ -64,40 +64,82 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               padding: EdgeInsets.only(bottom: width * 0.001),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end, // 오른쪽 정렬
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // 가로로 동일한 간격으로 배치
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: width * 0.024), // 오른쪽 패딩 추가
-                    child: ButtonTheme(
-                      minWidth: width * 0.02,
-                      height: height * 0.00125,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
-                        ),
-
-                        child: Text(
-                          '학업 현황',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13),
-                        ),
-                        onPressed: () {
-                          // 'subject_takenScreen' 페이지로 이동하는 코드
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Subject_takenScreen()),
-                          );
-                        },
-                      ),
-                      ),
+                  ButtonTheme(
+                    minWidth: width * 0.02,
+                    height: height * 0.00125,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
                     ),
-                  ],
-
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                      ),
+                      child: Text(
+                        '주전공 이수체계도',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      onPressed: () {
+                        // 왼쪽 버튼을 눌렀을 때 수행할 작업을 여기에 추가
+                      },
+                    ),
+                  ),
+                  ButtonTheme(
+                    minWidth: width * 0.02,
+                    height: height * 0.00125,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                      ),
+                      child: Text(
+                        '복수전공 이수체계도',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      onPressed: () {
+                      },
+                    ),
+                  ),
+                  ButtonTheme(
+                    minWidth: width * 0.02,
+                    height: height * 0.00125,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                      ),
+                      child: Text(
+                        '학업 현황',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      onPressed: () {
+                        // 'subject_takenScreen' 페이지로 이동하는 코드
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Subject_takenScreen()),
+                        );
+                        // 중앙 버튼을 눌렀을 때 수행할 작업을 여기에 추가
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             Divider(),
