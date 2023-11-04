@@ -15,7 +15,7 @@ public class AddTakenLectureRequestDto {
 
     private Long lectureId;
 
-    private boolean isSubstitute;
+    private Boolean isSubstitute;
 
     private Long prerequisiteId;
 
