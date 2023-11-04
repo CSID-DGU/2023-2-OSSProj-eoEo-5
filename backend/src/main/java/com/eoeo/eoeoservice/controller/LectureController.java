@@ -32,4 +32,9 @@ public class LectureController {
         return lectureService.getPrerequisites(request);
     }
 
+    @GetMapping("/getsubstitutes")
+    public List<GetSubstituteLectureResponseDto> getSubstitutes(GetSubstituteLectureRequestDto request){
+        return lectureService.getSubstitutes(request);
+    }
+
 }

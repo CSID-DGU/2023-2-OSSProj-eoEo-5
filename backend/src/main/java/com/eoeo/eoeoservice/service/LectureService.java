@@ -8,6 +8,8 @@ import com.eoeo.eoeoservice.domain.lecture_taken.LectureTaken;
 import com.eoeo.eoeoservice.domain.lecture_taken.LectureTakenRepository;
 import com.eoeo.eoeoservice.domain.prerequisite.Prerequisite;
 import com.eoeo.eoeoservice.domain.prerequisite.PrerequisiteRepository;
+import com.eoeo.eoeoservice.domain.substitute_lecture.SubstituteLecture;
+import com.eoeo.eoeoservice.domain.substitute_lecture.SubstituteLectureRepository;
 import com.eoeo.eoeoservice.dto.lecture.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class LectureService {
     private final AccountRepository accountRepository;
     private final LectureRepository lectureRepository;
     private final PrerequisiteRepository prerequisiteRepository;
+    private final SubstituteLectureRepository substituteLectureRepository;
     private final LectureTakenRepository lectureTakenRepository;
 
 
@@ -109,6 +112,25 @@ public class LectureService {
                     .name(prerequisiteLecture.getName())
                     .lectureNumber(prerequisiteLecture.getLectureNumber())
                     .credit(prerequisiteLecture.getCredit())
+                    .build());
+        }
+
+        return response;
+    }
+
+    public List<GetSubstituteLectureResponseDto> getSubstitutes(GetSubstituteLectureRequestDto request){
+        List<GetSubstituteLectureResponseDto> response = new LinkedList<>();
+
+        List<SubstituteLecture> substitutes = substituteLectureRepository.findAllByOriginalLectureIdAndIsDeleted(request.getLectureId(), false);
+
+        for(SubstituteLecture substitute: substitutes){
+            Lecture substituteLecture = substitute.getSubstituteLecture();
+
+            response.add(GetSubstituteLectureResponseDto.builder()
+                    .lectureId(substituteLecture.getId())
+                    .name(substituteLecture.getName())
+                    .lectureNumber(substituteLecture.getLectureNumber())
+                    .courseTypeId(substituteLecture.getCourseType().getId())
                     .build());
         }
 
