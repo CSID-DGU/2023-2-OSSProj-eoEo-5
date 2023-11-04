@@ -1,7 +1,7 @@
 package com.eoeo.eoeoservice.dto.lecture;
 
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
-import com.eoeo.eoeoservice.domain.prerequisite.Prerequisite;
+import com.eoeo.eoeoservice.domain.substitute_lecture.SubstituteLecture;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,8 +35,8 @@ public class GetTakenLectureResponseDto {
 
     private String originalLectureNumber;
 
-    public void setOriginalLecture(Prerequisite prerequisite){
-        Lecture originalLecture = prerequisite.getLecture();
+    public void setOriginalLecture(SubstituteLecture substituteLecture){
+        Lecture originalLecture = substituteLecture.getOriginalLecture();
         originalLectureId = originalLecture.getId();
         originalLectureName = originalLecture.getName();
         originalLectureNumber = originalLecture.getLectureNumber();

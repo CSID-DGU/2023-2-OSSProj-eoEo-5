@@ -44,14 +44,14 @@ public class LectureService {
 
         if(request.getIsSubstitute()){
 
-            Prerequisite prerequisite = prerequisiteRepository.findById(request.getPrerequisiteId())
+            SubstituteLecture substituteLecture = substituteLectureRepository.findByIdAndIsDeleted(request.getSubstituteId(), false)
                     .orElseThrow(() -> new NoSuchElementException("No such prerequisite"));
 
             lectureTaken = LectureTaken.builder()
                     .account(account)
                     .lecture(lecture)
                     .isSubstitute(true)
-                    .prerequisite(prerequisite)
+                    .substituteLecture(substituteLecture)
                     .build();
         } else{
             lectureTaken = LectureTaken.builder()
@@ -64,6 +64,12 @@ public class LectureService {
         lectureTakenRepository.save(lectureTaken);
 
         return lectureTaken.getId();
+    }
+
+    @Transactional
+    public Boolean addTakenLectures(List<AddTakenLectureRequestDto> requests){
+
+        return null;
     }
 
     public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
@@ -91,7 +97,7 @@ public class LectureService {
             }
 
             if(takenLecture.isSubstitute()){
-                getTakenLectureResponseDto.setOriginalLecture(takenLecture.getPrerequisite());
+                getTakenLectureResponseDto.setOriginalLecture(takenLecture.getSubstituteLecture());
             }
 
             response.add(getTakenLectureResponseDto);

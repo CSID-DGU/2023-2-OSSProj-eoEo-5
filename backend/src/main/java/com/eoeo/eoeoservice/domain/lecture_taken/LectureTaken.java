@@ -3,7 +3,7 @@ package com.eoeo.eoeoservice.domain.lecture_taken;
 import com.eoeo.eoeoservice.domain.BaseEntity;
 import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
-import com.eoeo.eoeoservice.domain.prerequisite.Prerequisite;
+import com.eoeo.eoeoservice.domain.substitute_lecture.SubstituteLecture;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,8 +40,8 @@ public class LectureTaken extends BaseEntity {
     private boolean isSubstitute;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prerequisite_id")
+    @JoinColumn(name = "substitute_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Prerequisite prerequisite;
+    private SubstituteLecture substituteLecture;
 
 }
