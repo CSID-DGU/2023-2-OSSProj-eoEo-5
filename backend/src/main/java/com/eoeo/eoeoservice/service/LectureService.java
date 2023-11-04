@@ -8,9 +8,7 @@ import com.eoeo.eoeoservice.domain.lecture_taken.LectureTaken;
 import com.eoeo.eoeoservice.domain.lecture_taken.LectureTakenRepository;
 import com.eoeo.eoeoservice.domain.prerequisite.Prerequisite;
 import com.eoeo.eoeoservice.domain.prerequisite.PrerequisiteRepository;
-import com.eoeo.eoeoservice.dto.lecture.AddTakenLectureRequestDto;
-import com.eoeo.eoeoservice.dto.lecture.GetTakenLectureRequestDto;
-import com.eoeo.eoeoservice.dto.lecture.GetTakenLectureResponseDto;
+import com.eoeo.eoeoservice.dto.lecture.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,6 +93,23 @@ public class LectureService {
 
             response.add(getTakenLectureResponseDto);
 
+        }
+
+        return response;
+    }
+
+    public List<GetPrerequisiteResponseDto> getPrerequisites(GetPrerequisiteRequestDto request){
+        List<GetPrerequisiteResponseDto> response = new LinkedList<>();
+
+        List<Prerequisite> prerequisites = prerequisiteRepository.findAllByLectureIdAndIsDeleted(request.getLectureId(), false);
+
+        for(Prerequisite prerequisite : prerequisites){
+            Lecture prerequisiteLecture = prerequisite.getLecture();
+            response.add(GetPrerequisiteResponseDto.builder()
+                    .name(prerequisiteLecture.getName())
+                    .lectureNumber(prerequisiteLecture.getLectureNumber())
+                    .credit(prerequisiteLecture.getCredit())
+                    .build());
         }
 
         return response;

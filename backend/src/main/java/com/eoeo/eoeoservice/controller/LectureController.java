@@ -1,8 +1,6 @@
 package com.eoeo.eoeoservice.controller;
 
-import com.eoeo.eoeoservice.dto.lecture.AddTakenLectureRequestDto;
-import com.eoeo.eoeoservice.dto.lecture.GetTakenLectureRequestDto;
-import com.eoeo.eoeoservice.dto.lecture.GetTakenLectureResponseDto;
+import com.eoeo.eoeoservice.dto.lecture.*;
 import com.eoeo.eoeoservice.service.LectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +25,11 @@ public class LectureController {
     @GetMapping("/getlecturetaken")
     public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
         return lectureService.getTakenLectures(request);
+    }
+
+    @GetMapping("/getprerequisites")
+    public List<GetPrerequisiteResponseDto> getPrerequisites(GetPrerequisiteRequestDto request){
+        return lectureService.getPrerequisites(request);
     }
 
 }
