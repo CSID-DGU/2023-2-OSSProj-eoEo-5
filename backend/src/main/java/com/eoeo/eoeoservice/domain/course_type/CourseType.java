@@ -1,4 +1,4 @@
-package com.eoeo.eoeoservice.domain.course;
+package com.eoeo.eoeoservice.domain.course_type;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-public class Course extends BaseEntity {
+public class CourseType extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +21,8 @@ public class Course extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private Boolean isRequired;
 
 }

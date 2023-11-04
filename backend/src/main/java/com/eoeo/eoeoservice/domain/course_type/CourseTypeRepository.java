@@ -1,9 +1,9 @@
-package com.eoeo.eoeoservice.domain.course;
+package com.eoeo.eoeoservice.domain.course_type;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface CourseTypeRepository extends JpaRepository<CourseType, Long> {
 
 }
