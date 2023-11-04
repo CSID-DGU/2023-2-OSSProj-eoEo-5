@@ -4,6 +4,7 @@ import 'package:frontend/widget/chartwidget.dart';
 import 'package:frontend/widget/textwriter.dart';
 import '../widget/barchart.dart';
 import 'FAQ.dart';
+import 'login.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -171,6 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 40,// 아이콘 색상
               ),
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
               },
             ),
 
