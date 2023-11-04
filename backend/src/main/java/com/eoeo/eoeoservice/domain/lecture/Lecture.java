@@ -32,8 +32,8 @@ public class Lecture extends BaseEntity {
     private boolean isCoreLecture;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="course_id")
-    private CourseType course;
+    @JoinColumn(name="course_type_id")
+    private CourseType courseType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="core_lecture_type_id")
