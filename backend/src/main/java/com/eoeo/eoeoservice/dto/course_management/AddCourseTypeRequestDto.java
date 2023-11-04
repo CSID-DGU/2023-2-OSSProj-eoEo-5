@@ -9,8 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddCourseRequestDto {
+public class AddCourseTypeRequestDto {
 
     private String name;
+
+    private Boolean isRequired;
 
 }
