@@ -5,7 +5,7 @@ import 'package:frontend/widget/textwriter.dart';
 import '../widget/barchart.dart';
 import 'FAQ.dart';
 import 'login.dart';
-
+import 'subject_taken.dart'; //기수강과목 불러오기
 class HomeScreen extends StatefulWidget {
 
   @override
@@ -78,18 +78,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
                         ),
+
                         child: Text(
-                          '기수강 과목 확인',
+                          '학업 현황',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 13),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          // 'subject_takenScreen' 페이지로 이동하는 코드
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Subject_takenScreen()),
+                          );
+                        },
+                      ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+
               ),
             ),
             Divider(),
@@ -167,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             IconButton(
               icon: Icon(
-                Icons.home_rounded, // 검색 아이콘
+                Icons.home_rounded, // 로그인 페이지 아이콘
                 color: Colors.lightBlueAccent,
                 size: 40,// 아이콘 색상
               ),
@@ -178,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             IconButton(
               icon: Icon(
-                Icons.settings_rounded, // 검색 아이콘
+                Icons.settings_rounded, // 환경설정 아이콘
                 color: Colors.lightBlueAccent,
                 size: 40,// 아이콘 색상
               ),
