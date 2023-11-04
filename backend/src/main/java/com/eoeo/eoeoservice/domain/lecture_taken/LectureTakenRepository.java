@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface LectureTakenRepository extends JpaRepository<LectureTaken, Long> {
 
-    List<LectureTaken> findAllByAccount(Account account);
+    List<LectureTaken> findAllByAccountAndIsDeleted(Account account, Boolean isDeleted);
 }
