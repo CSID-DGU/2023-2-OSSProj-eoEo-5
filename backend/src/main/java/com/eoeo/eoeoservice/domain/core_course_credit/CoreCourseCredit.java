@@ -2,7 +2,7 @@ package com.eoeo.eoeoservice.domain.core_course_credit;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
 import com.eoeo.eoeoservice.domain.core_course.CoreCourse;
-import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureType;
+import com.eoeo.eoeoservice.domain.core_lecture_type.CoreLectureType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

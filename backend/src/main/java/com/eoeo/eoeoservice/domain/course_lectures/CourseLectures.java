@@ -1,5 +1,6 @@
 package com.eoeo.eoeoservice.domain.course_lectures;
 
+import com.eoeo.eoeoservice.domain.BaseEntity;
 import com.eoeo.eoeoservice.domain.course_type.CourseType;
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @SQLDelete(sql = "UPDATE CoreLectures SET isDeleted = true WHERE id = ?")
-public class CourseLectures {
+public class CourseLectures extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

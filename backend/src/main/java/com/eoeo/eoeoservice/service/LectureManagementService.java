@@ -1,7 +1,7 @@
 package com.eoeo.eoeoservice.service;
 
-import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureType;
-import com.eoeo.eoeoservice.domain.core_course_type.CoreLectureTypeRepository;
+import com.eoeo.eoeoservice.domain.core_lecture_type.CoreLectureType;
+import com.eoeo.eoeoservice.domain.core_lecture_type.CoreLectureTypeRepository;
 import com.eoeo.eoeoservice.domain.course_type.CourseType;
 import com.eoeo.eoeoservice.domain.course_type.CourseTypeRepository;
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
