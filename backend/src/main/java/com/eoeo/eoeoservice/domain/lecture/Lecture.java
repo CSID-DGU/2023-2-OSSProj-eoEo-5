@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 
@@ -16,6 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
+@SQLDelete(sql = "UPDATE Lecture SET isDeleted = true WHERE id = ?")
 public class Lecture extends BaseEntity {
 
     @Id
@@ -37,6 +41,7 @@ public class Lecture extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="core_lecture_type_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private CoreLectureType coreLectureType;
 
     @Column(nullable = false)

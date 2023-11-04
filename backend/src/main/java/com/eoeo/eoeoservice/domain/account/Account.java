@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
+@SQLDelete(sql = "UPDATE Account SET isDeleted = true WHERE id = ?")
 public class Account extends BaseEntity implements UserDetails{
 
     @Id
@@ -39,6 +43,7 @@ public class Account extends BaseEntity implements UserDetails{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Major major;
 
     @Column(nullable = false)
@@ -46,6 +51,7 @@ public class Account extends BaseEntity implements UserDetails{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "secound_major_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Major secondMajor;
 
     private String validationToken;
