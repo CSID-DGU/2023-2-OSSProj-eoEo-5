@@ -44,10 +44,12 @@ class _LogInState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           TextField(
+                            controller: controller,
                             decoration: InputDecoration(labelText: 'Enter ID'),
                             keyboardType: TextInputType.text,
                           ),
                           TextField(
+                            controller: controller2,
                             decoration:
                             InputDecoration(labelText: 'Enter password'),
                             keyboardType: TextInputType.text,
@@ -59,19 +61,20 @@ class _LogInState extends State<LoginScreen> {
                               height: 50.0,
                               child: ElevatedButton(
                                 onPressed: (){
-
-                                  if (controller.text == '2019111383' &&
+                                  if (controller.text == 'admin' &&
                                       controller2.text == '1234') {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                NextPage(HomeScreen())));
+                                                NextPage(HomeScreen())
+                                        )
+                                    );
                                   }
-                                  else if (controller.text == '2019111383' && controller2.text != '1234') {
+                                  else if (controller.text == 'admin' && controller2.text != '1234') {
                                     showSnackBar(context, Text('Wrong password'));
                                   }
-                                  else if (controller.text != '2019111383' && controller2.text == '1234') {
+                                  else if (controller.text != 'admin' && controller2.text == '1234') {
                                     showSnackBar(context, Text('Wrong email'));
                                   }
                                   else {
