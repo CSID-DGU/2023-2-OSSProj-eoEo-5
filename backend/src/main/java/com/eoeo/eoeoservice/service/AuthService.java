@@ -95,6 +95,10 @@ public class AuthService {
                 .schoolName(account.getMajor().getSchool().getName())
                 .majorId(account.getMajor().getId())
                 .majorName(account.getMajor().getName())
+                .coreCourseId(account.getMajor().getCoreCourse().getId())
+                .requiredCourseId(account.getMajor().getRequiredCourse().getId())
+                .selectiveCourseId(account.getMajor().getSelectiveCourse().getId())
+                .selectiveCredit(account.getMajor().getSelectiveCourseCredit())
                 .accessToken(jwtProvider.createAccessToken(account.getUsername()))
                 .refreshToken(jwtProvider.createRefreshToken(account.getUsername(), validationToken))
                 .build();

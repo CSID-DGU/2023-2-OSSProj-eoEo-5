@@ -28,6 +28,10 @@ public class AccountService {
                 .schoolName(account.getMajor().getSchool().getName())
                 .majorId(account.getMajor().getId())
                 .majorName(account.getMajor().getName())
+                .coreCourseId(account.getMajor().getCoreCourse().getId())
+                .requiredCourseId(account.getMajor().getRequiredCourse().getId())
+                .selectiveCourseId(account.getMajor().getSelectiveCourse().getId())
+                .selectiveCredit(account.getMajor().getSelectiveCourseCredit())
                 .build();
 
         if(account.getIsSecondMajor()){
