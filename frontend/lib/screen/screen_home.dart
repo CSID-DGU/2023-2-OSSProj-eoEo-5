@@ -8,10 +8,12 @@ import 'login.dart';
 import 'subject_taken.dart'; //기수강과목 불러오기
 import 'main_major_course.dart'; //주전공 이수체계도 불러오기
 import 'double_major_course.dart'; //주전공 이수체계도 불러오기
+
 class HomeScreen extends StatefulWidget {
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
+
 }
 
 class _HomeScreenState extends State<HomeScreen> {
