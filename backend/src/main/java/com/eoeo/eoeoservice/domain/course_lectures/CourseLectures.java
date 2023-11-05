@@ -35,7 +35,4 @@ public class CourseLectures extends BaseEntity {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Lecture lecture;
 
-    @Column(nullable = false)
-    private Boolean isRequired;
-
 }
