@@ -25,7 +25,7 @@ public class JwtProvider {
 
     private String tokenKey = "secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecret";
 
-    private long expireTimeAccessToken = 2L;
+    private long expireTimeAccessToken = 45L;
 
     private long expireRefreshToken = 14L;
 
@@ -35,7 +35,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(Date.from(now.toInstant().plus(expireTimeAccessToken, ChronoUnit.HOURS)))
+                .setExpiration(Date.from(now.toInstant().plus(expireTimeAccessToken, ChronoUnit.SECONDS)))
                 .signWith(SignatureAlgorithm.HS256, tokenKey)
                 .compact();
     }
