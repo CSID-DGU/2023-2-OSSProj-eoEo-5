@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 'Main_major_course' 페이지로 이동하는 코드
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Main_major_course()),
+                          MaterialPageRoute(builder: (context) => MainMajorCourse()),
                         );
                       },
                     ),
