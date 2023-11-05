@@ -44,7 +44,7 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
           title: Text(
-            '복수전공 : 융합소프트웨어학과 이수체계도 보기',
+            '주전공 : 경영학과 이수체계도 보기',
             style: TextStyle(
               color: Colors.white,
             ),
