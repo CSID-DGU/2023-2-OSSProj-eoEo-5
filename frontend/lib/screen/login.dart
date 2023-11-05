@@ -112,11 +112,3 @@ void showSnackBar(BuildContext context, Text text) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-class NextPage extends StatelessWidget {
-  const NextPage(homeScreen, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
