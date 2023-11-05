@@ -42,14 +42,14 @@ public class AccountDataResponseDto {
 
     private long selectiveCredit;
 
-    private long secondSelectiveCredit;
+    private long secondSelectiveCourseCredit;
 
     public void setSecondMajor(Major major){
         secondMajorId = major.getId();
         secondMajorName = major.getName();
         secondRequiredCourseId = major.getRequiredCourse().getId();
         secondSelectiveCourseId = major.getSelectiveCourse().getId();
-        secondSelectiveCredit = major.getSelectiveCourseCredit();
+        secondSelectiveCourseCredit = major.getSelectiveCourseCredit();
     }
 
 }

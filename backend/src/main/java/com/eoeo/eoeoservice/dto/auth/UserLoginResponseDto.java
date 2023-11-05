@@ -42,7 +42,7 @@ public class UserLoginResponseDto {
 
     private long selectiveCredit;
 
-    private long secondSelectiveCredit;
+    private long secondSelectiveCourseCredit;
 
     private String accessToken;
 
@@ -53,7 +53,7 @@ public class UserLoginResponseDto {
         secondMajorName = major.getName();
         secondRequiredCourseId = major.getRequiredCourse().getId();
         secondSelectiveCourseId = major.getSelectiveCourse().getId();
-        secondSelectiveCredit = major.getSelectiveCourseCredit();
+        secondSelectiveCourseCredit = major.getSelectiveCourseCredit();
     }
 
 
