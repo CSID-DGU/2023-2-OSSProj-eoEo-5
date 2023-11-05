@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/module/request.dart';
 import 'package:frontend/module/user_model.dart';
 
 class ShowUser extends StatefulWidget {

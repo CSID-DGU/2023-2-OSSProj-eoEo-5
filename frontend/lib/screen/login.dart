@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
+import 'package:frontend/module/Request.dart';
 import 'package:frontend/screen/screen_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../module/request.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -116,12 +116,14 @@ class _LogInState extends State<LoginScreen> {
       "password" : password
     };
 
-    Map<String, dynamic>? response = await postWithoutAuthWithBody("https://eoeoservice.site/auth/login", loginData);
+    Map<String, dynamic>? response = await Request.postRequestWithBody("https://eoeoservice.site/auth/login", loginData, false, context);
 
     if(response!.containsKey('id')){
       pref = await SharedPreferences.getInstance();
       User user = User(response);
       await pref.setString('user', jsonEncode(user));
+      await pref.setString('accessToken', response['accessToken']);
+      await pref.setString('refreshToken', response['refreshToken']);
       return true;
     } else{
       return false;
