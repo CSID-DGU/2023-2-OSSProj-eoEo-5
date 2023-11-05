@@ -1,16 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/data/User.dart';
 import 'package:frontend/screen/screen_home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../module/request.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LogInState();
 }
 
 class _LogInState extends State<LoginScreen> {
 
+  late SharedPreferences pref;
+
   // text field와 연결
   TextEditingController controller = TextEditingController(); // ID
   TextEditingController controller2 = TextEditingController(); // PW
+
+  @override
+  void initState(){
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,25 +76,19 @@ class _LogInState extends State<LoginScreen> {
                               minWidth: 100.0,
                               height: 50.0,
                               child: ElevatedButton(
-                                onPressed: (){
-                                  if (controller.text == 'admin' &&
-                                      controller2.text == '1234') {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) => HomeScreen()
-                                        )
-                                    );
-                                  }
-                                  else if (controller.text == 'admin' && controller2.text != '1234') {
-                                    showSnackBar(context, Text('Wrong password'));
-                                  }
-                                  else if (controller.text != 'admin' && controller2.text == '1234') {
-                                    showSnackBar(context, Text('Wrong email'));
-                                  }
-                                  else {
-                                    showSnackBar(context, Text('Check your info again'));
-                                  }
+                                onPressed: () {
+                                  login(controller.text, controller2.text).then((response){
+                                    if(response){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) => HomeScreen()
+                                          )
+                                      );
+                                    }else{
+                                      showSnackBar(context, Text('Check your info again'));
+                                    }
+                                  });
 
                                 },
                                 child: Icon(
@@ -98,6 +108,24 @@ class _LogInState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  Future<bool> login(String username, String password) async{
+    Map<String, String> loginData = {
+      "username" : username,
+      "password" : password
+    };
+
+    Map<String, dynamic>? response = await postWithoutAuthWithBody("https://eoeoservice.site/auth/login", loginData);
+
+    if(response!.containsKey('id')){
+      pref = await SharedPreferences.getInstance();
+      User user = User(response);
+      await pref.setString('user', jsonEncode(user));
+      return true;
+    } else{
+      return false;
+    }
   }
 }
 

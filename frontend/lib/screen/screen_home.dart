@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/data/User.dart';
 import 'package:frontend/screen/set.dart';
 import 'package:frontend/widget/chartwidget.dart';
 import 'package:frontend/widget/textwriter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../module/request.dart';
 import '../module/show_user.dart';
 import '../widget/barchart.dart';
@@ -20,6 +24,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  late SharedPreferences pref;
+
+  bool isUserDataLoaded = false;
+
   String testText ="";
 
   Widget? text;
@@ -27,18 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
   // request module 사용하기 위해 필요한 함수
   @override
   void initState(){
-    text = titleText("");
-    setState((){
-      request();
-    });
-  }
-  void request() {
-    postWithoutAuthWithParameter("https://eoeoservice.site/auth/login", <String,String>{"username" : "admin", "password" : "admin"}).then((response){
-      setState((){
-        text = titleText(response!['username'].toString());
+    SharedPreferences.getInstance().then((response){
+      pref = response;
+      setState(() {
+        isUserDataLoaded = true;
       });
     });
   }
+
 
   Widget titleText(String test){
     return Text(
@@ -52,9 +56,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(isUserDataLoaded){
+      return homeScreen();
+    } else{
+      return Container();
+    }
+
+  }
+
+  Widget homeScreen(){
     Size screenSize = MediaQuery.of(context).size;
     double width = screenSize.width;
     double height = screenSize.height;
+
+    User user = User.fromJson(jsonDecode(pref.getString("user")!));
+
+    String name = user.name;
+    String major = user.major;
 
 
     return SafeArea(
@@ -76,6 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.black, // 아이콘 색상
                 ),
                 onPressed: () {
+                  SharedPreferences.getInstance().then((response){
+                    response.clear();
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
+                  });
+
                 },
               ),
             ),
@@ -91,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextWriter(width:width, fontSize:20, contents: "윤영헌님은", textColor: Colors.black, fontWeight: FontWeight.bold),
-            TextWriter(width: width, fontSize: 18, contents:"융합소프트웨어 전공입니다.", fontWeight:FontWeight.bold, textColor: Colors.black),
+            TextWriter(width:width, fontSize:20, contents: "$name님은", textColor: Colors.black, fontWeight: FontWeight.bold),
+            TextWriter(width: width, fontSize: 18, contents:"$major 전공입니다.", fontWeight:FontWeight.bold, textColor: Colors.black),
             Container(
               padding: EdgeInsets.only(bottom: width * 0.001),
 
