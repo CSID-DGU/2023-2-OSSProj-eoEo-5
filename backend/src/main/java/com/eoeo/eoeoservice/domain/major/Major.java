@@ -36,7 +36,7 @@ public class Major extends BaseEntity {
     private School school;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "core_course_id", nullable = false)
+    @JoinColumn(name = "core_course_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private CoreCourse coreCourse;
 
