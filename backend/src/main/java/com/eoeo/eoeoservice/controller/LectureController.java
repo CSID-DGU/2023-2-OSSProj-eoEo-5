@@ -42,4 +42,9 @@ public class LectureController {
         return lectureService.getSubstitutes(request);
     }
 
+    @GetMapping("/getoriginallectures")
+    public List<GetOriginalLecturesResponseDto> getOriginalLectures(GetOriginalLecturesRequestDto request){
+        return lectureService.getOriginalLectures(request);
+    }
+
 }

@@ -162,4 +162,27 @@ public class LectureService {
         return response;
     }
 
+    public List<GetOriginalLecturesResponseDto> getOriginalLectures(GetOriginalLecturesRequestDto request){
+
+        List<GetOriginalLecturesResponseDto> response = new LinkedList<>();
+
+        List<SubstituteLecture> substitutes = substituteLectureRepository.findAllBySubstituteLectureIdAndIsDeleted(request.getSubstituteLectureId(), false);
+
+        for(SubstituteLecture substitute : substitutes){
+
+            Lecture originalLecture = substitute.getOriginalLecture();
+
+            response.add(GetOriginalLecturesResponseDto.builder()
+                    .substituteId(substitute.getId())
+                    .originalLectureId(originalLecture.getId())
+                    .originalLectureName(originalLecture.getName())
+                    .originalLectureNumber(originalLecture.getLectureNumber())
+                    .originalLectureCredit(originalLecture.getCredit())
+                    .build());
+
+        }
+
+        return response;
+
+    }
 }
