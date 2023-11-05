@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screen/set.dart';
 import 'package:frontend/widget/chartwidget.dart';
 import 'package:frontend/widget/textwriter.dart';
+import '../module/request.dart';
+import '../module/show_user.dart';
 import '../widget/barchart.dart';
 import 'FAQ.dart';
 import 'login.dart';
@@ -18,11 +20,42 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  String testText ="";
+
+  Widget? text;
+
+  // request module 사용하기 위해 필요한 함수
+  @override
+  void initState(){
+    text = titleText("");
+    setState((){
+      request();
+    });
+  }
+  void request() {
+    postWithoutAuthWithParameter("https://eoeoservice.site/auth/login", <String,String>{"username" : "admin", "password" : "admin"}).then((response){
+      setState((){
+        text = titleText(response!['username'].toString());
+      });
+    });
+  }
+
+  Widget titleText(String test){
+    return Text(
+      //'Team eoEo',
+      test,
+      style: TextStyle(
+        color: Colors.black,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     double width = screenSize.width;
     double height = screenSize.height;
+
 
     return SafeArea(
       child: Scaffold(
@@ -30,12 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text(
-            'Team eoEo',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+          title: Text("eoEo", style: TextStyle(color: Colors.black)),
           centerTitle: true, // Title을 가운데 정렬
           elevation: 0.8, // 그림자 조절
           leading: Container(),
@@ -67,8 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
             TextWriter(width: width, fontSize: 18, contents:"융합소프트웨어 전공입니다.", fontWeight:FontWeight.bold, textColor: Colors.black),
             Container(
               padding: EdgeInsets.only(bottom: width * 0.001),
+
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // 가로로 동일한 간격으로 배치
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 가로로 동일한 간격으로 배치
                 children: <Widget>[
                   ButtonTheme(
                     minWidth: width * 0.02,
@@ -248,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 40,// 아이콘 색상
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
               },
             ),
 

@@ -11,13 +11,13 @@ class ShowUser extends StatefulWidget {
 }
 
 class _ShowUserState extends State<ShowUser> {
-  late final String url;
+  late final String url = "";
   Future<User>? user;
 
   @override
   void initState() {
     super.initState();
-    user = getData(url) as Future<User>?;
+    //user = getData(url) as Future<User>?;
   }
 
   @override
