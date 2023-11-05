@@ -66,8 +66,7 @@ class _LogInState extends State<LoginScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                NextPage(HomeScreen())
+                                            builder: (BuildContext context) => HomeScreen()
                                         )
                                     );
                                   }
