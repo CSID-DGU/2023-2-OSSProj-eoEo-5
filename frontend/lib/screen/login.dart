@@ -35,10 +35,9 @@ class _LogInState extends State<LoginScreen> {
         elevation: 0.0,
         backgroundColor: Colors.blue,
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
+          TextButton(
+              child: Text("회원가입", style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.push(
                     context,
