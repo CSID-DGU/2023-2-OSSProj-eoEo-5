@@ -16,14 +16,14 @@ String? refreshToken; // 리프레시 토큰
 
 // GET
 Future<String?> getData(String url) async {
-  var response = await http.get(Uri.parse(url));
-  return _handleResponse(response);
+  var response = await http.get(Uri.parse(url)); // 주어진 URL로 GET 요청을 보내고 응답을 기다림
+  return _handleResponse(response);  //응답을 처리하고 새로운 액세스 토큰을 반환
 }
 
 // POST
 Future<String?> postData(String url, Map<String, dynamic> data) async {
   final headers = <String, String>{
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json', // JSON 형식의 요청을 보내기 위한 헤더 설정
   };
 
   // 엑세스 토큰이 있으면 요청 헤더에 추가
@@ -31,18 +31,18 @@ Future<String?> postData(String url, Map<String, dynamic> data) async {
     headers['Authorization']='Bearer $accessToken';
   }
 
-  final body = jsonEncode(data);
+  final body = jsonEncode(data); // 전달할 데이터를 JSON 형식으로 변환
 
   final response = await http.post(
     Uri.parse(url),
-    headers: headers,
-    body: body,
+    headers: headers, // 헤더를 설정
+    body: body, // JSON 데이터를 요청 본문으로 설정
   );
 
   // 토큰 재발급
   final newAccessToken = _handleResponse(response);
   if (newAccessToken != null){
-    accessToken = newAccessToken;
+    accessToken = newAccessToken; // 새로운 액세스 토큰을 저장
     return newAccessToken;
   }
   else{
@@ -56,10 +56,10 @@ String? _handleResponse(http.Response response) {
   final statusCode = response.statusCode;
   final responseBody = utf8.decode(response.bodyBytes);
 
-  if (statusCode == 200) {
-    final json = jsonDecode(responseBody);
-    if (json.containsKey('access_token')) {
-      return json['access_token'];
+  if (statusCode == 200) { // 성공적인 응답일 경우
+    final json = jsonDecode(responseBody); // JSON 응답을 파싱
+    if (json.containsKey('access_token')) { // 'access_token' 키가 있는지 확인
+      return json['access_token']; // 새로운 액세스 토큰 반환
     }
   }
   return null; // 새로운 액세스 토큰을 찾을 수 없음
