@@ -3,10 +3,7 @@ package com.eoeo.eoeoservice.controller;
 import com.eoeo.eoeoservice.dto.lecture.*;
 import com.eoeo.eoeoservice.service.LectureService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,12 +15,12 @@ public class LectureController {
     private final LectureService lectureService;
 
     @PostMapping("/addlecturetaken")
-    public Long addLectureTaken(AddTakenLectureRequestDto request){
+    public Long addLectureTaken(@RequestBody AddTakenLectureRequestDto request){
         return lectureService.addTakenLecture(request);
     }
 
     @PostMapping("/addlecturestaken")
-    public Boolean addLecturesTaken(AddTakenLecturesRequestDto request){
+    public Boolean addLecturesTaken(@RequestBody AddTakenLecturesRequestDto request){
         return lectureService.addTakenLectures(request);
     }
 
