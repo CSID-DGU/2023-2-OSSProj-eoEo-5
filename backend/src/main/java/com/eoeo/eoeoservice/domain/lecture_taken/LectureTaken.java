@@ -44,4 +44,9 @@ public class LectureTaken extends BaseEntity {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private SubstituteLecture substituteLecture;
 
+    public void setSubstitute(SubstituteLecture substitute){
+        isSubstitute = true;
+        substituteLecture = substitute;
+    }
+
 }

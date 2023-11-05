@@ -22,6 +22,11 @@ public class LectureController {
         return lectureService.addTakenLecture(request);
     }
 
+    @PostMapping("/addlecturestaken")
+    public Boolean addLecturesTaken(AddTakenLecturesRequestDto request){
+        return lectureService.addTakenLectures(request);
+    }
+
     @GetMapping("/getlecturetaken")
     public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
         return lectureService.getTakenLectures(request);

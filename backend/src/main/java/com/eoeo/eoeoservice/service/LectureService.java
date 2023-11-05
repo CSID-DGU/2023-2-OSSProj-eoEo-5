@@ -67,9 +67,28 @@ public class LectureService {
     }
 
     @Transactional
-    public Boolean addTakenLectures(List<AddTakenLectureRequestDto> requests){
+    public Boolean addTakenLectures(AddTakenLecturesRequestDto requests){
+        Account account = accountRepository.findByIdAndIsDeleted(requests.getAccountId(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
 
-        return null;
+        for(LectureTakenDto dto : requests.getLectures()){
+            Lecture lecture = lectureRepository.findById(dto.getLectureId()).orElseThrow(() -> new NoSuchElementException("No such lecture"));
+            LectureTaken lectureTaken = LectureTaken.builder()
+                    .account(account)
+                    .lecture(lecture)
+                    .isSubstitute(false)
+                    .build();
+
+            if(dto.getIsSubstitute()){
+                SubstituteLecture substituteLecture = substituteLectureRepository .findByIdAndIsDeleted(dto.getSubstituteId(), false)
+                                .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
+                lectureTaken.setSubstitute(substituteLecture);
+            }
+
+            lectureTakenRepository.save(lectureTaken);
+
+        }
+        return true;
     }
 
     public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
@@ -142,4 +161,5 @@ public class LectureService {
 
         return response;
     }
+
 }
