@@ -111,8 +111,6 @@ public class LectureService {
 
             if(lecture.isCoreLecture()){
                 getTakenLectureResponseDto.setCoreCourse(lecture);
-            } else{
-                getTakenLectureResponseDto.setCourseId(lecture);
             }
 
             if(takenLecture.isSubstitute()){
@@ -155,7 +153,6 @@ public class LectureService {
                     .lectureId(substituteLecture.getId())
                     .name(substituteLecture.getName())
                     .lectureNumber(substituteLecture.getLectureNumber())
-                    .courseTypeId(substituteLecture.getCourseType().getId())
                     .build());
         }
 

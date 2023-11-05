@@ -17,6 +17,4 @@ public class GetSubstituteLectureResponseDto {
 
     private String lectureNumber;
 
-    private Long courseTypeId;
-
 }

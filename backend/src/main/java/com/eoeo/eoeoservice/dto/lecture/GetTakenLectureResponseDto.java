@@ -23,8 +23,6 @@ public class GetTakenLectureResponseDto {
 
     private Long coreLectureTypeId;
 
-    private Long courseTypeId;
-
     private Long credit;
 
     private Boolean isSubstitute;
@@ -45,9 +43,5 @@ public class GetTakenLectureResponseDto {
     public void setCoreCourse(Lecture lecture){
         isCoreLecture = lecture.isCoreLecture();
         coreLectureTypeId = lecture.getCoreLectureType().getId();
-    }
-
-    public void setCourseId(Lecture lecture){
-        courseTypeId = lecture.getCourseType().getId();
     }
 }

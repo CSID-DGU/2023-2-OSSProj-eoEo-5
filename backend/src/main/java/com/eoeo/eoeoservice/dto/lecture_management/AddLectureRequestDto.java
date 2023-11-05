@@ -17,8 +17,6 @@ public class AddLectureRequestDto {
 
     private String LectureNumber;
 
-    private Long courseId;
-
     private Long coreLectureTypeId;
 
     private Long credit;

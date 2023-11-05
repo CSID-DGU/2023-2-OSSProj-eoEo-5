@@ -47,14 +47,10 @@ public class LectureManagementService {
                     .credit(request.getCredit())
                     .build();
         } else{
-            CourseType courseType = courseTypeRepository.findById(request.getCourseId())
-                    .orElseThrow(() -> new NoSuchElementException("No such course"));
-
             lecture = Lecture.builder()
                     .name(request.getName())
                     .lectureNumber(request.getLectureNumber())
                     .isCoreLecture(false)
-                    .courseType(courseType)
                     .credit(request.getCredit())
                     .build();
         }
