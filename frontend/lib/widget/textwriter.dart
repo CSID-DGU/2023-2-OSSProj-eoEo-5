@@ -44,4 +44,8 @@ class TextWriter extends StatelessWidget{
     );
   }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> FETCH_HEAD

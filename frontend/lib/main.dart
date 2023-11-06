@@ -51,4 +51,8 @@ class _MyAppState extends State<MyApp>{
       return 2;
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> FETCH_HEAD

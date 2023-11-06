@@ -49,6 +49,7 @@ late List<data> _chartData;
                    //radius: BorderRadius.all(Radius.circuler(15)),
                    //borderRadius: BorderRadius.all(Radius.circular(15)),
                    maximumValue: 90
+<<<<<<< HEAD
                     )
               ],
               annotations: <CircularChartAnnotation>[
@@ -66,6 +67,11 @@ late List<data> _chartData;
                   angle: 90, // 원의 중심에서 원 주변으로 레이블을 배치하는 각도
                 ),
               ],
+=======
+
+                    )
+              ],
+>>>>>>> FETCH_HEAD
             )
         )
     );
@@ -81,4 +87,8 @@ late List<data> _chartData;
 
     return chartData;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> FETCH_HEAD
