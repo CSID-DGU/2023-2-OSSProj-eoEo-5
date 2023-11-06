@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class BarChart extends StatefulWidget {
+  BarChart({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _BarChart createState() => _BarChart();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _BarChart extends State<BarChart> {
   late List<BARData> _chartData;
-  late TooltipBehavior _tooltipBehavior;
+
 
   @override
   void initState() {
     _chartData = getChartData();
-    _tooltipBehavior = TooltipBehavior(enable: true);
+
     super.initState();
   }
 
@@ -27,11 +26,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       child: Center(
         child: Container(
-          width: 350,
-          height: 80,
+          width: 330,
+          height: 60,
           child: Align(
             alignment: Alignment.centerLeft, // 왼쪽 정렬을 위해 Alignment.centerLeft 사용
             child: SfCartesianChart(
+              plotAreaBorderWidth: 0,
               series: <ChartSeries>[
                 BarSeries<BARData, String>(
                   name: '',
@@ -47,14 +47,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 )
               ],
-              primaryXAxis: CategoryAxis(),
+              primaryXAxis:
+              CategoryAxis(
+                  majorGridLines: const MajorGridLines(width: 0,  color: Colors.white),
+                  minorGridLines: const MinorGridLines(width: 0, color: Colors.white),
+                  isVisible: false,
+              ),
+              primaryYAxis: NumericAxis(
+                // 최대값을 100으로 설정
+                maximum: 100,
+                isVisible: false,
+              ),
             ),
           ),
         ),
       ),
     );
   }
-
 
   List<BARData> getChartData() {
     final List<BARData> chartData = [
