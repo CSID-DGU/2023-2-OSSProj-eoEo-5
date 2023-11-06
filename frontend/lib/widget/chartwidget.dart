@@ -23,6 +23,40 @@ late List<data> _chartData;
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Container(
+            width: 380,
+            height: 380,
+            child: SfCircularChart(
+              series: <CircularSeries>[
+                //DoughnutSeries<data, String>(
+               RadialBarSeries<data, String>(
+                    dataSource: _chartData,
+                    xValueMapper: (data data, _) => data.section,
+                    yValueMapper: (data data, _) => data.credit,
+                    pointColorMapper: (data data, _) {
+                      if (data.section == "major") {
+                        return Colors.blueAccent;
+                    } else if (data.section == "double major") {
+                        return Colors.greenAccent;
+                    } else if (data.section == "liberal arts") {
+                        return Colors.yellowAccent;
+                    }
+                  },
+                   cornerStyle: CornerStyle.bothCurve,
+                   //radius: BorderRadius.all(Radius.circuler(15)),
+                   //borderRadius: BorderRadius.all(Radius.circular(15)),
+                   maximumValue: 90
+
+                    )
+              ],
+            )
+        )
+    );
+  }
+
   // 리스트 데이터, DB에서 받야와야 함
   List<data> getChartData(){
     final List<data> chartData = [
@@ -32,33 +66,5 @@ late List<data> _chartData;
     ];
 
     return chartData;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Container(
-            width: 370,
-            height: 370,
-            child: SfCircularChart(
-              series: <CircularSeries>[
-                RadialBarSeries<data, String>(
-                    dataSource: _chartData,
-                    xValueMapper: (data data, _) => data.section,
-                    yValueMapper: (data data, _) => data.credit,
-                    pointColorMapper: (data data, _) {
-                      if (data.section == "major") {
-                        return Colors.lightBlue;
-                    } else if (data.section == "double major") {
-                        return Colors.greenAccent;
-                    } else if (data.section == "liberal arts") {
-                        return Colors.yellowAccent;
-                    }
-                  },
-                    maximumValue: 90
-
-                    )
-              ],
-            )));
   }
 }
