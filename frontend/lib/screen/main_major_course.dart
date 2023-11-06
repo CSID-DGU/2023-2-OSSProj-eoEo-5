@@ -12,9 +12,9 @@ class MainMajorCourse extends StatefulWidget {
 }
 
 class _MainMajorCourseState extends State<MainMajorCourse> {
-  bool isDataLoaded = false;
-  List<Widget> requiredLectureWidgets = [];
-  List<Widget> selectiveLectureWidgets = [];
+  bool isDataLoaded = false; // 데이터가 로드되었는지 여부를 나타내는 플래그
+  List<Widget> requiredLectureWidgets = []; // 전공필수 강의 위젯 목록
+  List<Widget> selectiveLectureWidgets = []; // 전공선택 강의 위젯 목록
 
   late List<List> lectureList;
 
@@ -53,11 +53,11 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         body: Container(
             child: Column(children: [
           Text("전공필수", style: TextStyle(fontSize: 24)),
-          Column(
+          Column( // 전공필수 강의 위젯 목록 표시
             children: requiredLectureWidgets,
           ),
           Text("전공선택", style: TextStyle(fontSize: 24)),
-          Column(
+          Column( // 전공선택 강의 위젯 목록 표시
             children: selectiveLectureWidgets,
           )
         ])));
@@ -77,13 +77,13 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         {"courseId": "$requiredCourseId"},
         true,
         true,
-        context);
+        context); // 필수 강의 정보를 가져오는 HTTP 요청
     http.Response? selectiveLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
         {"courseId": "$selectiveCourseId"},
         true,
         true,
-        context);
+        context); // 선택 강의 정보를 가져오는 HTTP 요청
 
     List requiredLectureList =
         jsonDecode(utf8.decode(requiredLectures!.bodyBytes));

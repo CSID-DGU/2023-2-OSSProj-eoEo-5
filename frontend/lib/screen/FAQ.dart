@@ -29,20 +29,20 @@ class FAQScreen extends StatelessWidget {
             Divider(), // 구분선 추가
 
             ListTile(
-              title: Text('여기다가'),
-              subtitle: Text('이제 크롤링한 데이터를'),
+              title: Text('FAQ1'),
+              subtitle: Text('답변'),
               onTap: () {
               },
             ),
             ListTile(
-              title: Text('붙이며는'),
-              subtitle: Text('됩니다아'),
+              title: Text('FAQ2'),
+              subtitle: Text('답변'),
               onTap: () {
               },
             ),
             ListTile(
-              title: Text('하이구'),
-              subtitle: Text('힘드롱'),
+              title: Text('FAQ2'),
+              subtitle: Text('답변'),
               onTap: () {
               },
             ),

@@ -1,11 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/module/Request.dart';
-/*
-import 'package:member/global.dart';
-import 'package:member/pages/login/login.page.dart';
-*/
 
 class Registerpage extends StatefulWidget {
   const Registerpage({super.key});
@@ -15,25 +10,24 @@ class Registerpage extends StatefulWidget {
 }
 
 class _RegisterpageState extends State<Registerpage> {
-  TextEditingController userNameTextController = TextEditingController(); // ID
-  TextEditingController passwordTextController = TextEditingController(); // PW
-  TextEditingController nameTextController = TextEditingController(); // ID
-  bool isMajorListDataLoaded = false;
-  bool isThereSecondMajor = false;
-  int majorId = 0;
-  int secondMajorId = 0;
-  List majorItemList = [];
-  String titleText = "Register";
+  TextEditingController userNameTextController = TextEditingController(); // 사용자명 입력 필드 컨트롤러
+  TextEditingController passwordTextController = TextEditingController(); // 비밀번호 입력 필드 컨트롤러
+  TextEditingController nameTextController = TextEditingController(); // 이름 입력 필드 컨트롤러
+  bool isMajorListDataLoaded = false; // 주전공 목록 데이터가 로드되었는지 여부를 나타내는 플래그
+  bool isThereSecondMajor = false; // 두 번째 전공 선택 여부
+  int majorId = 0; // 선택한 주전공 ID
+  int secondMajorId = 0; // 선택한 두 번째 전공 ID
+  List majorItemList = []; // 주전공 목록
+  String titleText = "Register"; // 화면 제목
 
-  late String selectedMajor;
-  late String selectedSecondMajor;
-  late List majorList;
+  late String selectedMajor; // 선택한 주전공
+  late String selectedSecondMajor; // 선택한 두 번째 전공
+  late List majorList; // 주전공 목록
 
   @override
   void initState() {
     super.initState();
-    Request.getRequest("https://eoeoservice.site/auth/majorlist", {}, false,
-            false, context)
+    Request.getRequest("https://eoeoservice.site/auth/majorlist", {}, false, false, context)
         .then((response) {
       majorList = jsonDecode(utf8.decode(response!.bodyBytes));
       for (int i = 0; i < majorList.length; i++) {
@@ -87,8 +81,8 @@ class _RegisterpageState extends State<Registerpage> {
                   ),
                   const Text("Name", style: TextStyle(fontSize: 20)),
                   TextField(
-                    controller: nameTextController,
-                    keyboardType: TextInputType.text
+                      controller: nameTextController,
+                      keyboardType: TextInputType.text
                   ),
                   const Text("Major", style: TextStyle(fontSize: 20)),
                   DropdownButton(
@@ -105,7 +99,7 @@ class _RegisterpageState extends State<Registerpage> {
                   const Text("SecondMajor", style: TextStyle(fontSize: 20)),
                   TextButton(
                     child: isThereSecondMajor
-                        ? Text("복수전공 선택 헤제")
+                        ? Text("복수전공 선택 해제")
                         : Text("복수전공 선택"),
                     onPressed: () {
                       setState(() {
@@ -114,18 +108,18 @@ class _RegisterpageState extends State<Registerpage> {
                     },
                   ),
                   Container(
-                    child: isThereSecondMajor ? DropdownButton(
-                        value: selectedSecondMajor,
-                        items: majorItemList.map((value) {
-                          return DropdownMenuItem(
-                              value: value, child: Text(value));
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedSecondMajor = value.toString();
-                          });
-                        })
-                        : Container()
+                      child: isThereSecondMajor ? DropdownButton(
+                          value: selectedSecondMajor,
+                          items: majorItemList.map((value) {
+                            return DropdownMenuItem(
+                                value: value, child: Text(value));
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedSecondMajor = value.toString();
+                            });
+                          })
+                          : Container()
                   ),
                   TextButton(child: Text("Register"), onPressed: () {
                     Map<String, dynamic> registerValue;

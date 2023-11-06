@@ -35,25 +35,25 @@ class double_major_course extends StatelessWidget {
                   ListTile(
                     title: Text('융합프로그래밍1'),
                     onTap: () {
-                      // 융합프로그래밍1 과목에 대한 설명이 나오도록 할 수 있습니다.
+                      // 융합프로그래밍1 누르면 과목 정보 나옴
                     },
                   ),
                   ListTile(
                     title: Text('컴퓨터시스템'),
                     onTap: () {
-                      // 컴퓨터시스템 과목에 대한 설명이 나오도록 할 수 있습니다.
+                      // 컴퓨터시스템 누르면 과목 정보 나옴
                     },
                   ),
                   ListTile(
                     title: Text('자료구조 및 알고리즘1'),
                     onTap: () {
-                      // 자료구조 및 알고리즘1 과목에 대한 설명이 나오도록 할 수 있습니다.
+                      // 자료구조 및 알고리즘1 누르면 과목 정보 나옴
                     },
                   ),
                   ListTile(
                     title: Text('융합프로그래밍2'),
                     onTap: () {
-                      // 융합프로그래밍2 과목에 대한 설명이 나오도록 할 수 있습니다.
+                      // 융합프로그래밍2 누르면 과목 정보 나옴
                     },
                   ),
                   ListTile(
