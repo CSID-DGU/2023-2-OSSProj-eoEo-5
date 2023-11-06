@@ -13,9 +13,9 @@ class Subject_takenScreen extends StatefulWidget {
 
 class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool isDataLoaded = false;
-  List<Widget> requiredLectureWidgets = [];
+  List<Widget> requiredLectureWidgets = []; // 기수강과목 위젯
 
-  late List<List> lectureList;
+  late List<List> lectureList; // 강의 목록을 저장할 수
 
   @override
   void initState() {
