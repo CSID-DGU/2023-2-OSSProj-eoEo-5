@@ -24,13 +24,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
     super.initState();
 
-    SharedPreferences.getInstance().then((response){
-      pref = response;
-      setState(() {
-        isUserDataLoaded = true;
-      });
-    });
-
     loadLectures().then((response) {
       lectureList = response;
       renderWidgets(response);
@@ -52,9 +45,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
   Widget renderScreen() {
 
-    User user = User.fromJson(jsonDecode(pref.getString("user")!));
-
-    String name = user.name;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
@@ -79,10 +69,16 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     int? id = user.id;
+    int? requiredCourseId = user.requiredCourseId;
 
     http.Response? takenLectures = await Request.getRequest(
+      /*
         "https://eoeoservice.site/lecture/getlecturetaken",
-        {"id": "$id"},
+        {"userId": "$id"},
+
+       */
+        "https://eoeoservice.site/course/getcourselectures",
+        {"courseId": "$requiredCourseId"},
         true,
         true,
         context);
