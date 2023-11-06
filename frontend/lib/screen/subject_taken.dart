@@ -13,24 +13,13 @@ class Subject_takenScreen extends StatefulWidget {
 
 class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool isDataLoaded = false;
-  List<Widget> takenLectureWidgets = [];
-  late List<List> lectureList;
+  List<Widget> requiredLectureWidgets = [];
 
-  late SharedPreferences pref;
-  bool isUserDataLoaded = false;
+  late List<List> lectureList;
 
   @override
   void initState() {
-
     super.initState();
-
-    SharedPreferences.getInstance().then((response){
-      pref = response;
-      setState(() {
-        isUserDataLoaded = true;
-      });
-    });
-
     loadLectures().then((response) {
       lectureList = response;
       renderWidgets(response);
@@ -38,7 +27,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         isDataLoaded = true;
       });
     });
-
   }
 
   @override
@@ -51,10 +39,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   }
 
   Widget renderScreen() {
-
-    User user = User.fromJson(jsonDecode(pref.getString("user")!));
-
-    String name = user.name;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
@@ -69,7 +53,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
             child: Column(children: [
               Text("기수강 과목", style: TextStyle(fontSize: 24)),
               Column(
-                children: takenLectureWidgets,
+                children: requiredLectureWidgets,
               )
             ])));
   }
@@ -80,26 +64,26 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     int? id = user.id;
 
-    http.Response? takenLectures = await Request.getRequest(
+    http.Response? requiredLectures = await Request.getRequest(
         "https://eoeoservice.site/lecture/getlecturetaken",
         {"id": "$id"},
         true,
         true,
         context);
 
-    List takenLectureList =
-    jsonDecode(utf8.decode(takenLectures!.bodyBytes));
+    List requiredLectureList =
+    jsonDecode(utf8.decode(requiredLectures!.bodyBytes));
 
-    response.add(takenLectureList);
+    response.add(requiredLectureList);
 
     return response;
   }
 
   void renderWidgets(List<List> lectures) {
-    takenLectureWidgets = [];
+    requiredLectureWidgets = [];
 
     for (int i = 0; i < lectures[0].length; i++) {
-      takenLectureWidgets.add(Container(
+      requiredLectureWidgets.add(Container(
           width: MediaQuery.of(context).size.width,
           child: Text(lectures[0][i]['lectureName'],
               style: TextStyle(fontSize: 20))));
