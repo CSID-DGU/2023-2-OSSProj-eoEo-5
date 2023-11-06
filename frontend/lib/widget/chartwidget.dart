@@ -49,8 +49,22 @@ late List<data> _chartData;
                    //radius: BorderRadius.all(Radius.circuler(15)),
                    //borderRadius: BorderRadius.all(Radius.circular(15)),
                    maximumValue: 90
-
                     )
+              ],
+              annotations: <CircularChartAnnotation>[
+                CircularChartAnnotation(
+                  widget: Container(
+                    child: Text(
+                      '${_chartData[0].credit}%',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlueAccent
+                      ),
+                    ),
+                  ),
+                  angle: 90, // 원의 중심에서 원 주변으로 레이블을 배치하는 각도
+                ),
               ],
             )
         )
