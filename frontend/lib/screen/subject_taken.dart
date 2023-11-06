@@ -1,55 +1,97 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class Subject_takenScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:frontend/data/User.dart';
+import 'package:frontend/module/Request.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+class Subject_takenScreen extends StatefulWidget {
+  @override
+  _Subject_takenScreen createState() => _Subject_takenScreen();
+}
+
+class _Subject_takenScreen extends State<Subject_takenScreen> {
+  bool isDataLoaded = false;
+  List<Widget> requiredLectureWidgets = [];
+
+  late List<List> lectureList;
+
+  @override
+  void initState() {
+    super.initState();
+    loadLectures().then((response) {
+      lectureList = response;
+      renderWidgets(response);
+      setState(() {
+        isDataLoaded = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isDataLoaded) {
+      return renderScreen();
+    } else {
+      return Container();
+    }
+  }
+
+  Widget renderScreen() {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: Text(
-          '학업 현황',
-          style: TextStyle(
-            color: Colors.white,
-            //fontWeight: FontWeight.bold,
-          ),),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              '내가 들은 과목',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+        appBar: AppBar(
+          backgroundColor: Colors.lightBlue,
+          title: Text(
+            '기수강 과목입니다.',
+            style: TextStyle(
+              color: Colors.white,
             ),
-
-            Divider(), // 구분선 추가
-
-            ListTile(
-              title: Text('2018년도'),
-              subtitle: Text('들은 과목이 리스트로 나와요~ '), //들은 학점도 오른쪽 상단에 나오면 좋겠다
-              onTap: () {
-              },
-            ),
-            ListTile(
-              title: Text('2019년도'),
-              subtitle: Text('들은 과목이 리스트로 나와요~ '),
-              onTap: () {
-              },
-            ),
-            ListTile(
-              title: Text('2023년도'),
-              subtitle: Text('들은 과목이 리스트로 나와요~'), // 휴학을 짱 오래했다는 설정과 지금 듣고있는 년도도 볼 수 잇음
-              onTap: () {
-              },
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+        body: Container(
+            child: Column(children: [
+              Text("기수강 과목", style: TextStyle(fontSize: 24)),
+              Column(
+                children: requiredLectureWidgets,
+              )
+            ])));
+  }
+
+  Future<List<List>> loadLectures() async {
+    List<List> response = [];
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    User user = User.fromJson(jsonDecode(pref.getString("user")!));
+    int? id = user.id;
+
+    http.Response? requiredLectures = await Request.getRequest(
+        "https://eoeoservice.site/lecture/getlecturetaken",
+        {"id": "$id"},
+        true,
+        true,
+        context);
+
+    List requiredLectureList =
+    jsonDecode(utf8.decode(requiredLectures!.bodyBytes));
+
+    response.add(requiredLectureList);
+
+    return response;
+  }
+
+  void renderWidgets(List<List> lectures) {
+    requiredLectureWidgets = [];
+
+    for (int i = 0; i < lectures[0].length; i++) {
+      requiredLectureWidgets.add(Container(
+          width: MediaQuery.of(context).size.width,
+          child: Text(lectures[0][i]['lectureName'],
+              style: TextStyle(fontSize: 20))));
+    }
   }
 }
+
+
+
+
 
