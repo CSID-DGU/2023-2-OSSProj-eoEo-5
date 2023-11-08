@@ -12,7 +12,7 @@ class Subject_takenScreen extends StatefulWidget {
 }
 
 class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_takenScreen 위젯의 상태 클래스
-  bool isDataLoaded = false;
+  bool isDataLoaded = false; // 데이터가 로드되었는지 여부를 나타내는 플래그
   List<Widget> takenLectureWidgets = [];
   late List<List> lectureList;
 
@@ -67,8 +67,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
     int? takenCourseId = user.id; // 사용자의 기수강 ID
 
     http.Response? takenLectures = await Request.getRequest( // 서버에서 강의 정보 요청
-        "https://eoeoservice.site/lecture/getsubstitutes",
-        {"courseId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
+        "https://eoeoservice.site/lecture/getlecturetaken",
+        {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
         true,
         true,
         context);
@@ -86,7 +86,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
     for (int i = 0; i < lectures[0].length; i++) {
       takenLectureWidgets.add(Container(
           width: MediaQuery.of(context).size.width,
-          child: Text(lectures[0][i]['lectureName'],
+          child: Text(lectures[0][i]['name'],
               style: TextStyle(fontSize: 20))));
     }
   }

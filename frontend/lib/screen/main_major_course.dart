@@ -19,9 +19,9 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
   late List<List> lectureList;
 
   @override
-  void initState() {
+  void initState() { // 초기화 메서드
     super.initState();
-    loadLectures().then((response) {
+    loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
       lectureList = response;
       renderWidgets(response);
       setState(() {
@@ -63,9 +63,9 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         ])));
   }
 
-  Future<List<List>> loadLectures() async {
-    List<List> response = [];
-    SharedPreferences pref = await SharedPreferences.getInstance();
+  Future<List<List>> loadLectures() async { // 강의정보 불러오는 비동기 함수
+    List<List> response = []; // 위젯에 렌더링할 리스트
+    SharedPreferences pref = await SharedPreferences.getInstance(); // shared prefere
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     int? requiredCourseId = user.requiredCourseId;
     int? selectiveCourseId = user.selectiveCourseId;
