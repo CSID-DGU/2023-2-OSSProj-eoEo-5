@@ -55,11 +55,11 @@ late List<data> _chartData;
                 CircularChartAnnotation(
                   widget: Container(
                     child: Text(
-                      '${_chartData[0].credit}%',
+                      '전공: ${_chartData[0].credit}%\n복수전공: ${_chartData[1].credit}%\n교양: ${_chartData[2].credit}%',
                       style: TextStyle(
-                        fontSize: 40,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.lightBlueAccent
+                        color: Colors.black
                       ),
                     ),
                   ),

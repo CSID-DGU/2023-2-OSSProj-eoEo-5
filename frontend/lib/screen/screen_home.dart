@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   '학업이수 달성도',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 23,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
