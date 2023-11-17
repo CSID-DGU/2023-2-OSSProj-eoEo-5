@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:frontend/module/Request.dart';
+import 'package:frontend/module/Request.dart' as rq;
 
 class Registerpage extends StatefulWidget {
   const Registerpage({super.key});
@@ -27,7 +27,7 @@ class _RegisterpageState extends State<Registerpage> {
   @override
   void initState() {
     super.initState();
-    Request.getRequest("https://eoeoservice.site/auth/majorlist", {}, false, false, context)
+    rq.Request.getRequest("https://eoeoservice.site/auth/majorlist", {}, false, false, context)
         .then((response) {
       majorList = jsonDecode(utf8.decode(response!.bodyBytes));
       for (int i = 0; i < majorList.length; i++) {
@@ -147,7 +147,7 @@ class _RegisterpageState extends State<Registerpage> {
                         "isSecondMajor" : false
                       };
                     }
-                    Request.postRequestWithBody("https://eoeoservice.site/auth/register", registerValue, false, context).then((response){
+                    rq.Request.postRequestWithBody("https://eoeoservice.site/auth/register", registerValue, false, context).then((response){
                       if(response?.statusCode == 200){
                         Navigator.pop(context);
                       }else{

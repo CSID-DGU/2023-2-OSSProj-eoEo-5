@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:frontend/screen/login.dart';
-import 'package:frontend/screen/screen_home.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 
