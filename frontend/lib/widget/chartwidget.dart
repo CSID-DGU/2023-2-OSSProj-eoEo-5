@@ -134,21 +134,3 @@ class _ChartWidget extends State<ChartWidget> {
   }
 
 
-
-
-
-/*
-  // 리스트 데이터, DB에서 받야와야 함
-  List<data> getChartData(){
-    final List<data> chartData = [
-      data('major', 50),
-      data('double major', 30),
-      data('liberal arts', 33),
-    ];
-
-    return chartData;
-  }
-
- */
-
-

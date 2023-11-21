@@ -18,6 +18,7 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
 
   late List<List> lectureList;
 
+
   @override
   void initState() { // 초기화 메서드
     super.initState();
@@ -44,23 +45,33 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
           title: Text(
-            '주전공 : 경영학과 이수체계도 보기',
+            '주전공 이수체계도 보기',
             style: TextStyle(
               color: Colors.white,
             ),
           ),
         ),
-        body: Container(
-            child: Column(children: [
-          Text("전공필수", style: TextStyle(fontSize: 24)),
-          Column( // 전공필수 강의 위젯 목록 표시
-            children: requiredLectureWidgets,
-          ),
-          Text("전공선택", style: TextStyle(fontSize: 24)),
-          Column( // 전공선택 강의 위젯 목록 표시
-            children: selectiveLectureWidgets,
-          )
-        ])));
+
+
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+            child: Column
+              (children: [
+                Text("전공필수", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Column( // 전공필수 강의 위젯 목록 표시
+                  children: requiredLectureWidgets,
+                  ),
+                Padding(padding: const EdgeInsets.all(20.0), ),
+
+                Text("전공선택", style: TextStyle(fontSize: 24,  fontWeight: FontWeight.bold)),
+                Column( // 전공선택 강의 위젯 목록 표시
+                  children: selectiveLectureWidgets,
+                )
+              ]
+            )
+        )
+
+    );
   }
 
   Future<List<List>> loadLectures() async { // 강의정보 불러오는 비동기 함수
@@ -100,18 +111,44 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
     print(lectures);
     requiredLectureWidgets = [];
     selectiveLectureWidgets = [];
+
+
     for (int i = 0; i < lectures[0].length; i++) {
-      requiredLectureWidgets.add(Container(
-          width: MediaQuery.of(context).size.width,
-          child: Text(lectures[0][i]['lectureName'],
-              style: TextStyle(fontSize: 20))));
+      requiredLectureWidgets.add(
+        Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(8.0),
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                lectures[0][i]['lectureName'],
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Divider(),
+          ],
+        )
+
+      );
     }
 
     for (int i = 0; i < lectures[1].length; i++) {
-      selectiveLectureWidgets.add(Container(
-          width: MediaQuery.of(context).size.width,
-          child: Text(lectures[1][i]['lectureName'],
-              style: TextStyle(fontSize: 20))));
+      selectiveLectureWidgets.add(
+        Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(8.0),
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                lectures[1][i]['lectureName'],
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Divider(),
+
+          ],
+        )
+      );
     }
   }
 }

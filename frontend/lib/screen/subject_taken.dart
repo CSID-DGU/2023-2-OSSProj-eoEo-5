@@ -11,6 +11,14 @@ class Subject_takenScreen extends StatefulWidget {
   _Subject_takenScreen createState() => _Subject_takenScreen(); // 상태 클래스 반환
 }
 
+/*
+
+1. 서버에서 response응답을 받아옴
+2. lectureList에 response 저장
+3. renderWidgets 메서드에 response
+
+ */
+
 class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_takenScreen 위젯의 상태 클래스
   bool isDataLoaded = false; // 데이터가 로드되었는지 여부를 나타내는 플래그
   List<Widget> takenLectureWidgets = []; // 컨테이너에 띄울 리스트 위젯
@@ -50,8 +58,9 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
           ),
         ),
         body: Container(
+            padding: const EdgeInsets.all(16.0),
             child: Column(children: [
-              Text("기수강 과목", style: TextStyle(fontSize: 24)),
+              Text("기수강 과목", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Column(
                 children: takenLectureWidgets,
               )
@@ -83,11 +92,18 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
 
     for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
       takenLectureWidgets.add(
-          Container(
-          width: MediaQuery.of(context).size.width,
-          child: Text(lectures[0][i]['name'],
-              style: TextStyle(fontSize: 20)
-            )
+          Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(8.0),
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  lectures[0][i]['name'],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Divider(),
+            ],
           )
       );
     }
