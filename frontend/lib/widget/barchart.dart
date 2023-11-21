@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../data/User.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:http/http.dart' as http;
+import 'package:frontend/module/Request.dart' as rq;
 
 class BarChart extends StatefulWidget {
   BarChart({Key? key, required this.title}) : super(key: key);
@@ -16,8 +22,8 @@ class _BarChart extends State<BarChart> {
 
   @override
   void initState() {
-    _chartData = getChartData();
-
+    someFunction();
+    //_chartData = getChartData();
     super.initState();
   }
 
@@ -65,13 +71,64 @@ class _BarChart extends State<BarChart> {
     );
   }
 
+
+  /*
   List<BARData> getChartData() {
     final List<BARData> chartData = [
       BARData('달성도', 70),
     ];
     return chartData;
   }
+
+   */
+
+  List<BARData> getChartData(List<List> lectures) {
+    double major = 0;
+
+    for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
+      major += lectures[0][i]['credit'];
+    }
+
+    final List<BARData> chartData = [
+      BARData('major', major),
+    ];
+
+    return chartData;
+  }
+
+  // 강의 정보를 불러오는 비동기 함수
+  Future<List<List>> loadLectures() async {
+    List<List> response = [];
+    SharedPreferences pref = await SharedPreferences
+        .getInstance(); // SharedPreferences 인스턴스 생성
+    User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
+    int? takenCourseId = user.id; // 사용자의 기수강 ID
+
+    http.Response? takenLectures = await rq.Request.getRequest( // 서버에서 강의 정보 요청
+        "https://eoeoservice.site/lecture/getlecturetaken",
+        {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
+        true,
+        true,
+        context);
+
+    List takenLectureList = jsonDecode(
+        utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
+
+    response.add(takenLectureList);
+
+    return response;
+  }
+
+  Future<void> someFunction() async {
+    List<List> lecturesData = await loadLectures(); // 기수강 정보를 비동기로 받아옴
+
+    List<BARData> chartData = getChartData(lecturesData);
+    setState(() {
+      _chartData = chartData; // _chartData를 업데이트하고 화면을 리프레시
+    });
+  }
 }
+
 
 class BARData {
   BARData(this.mydata, this.ratio);
