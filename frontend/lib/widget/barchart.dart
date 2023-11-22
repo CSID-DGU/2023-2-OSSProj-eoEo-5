@@ -87,7 +87,7 @@ class _BarChart extends State<BarChart> {
     return chartData;
   }
 
-  // 강의 정보를 불러오는 비동기 함수ㅣ
+  // 강의 정보를 불러오는 비동기 함수
   Future<List<List>> loadLectures() async {
     List<List> response = [];
     SharedPreferences pref = await SharedPreferences
