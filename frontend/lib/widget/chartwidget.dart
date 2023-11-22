@@ -54,7 +54,7 @@ class _ChartWidget extends State<ChartWidget> {
                     cornerStyle: CornerStyle.bothCurve,
                     //radius: BorderRadius.all(Radius.circuler(15)),
                     //borderRadius: BorderRadius.all(Radius.circular(15)),
-                    maximumValue: 90
+                    maximumValue: 100
                 )
               ],
               annotations: <CircularChartAnnotation>[
@@ -127,6 +127,11 @@ class _ChartWidget extends State<ChartWidget> {
       doublemajor += lectures[0][i]['credit'];
       liberalarts += lectures[0][i]['credit'];
     }
+
+    major = (major/54*100).floorToDouble();
+    doublemajor = (doublemajor/36*100).floorToDouble();
+    liberalarts = (liberalarts/40*100).floorToDouble();
+
 
     final List<data> chartData = [
       data('major', major),
