@@ -13,5 +13,7 @@ public interface LectureTakenRepository extends JpaRepository<LectureTaken, Long
 
     List<LectureTaken> findAllByAccountAndIsDeleted(Account account, Boolean isDeleted);
 
-    Optional<LectureTaken> findByAccountAndLecture(Account account, Lecture lecture);
+    Optional<LectureTaken> findByAccountAndLectureAndIsDeleted(Account account, Lecture lecture, Boolean isDeleted);
+
+    List<LectureTaken> findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(Account account, Boolean isCoreLecture, Boolean isSecondMajor, Boolean isDeleted);
 }

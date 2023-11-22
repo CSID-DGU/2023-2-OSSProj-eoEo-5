@@ -42,7 +42,7 @@ public class LectureService {
         Lecture lecture = lectureRepository.findById(request.getLectureId())
                 .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
 
-        Optional<LectureTaken> existedLectureTaken = lectureTakenRepository.findByAccountAndLecture(account, lecture);
+        Optional<LectureTaken> existedLectureTaken = lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false);
 
         if (existedLectureTaken.isPresent()) {
             lectureTaken = existedLectureTaken.get();
@@ -85,7 +85,7 @@ public class LectureService {
 
         for (LectureTakenDto dto : requests.getLectures()) {
             Lecture lecture = lectureRepository.findById(dto.getLectureId()).orElseThrow(() -> new NoSuchElementException("No such lecture"));
-            if (lectureTakenRepository.findByAccountAndLecture(account, lecture).isPresent()) {
+            if (lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false).isPresent()) {
                 continue;
             }
             LectureTaken lectureTaken = LectureTaken.builder()
@@ -113,33 +113,36 @@ public class LectureService {
         Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
 
-        List<GetTakenLectureResponseDto> response = new LinkedList<>();
-
         List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccountAndIsDeleted(account, false);
 
-        for (LectureTaken takenLecture : takenLectures) {
-            Lecture lecture = takenLecture.getLecture();
-            GetTakenLectureResponseDto getTakenLectureResponseDto = GetTakenLectureResponseDto.builder()
-                    .id(takenLecture.getId())
-                    .name(lecture.getName())
-                    .lectureNumber(lecture.getLectureNumber())
-                    .credit(lecture.getCredit())
-                    .isCoreLecture(lecture.isCoreLecture())
-                    .build();
+        return addTakenLectureDatatoList(takenLectures);
+    }
 
-            if (lecture.isCoreLecture()) {
-                getTakenLectureResponseDto.setCoreCourse(lecture);
-            }
+    public List<GetTakenLectureResponseDto> getTakenCoreLectures(GetTakenLectureRequestDto request){
+        Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
 
-            if (takenLecture.isSubstitute()) {
-                getTakenLectureResponseDto.setOriginalLecture(takenLecture.getSubstituteLecture());
-            }
+        List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(account, true, false, false);
 
-            response.add(getTakenLectureResponseDto);
+        return addTakenLectureDatatoList(takenLectures);
+    }
 
-        }
+    public List<GetTakenLectureResponseDto> getTakenFirstMajorLectures(GetTakenLectureRequestDto request){
+        Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
 
-        return response;
+        List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(account, false, false, false);
+
+        return addTakenLectureDatatoList(takenLectures);
+    }
+
+    public List<GetTakenLectureResponseDto> getTakenSecondMajorLectures(GetTakenLectureRequestDto request){
+        Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
+
+        List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(account, false, true, false);
+
+        return addTakenLectureDatatoList(takenLectures);
     }
 
     public List<GetPrerequisiteResponseDto> getPrerequisites(GetPrerequisiteRequestDto request) {
@@ -199,5 +202,34 @@ public class LectureService {
 
         return response;
 
+    }
+
+    private List<GetTakenLectureResponseDto> addTakenLectureDatatoList(List<LectureTaken> takenLectures){
+
+        List<GetTakenLectureResponseDto> response = new LinkedList<>();
+
+        for (LectureTaken takenLecture : takenLectures) {
+            Lecture lecture = takenLecture.getLecture();
+            GetTakenLectureResponseDto getTakenLectureResponseDto = GetTakenLectureResponseDto.builder()
+                    .id(takenLecture.getId())
+                    .name(lecture.getName())
+                    .lectureNumber(lecture.getLectureNumber())
+                    .credit(lecture.getCredit())
+                    .isCoreLecture(lecture.isCoreLecture())
+                    .build();
+
+            if (lecture.isCoreLecture()) {
+                getTakenLectureResponseDto.setCoreCourse(lecture);
+            }
+
+            if (takenLecture.isSubstitute()) {
+                getTakenLectureResponseDto.setOriginalLecture(takenLecture.getSubstituteLecture());
+            }
+
+            response.add(getTakenLectureResponseDto);
+
+        }
+
+        return response;
     }
 }

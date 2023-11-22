@@ -29,6 +29,21 @@ public class LectureController {
         return lectureService.getTakenLectures(request);
     }
 
+    @GetMapping("/getcorelecturetaken")
+    public List<GetTakenLectureResponseDto> getTakenCoreLectures(GetTakenLectureRequestDto request){
+        return lectureService.getTakenCoreLectures(request);
+    }
+
+    @GetMapping("/getfirstmajorlecturetaken")
+    public List<GetTakenLectureResponseDto> getTakenFirstMajorLectures(GetTakenLectureRequestDto request){
+        return lectureService.getTakenFirstMajorLectures(request);
+    }
+
+    @GetMapping("/getsecondmajorlecturetaken")
+    public List<GetTakenLectureResponseDto> getTakenSecondMajorLectures(GetTakenLectureRequestDto request){
+        return lectureService.getTakenSecondMajorLectures(request);
+    }
+
     @GetMapping("/getprerequisites")
     public List<GetPrerequisiteResponseDto> getPrerequisites(GetPrerequisiteRequestDto request){
         return lectureService.getPrerequisites(request);
