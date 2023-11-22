@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +31,8 @@ public class LectureService {
     private final LectureTakenRepository lectureTakenRepository;
 
 
-
     @Transactional
-    public Long addTakenLecture(AddTakenLectureRequestDto request){
+    public Long addTakenLecture(AddTakenLectureRequestDto request) {
 
         LectureTaken lectureTaken;
 
@@ -42,46 +42,57 @@ public class LectureService {
         Lecture lecture = lectureRepository.findById(request.getLectureId())
                 .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
 
-        if(request.getIsSubstitute()){
+        Optional<LectureTaken> existedLectureTaken = lectureTakenRepository.findByAccountAndLecture(account, lecture);
 
-            SubstituteLecture substituteLecture = substituteLectureRepository.findByIdAndIsDeleted(request.getSubstituteId(), false)
-                    .orElseThrow(() -> new NoSuchElementException("No such prerequisite"));
+        if (existedLectureTaken.isPresent()) {
+            lectureTaken = existedLectureTaken.get();
+        } else {
 
-            lectureTaken = LectureTaken.builder()
-                    .account(account)
-                    .lecture(lecture)
-                    .isSubstitute(true)
-                    .substituteLecture(substituteLecture)
-                    .build();
-        } else{
-            lectureTaken = LectureTaken.builder()
-                    .account(account)
-                    .lecture(lecture)
-                    .isSubstitute(false)
-                    .build();
+            if (request.getIsSubstitute()) {
+
+                SubstituteLecture substituteLecture = substituteLectureRepository.findByIdAndIsDeleted(request.getSubstituteId(), false)
+                        .orElseThrow(() -> new NoSuchElementException("No such prerequisite"));
+
+                lectureTaken = LectureTaken.builder()
+                        .account(account)
+                        .lecture(lecture)
+                        .isSubstitute(true)
+                        .substituteLecture(substituteLecture)
+                        .build();
+            } else {
+                lectureTaken = LectureTaken.builder()
+                        .account(account)
+                        .lecture(lecture)
+                        .isSubstitute(false)
+                        .build();
+            }
+
+            lectureTakenRepository.save(lectureTaken);
+
         }
-
-        lectureTakenRepository.save(lectureTaken);
 
         return lectureTaken.getId();
     }
 
     @Transactional
-    public Boolean addTakenLectures(AddTakenLecturesRequestDto requests){
+    public Boolean addTakenLectures(AddTakenLecturesRequestDto requests) {
         Account account = accountRepository.findByIdAndIsDeleted(requests.getAccountId(), false)
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
 
-        for(LectureTakenDto dto : requests.getLectures()){
+        for (LectureTakenDto dto : requests.getLectures()) {
             Lecture lecture = lectureRepository.findById(dto.getLectureId()).orElseThrow(() -> new NoSuchElementException("No such lecture"));
+            if (lectureTakenRepository.findByAccountAndLecture(account, lecture).isPresent()) {
+                continue;
+            }
             LectureTaken lectureTaken = LectureTaken.builder()
                     .account(account)
                     .lecture(lecture)
                     .isSubstitute(false)
                     .build();
 
-            if(dto.getIsSubstitute()){
-                SubstituteLecture substituteLecture = substituteLectureRepository .findByIdAndIsDeleted(dto.getSubstituteId(), false)
-                                .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
+            if (dto.getIsSubstitute()) {
+                SubstituteLecture substituteLecture = substituteLectureRepository.findByIdAndIsDeleted(dto.getSubstituteId(), false)
+                        .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
                 lectureTaken.setSubstitute(substituteLecture);
             }
 
@@ -91,7 +102,7 @@ public class LectureService {
         return true;
     }
 
-    public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request){
+    public List<GetTakenLectureResponseDto> getTakenLectures(GetTakenLectureRequestDto request) {
 
         Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
@@ -100,20 +111,21 @@ public class LectureService {
 
         List<LectureTaken> takenLectures = lectureTakenRepository.findAllByAccountAndIsDeleted(account, false);
 
-        for(LectureTaken takenLecture : takenLectures){
+        for (LectureTaken takenLecture : takenLectures) {
             Lecture lecture = takenLecture.getLecture();
             GetTakenLectureResponseDto getTakenLectureResponseDto = GetTakenLectureResponseDto.builder()
                     .id(takenLecture.getId())
                     .name(lecture.getName())
                     .lectureNumber(lecture.getLectureNumber())
                     .credit(lecture.getCredit())
+                    .isCoreLecture(lecture.isCoreLecture())
                     .build();
 
-            if(lecture.isCoreLecture()){
+            if (lecture.isCoreLecture()) {
                 getTakenLectureResponseDto.setCoreCourse(lecture);
             }
 
-            if(takenLecture.isSubstitute()){
+            if (takenLecture.isSubstitute()) {
                 getTakenLectureResponseDto.setOriginalLecture(takenLecture.getSubstituteLecture());
             }
 
@@ -124,12 +136,12 @@ public class LectureService {
         return response;
     }
 
-    public List<GetPrerequisiteResponseDto> getPrerequisites(GetPrerequisiteRequestDto request){
+    public List<GetPrerequisiteResponseDto> getPrerequisites(GetPrerequisiteRequestDto request) {
         List<GetPrerequisiteResponseDto> response = new LinkedList<>();
 
         List<Prerequisite> prerequisites = prerequisiteRepository.findAllByLectureIdAndIsDeleted(request.getLectureId(), false);
 
-        for(Prerequisite prerequisite : prerequisites){
+        for (Prerequisite prerequisite : prerequisites) {
             Lecture prerequisiteLecture = prerequisite.getLecture();
             response.add(GetPrerequisiteResponseDto.builder()
                     .name(prerequisiteLecture.getName())
@@ -141,12 +153,12 @@ public class LectureService {
         return response;
     }
 
-    public List<GetSubstituteLectureResponseDto> getSubstitutes(GetSubstituteLectureRequestDto request){
+    public List<GetSubstituteLectureResponseDto> getSubstitutes(GetSubstituteLectureRequestDto request) {
         List<GetSubstituteLectureResponseDto> response = new LinkedList<>();
 
         List<SubstituteLecture> substitutes = substituteLectureRepository.findAllByOriginalLectureIdAndIsDeleted(request.getLectureId(), false);
 
-        for(SubstituteLecture substitute: substitutes){
+        for (SubstituteLecture substitute : substitutes) {
             Lecture substituteLecture = substitute.getSubstituteLecture();
 
             response.add(GetSubstituteLectureResponseDto.builder()
@@ -159,13 +171,13 @@ public class LectureService {
         return response;
     }
 
-    public List<GetOriginalLecturesResponseDto> getOriginalLectures(GetOriginalLecturesRequestDto request){
+    public List<GetOriginalLecturesResponseDto> getOriginalLectures(GetOriginalLecturesRequestDto request) {
 
         List<GetOriginalLecturesResponseDto> response = new LinkedList<>();
 
         List<SubstituteLecture> substitutes = substituteLectureRepository.findAllBySubstituteLectureIdAndIsDeleted(request.getSubstituteLectureId(), false);
 
-        for(SubstituteLecture substitute : substitutes){
+        for (SubstituteLecture substitute : substitutes) {
 
             Lecture originalLecture = substitute.getOriginalLecture();
 
