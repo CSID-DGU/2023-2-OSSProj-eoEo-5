@@ -71,23 +71,14 @@ class _BarChart extends State<BarChart> {
     );
   }
 
-
-  /*
-  List<BARData> getChartData() {
-    final List<BARData> chartData = [
-      BARData('달성도', 70),
-    ];
-    return chartData;
-  }
-
-   */
-
   List<BARData> getChartData(List<List> lectures) {
     double major = 0;
 
     for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
       major += lectures[0][i]['credit'];
     }
+
+    major = (major/130) * 100;
 
     final List<BARData> chartData = [
       BARData('major', major),
@@ -96,7 +87,7 @@ class _BarChart extends State<BarChart> {
     return chartData;
   }
 
-  // 강의 정보를 불러오는 비동기 함수
+  // 강의 정보를 불러오는 비동기 함수ㅣ
   Future<List<List>> loadLectures() async {
     List<List> response = [];
     SharedPreferences pref = await SharedPreferences
