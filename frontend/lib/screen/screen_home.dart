@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.all(8.0), // 오른쪽 패딩 추가
               child: IconButton(
                 icon: Icon(
-                  Icons.search, // 검색 아이콘
+                  Icons.logout, // 검색 아이콘
                   color: Colors.black, // 아이콘 색상
                 ),
                 onPressed: () {

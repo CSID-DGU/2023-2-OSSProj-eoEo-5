@@ -54,7 +54,7 @@ class _ChartWidget extends State<ChartWidget> {
                     cornerStyle: CornerStyle.bothCurve,
                     //radius: BorderRadius.all(Radius.circuler(15)),
                     //borderRadius: BorderRadius.all(Radius.circular(15)),
-                    maximumValue: 90
+                    maximumValue: 100
                 )
               ],
               annotations: <CircularChartAnnotation>[
@@ -78,16 +78,17 @@ class _ChartWidget extends State<ChartWidget> {
     );
   }
 
-  // 강의 정보를 불러오는 비동기 함수
   Future<List<List>> loadLectures() async {
+
     List<List> response = [];
     SharedPreferences pref = await SharedPreferences
         .getInstance(); // SharedPreferences 인스턴스 생성
     User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
     int? takenCourseId = user.id; // 사용자의 기수강 ID
 
-    http.Response? takenLectures = await rq.Request.getRequest( // 서버에서 강의 정보 요청
-        "https://eoeoservice.site/lecture/getlecturetaken",
+    // 기수강 중 주전공 api 요청
+    http.Response? takenLectures = await rq.Request.getRequest( // 서버에서 강의 정보 분류 요청
+        "https://eoeoservice.site/lecture/getfirstmajorlecturetaken",
         {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
         true,
         true,
@@ -107,13 +108,16 @@ class _ChartWidget extends State<ChartWidget> {
     List<data> chartData = getChartData(lecturesData);
     setState(() {
       _chartData = chartData; // _chartData를 업데이트하고 화면을 리프레시
-    });
+
+      }
+    );
   }
 }
 
 
   // 2차원 리스트를 파라미터로 받아서 수치를 더한 후, data 클래스에 입력하는 코드
   List<data> getChartData(List<List> lectures) {
+
     double major = 0;
     double doublemajor = 0;
     double liberalarts = 0;
@@ -123,6 +127,11 @@ class _ChartWidget extends State<ChartWidget> {
       doublemajor += lectures[0][i]['credit'];
       liberalarts += lectures[0][i]['credit'];
     }
+
+    major = (major/54*100).floorToDouble();
+    doublemajor = (doublemajor/36*100).floorToDouble();
+    liberalarts = (liberalarts/40*100).floorToDouble();
+
 
     final List<data> chartData = [
       data('major', major),
