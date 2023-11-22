@@ -41,6 +41,12 @@ public class LectureController {
         return lectureService.getTakenLectures(request);
     }
 
+    @ApiOperation(value = "기수강 과목 전체 조회 (분류됨)")
+    @GetMapping("/getlecturetakensorted")
+    public GetTakenLectureSortedResponseDto getTakenLecturesSorted(GetTakenLectureRequestDto request){
+        return lectureService.getTakenLecturesSorted(request);
+    }
+
     @ApiOperation(value = "기수강 과목 중 교양만 조회")
     @GetMapping("/getcorelecturetaken")
     public List<GetTakenLectureResponseDto> getTakenCoreLectures(GetTakenLectureRequestDto request){

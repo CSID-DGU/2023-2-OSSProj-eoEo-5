@@ -118,6 +118,22 @@ public class LectureService {
         return addTakenLectureDatatoList(takenLectures);
     }
 
+    public GetTakenLectureSortedResponseDto getTakenLecturesSorted(GetTakenLectureRequestDto request){
+        Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
+
+        List<LectureTaken> takenCoreLectures = lectureTakenRepository.findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(account, true, false, false);
+        List<LectureTaken> takenFirstMajorLectures = lectureTakenRepository.findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(account, false, false, false);
+        List<LectureTaken> takenSecondMajorLectures = lectureTakenRepository.findAllByAccountAndIsCoreLectureAndIsSecondMajorAndIsDeleted(account, false, true, false);
+
+        return GetTakenLectureSortedResponseDto.builder()
+                .coreLectures(addTakenLectureDatatoList(takenCoreLectures))
+                .firstMajor(addTakenLectureDatatoList(takenFirstMajorLectures))
+                .secondMajor(addTakenLectureDatatoList(takenSecondMajorLectures))
+                .build();
+
+    }
+
     public List<GetTakenLectureResponseDto> getTakenCoreLectures(GetTakenLectureRequestDto request){
         Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
