@@ -13,6 +13,10 @@ public class LectureTakenDto {
 
     private Long lectureId;
 
+    private Boolean isCoreLecture;
+
+    private Boolean isSecondMajor;
+
     private Boolean isSubstitute;
 
     private Long substituteId;

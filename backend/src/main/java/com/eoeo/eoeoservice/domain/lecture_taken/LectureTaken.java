@@ -37,6 +37,12 @@ public class LectureTaken extends BaseEntity {
     private Lecture lecture;
 
     @Column(nullable = false)
+    private boolean isCoreLecture;
+
+    @Column(nullable = false)
+    private boolean isSecondMajor;
+
+    @Column(nullable = false)
     private boolean isSubstitute;
 
     @ManyToOne(fetch = FetchType.LAZY)

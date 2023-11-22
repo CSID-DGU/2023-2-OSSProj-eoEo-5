@@ -56,6 +56,8 @@ public class LectureService {
                 lectureTaken = LectureTaken.builder()
                         .account(account)
                         .lecture(lecture)
+                        .isCoreLecture(request.getIsCoreLecture())
+                        .isSecondMajor(request.getIsSecondMajor())
                         .isSubstitute(true)
                         .substituteLecture(substituteLecture)
                         .build();
@@ -63,6 +65,8 @@ public class LectureService {
                 lectureTaken = LectureTaken.builder()
                         .account(account)
                         .lecture(lecture)
+                        .isCoreLecture(request.getIsCoreLecture())
+                        .isSecondMajor(request.getIsSecondMajor())
                         .isSubstitute(false)
                         .build();
             }
@@ -87,6 +91,8 @@ public class LectureService {
             LectureTaken lectureTaken = LectureTaken.builder()
                     .account(account)
                     .lecture(lecture)
+                    .isCoreLecture(dto.getIsCoreLecture())
+                    .isSecondMajor(dto.getIsSecondMajor())
                     .isSubstitute(false)
                     .build();
 
