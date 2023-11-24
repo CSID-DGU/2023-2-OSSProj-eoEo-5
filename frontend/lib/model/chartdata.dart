@@ -1,5 +1,8 @@
 class data{
-  data(this.section, this.credit);
+
   final String section;
   final double credit;
+
+  // 생성자
+  data(this.section, this.credit);
 }

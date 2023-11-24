@@ -78,7 +78,7 @@ class _BarChart extends State<BarChart> {
       major += lectures[0][i]['credit'];
     }
 
-    major = (major/130) * 100;
+    major = ((major/130) * 100).floorToDouble();
 
     final List<BARData> chartData = [
       BARData('major', major),
