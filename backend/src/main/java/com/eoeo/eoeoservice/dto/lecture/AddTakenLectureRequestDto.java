@@ -15,6 +15,10 @@ public class AddTakenLectureRequestDto {
 
     private Long lectureId;
 
+    private Boolean isCoreLecture;
+
+    private Boolean isSecondMajor;
+
     private Boolean isSubstitute;
 
     private Long substituteId;
