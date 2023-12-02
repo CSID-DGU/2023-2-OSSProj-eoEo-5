@@ -1,5 +1,6 @@
 package com.eoeo.eoeoservice.configuration;
 
+import com.eoeo.eoeoservice.component.AuthenticationExceptionHandler;
 import com.eoeo.eoeoservice.security.JwtAuthenticationFilter;
 import com.eoeo.eoeoservice.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
+    private final AuthenticationExceptionHandler authenticationExceptionhandler;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -51,7 +53,9 @@ public class SecurityConfig {
                         httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
                                 HeadersConfigurer.FrameOptionsConfig::sameOrigin
                         )
-                ).addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                ).addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationExceptionhandler);
         return http.build();
     }
 

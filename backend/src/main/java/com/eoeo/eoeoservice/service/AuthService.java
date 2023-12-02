@@ -77,7 +77,7 @@ public class AuthService {
 
     @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto request) {
-        Account account = accountRepository.findByUsernameAndIsDeleted(request.getUsername(), false).orElseThrow(() -> new IllegalArgumentException());
+        Account account = accountRepository.findByUsernameAndIsDeleted(request.getUsername(), false).orElseThrow(() -> new IllegalArgumentException("No such Username"));
 
 
         if(!passwordEncoder.matches(account.getSalt()+request.getPassword(), account.getPassword())){
