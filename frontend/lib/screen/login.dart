@@ -31,24 +31,16 @@ class _LogInState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Log in'),
+        title: Text('모두의 융소'),
         elevation: 0.0,
         backgroundColor: Colors.blue,
         centerTitle: true,
         actions: <Widget>[
-          TextButton(
-              child: Text("회원가입", style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Registerpage()));
-              })
         ],
       ),
       body: Column(
         children: [
-          Padding(padding: EdgeInsets.only(top: 50)),
+          Padding(padding: EdgeInsets.only(top: 100)),
           Form(
               child: Theme(
             data: ThemeData(
@@ -56,57 +48,105 @@ class _LogInState extends State<LoginScreen> {
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: TextStyle(color: Colors.teal, fontSize: 15.0))),
             child: Container(
-                padding: EdgeInsets.all(40.0),
+                padding: EdgeInsets.all(50.0),
                 // 키보드가 올라와서 만약 스크린 영역을 차지하는 경우 스크롤이 되도록
                 // SingleChildScrollView으로 감싸 줌
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      TextField(
-                        controller: controller,
-                        decoration: InputDecoration(labelText: 'Enter ID'),
-                        keyboardType: TextInputType.text,
+                      Container(
+                        height:45.0,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                        ),
+                        child: TextField(
+                          controller: controller,
+                          decoration: InputDecoration(
+                            labelText: '  아이디',
+                            border: InputBorder.none, // Remove internal TextField border
+                          ),
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.grey, // 텍스트의 색상을 회색으로 변경
+                          ),
+                        ),
                       ),
-                      TextField(
-                        controller: controller2,
-                        decoration:
-                            InputDecoration(labelText: 'Enter password'),
-                        keyboardType: TextInputType.text,
-                        obscureText: true, // 비밀번호 안보이도록 하는 것
+                      SizedBox(height: 5.0), // Add some spacing between the text fields
+                      Container(
+                        height:45.0,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                        ),
+                        child: TextField(
+                          controller: controller2,
+                          decoration: InputDecoration(
+                            labelText: '  비밀번호',
+                            border: InputBorder.none, // Remove internal TextField border
+                          ),
+                          keyboardType: TextInputType.text,
+                          obscureText: true,
+                          style: TextStyle(
+                            color: Colors.grey, // 텍스트의 색상을 회색으로 변경
+                          ),
+                        ),
                       ),
-                      SizedBox(
-                        height: 40.0,
-                      ),
-                      ButtonTheme(
-                          minWidth: 100.0,
+                      SizedBox(height: 0.5), // Add some spacing before the button
+                      Container(
+                        width: double.infinity, // Make the width match the parent
+                        child: ButtonTheme(
+                          minWidth: double.infinity, // Set the minWidth to match the parent's width
                           height: 50.0,
                           child: ElevatedButton(
                             onPressed: () {
-                              login(controller.text, controller2.text)
-                                  .then((response) {
+                              login(controller.text, controller2.text).then((response) {
                                 if (response) {
                                   Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            HomeScreen(),
-                                      ),
-                                      (Route<dynamic> route) => false);
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) => HomeScreen(),
+                                    ),
+                                        (Route<dynamic> route) => false,
+                                  );
                                 } else {
-                                  showSnackBar(
-                                      context, Text('Check your info again'));
+                                  showSnackBar(context, Text('Check your info again'));
                                 }
                               });
                             },
-                            child: Icon(
-                              Icons.arrow_forward,
-                              color: Colors.white,
-                              size: 35.0,
+                            child: Text(
+                              '모두의 융소 로그인',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.lightBlue,
+                              
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
                             ),
-                          ))
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.0), // Adjust spacing before the Register button
+                      TextButton(
+                        child: Text("회원가입", style: TextStyle(color: Colors.black)),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => Registerpage(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 )),
