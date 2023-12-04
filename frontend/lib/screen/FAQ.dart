@@ -93,7 +93,7 @@ class _FAQScreenState extends State<FAQScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 16), // 필요에 따라 간격 조절
+            SizedBox(height: 13), // 필요에 따라 간격 조절
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
