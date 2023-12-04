@@ -1,10 +1,8 @@
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../data/User.dart';
 import '../widget/textwriter.dart';
 
@@ -12,23 +10,23 @@ class FAQScreen extends StatefulWidget{
 
   @override
   _FAQScreenSate createState() => _FAQScreenSate();
+
 }
 
 class _FAQScreenSate extends State<FAQScreen>{
-
   late SharedPreferences pref;
   bool isFaqDataLoaded = false;
+  late Map<String, dynamic> faqData = {}; // FQA 데이터 저장
+  String selectedCategory = "supportList"; // 선택할 카테고리
 
   @override
-  void initState(){ // 초기화 메서드
-
+  void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((response){
-      pref = response;
-      loadFaq().then((response){
-        setState(() {
-          isFaqDataLoaded = true;
-        });
+    // loadFaq 함수에서 데이터를 가져옴
+    loadFaq().then((response) {
+      setState(() {
+        isFaqDataLoaded = true;
+        faqData = response;
       });
     });
   }
@@ -36,12 +34,31 @@ class _FAQScreenSate extends State<FAQScreen>{
   @override
   Widget build(BuildContext context) { // build method
 
-    if(isFaqDataLoaded){
+    if(faqData == null){ // faq데이터가 null값일 경우 데이터 로드중 표시
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    else if(isFaqDataLoaded){
       return faqScreen();
     } else{
       return Container();
     }
+  }
 
+  void updateAndLoadFAQ(String category) async {
+    setState(() {
+      selectedCategory = category;
+      isFaqDataLoaded = false; // 새로운 카테고리를 선택하면 데이터를 다시 로딩
+    });
+
+    // loadFaq 함수에서 데이터를 가져옴
+    await loadFaq().then((response) {
+      setState(() {
+        isFaqDataLoaded = true;
+        faqData = response;
+      });
+    });
   }
 
   Widget faqScreen(){ // rendering screen
@@ -51,15 +68,14 @@ class _FAQScreenSate extends State<FAQScreen>{
 
     return SafeArea(
         child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: TextWriter(width: width, fontSize: 18, contents:"FAQ", fontWeight:FontWeight.bold, textColor: Colors.white),
+          ),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextWriter(width: width, fontSize: 18, contents:"FAQ", fontWeight:FontWeight.bold, textColor: Colors.black),
               Container(
                 padding: EdgeInsets.only(bottom: width * 0.001),
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 가로로 동일한 간격으로 배치
                   children: <Widget>[
@@ -71,7 +87,11 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            selectedCategory == "supportList"
+                                ? Colors.blue // 선택된 카테고리는 다르게 표시
+                                : Colors.lightBlueAccent,
+                          ),
                         ),
                         child: Text(
                           'support',
@@ -81,7 +101,9 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          updateAndLoadFAQ("supportList");
+                          },
                       ),
                     ),
                     ButtonTheme(
@@ -102,7 +124,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: (){},
                       ),
                     ),
                     ButtonTheme(
@@ -123,7 +145,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: (){},
                       ),
                     ),
                     ButtonTheme(
@@ -169,23 +191,20 @@ class _FAQScreenSate extends State<FAQScreen>{
                     ),
                   ],
                 ),
-              )
+              ),
+             Expanded(child: FAQList(faqData[selectedCategory] ?? [])),
             ],
           ),
-          bottomNavigationBar: Row(
-
-          ),
-
         )
     );
   }
 
-  Future<Map<String ,List>> loadFaq() async{
+  // 비동기로 faq데이터를 받아오는 메서드: <String, dynamic>
+  Future<Map<String ,dynamic>> loadFaq() async{
     SharedPreferences pref = await SharedPreferences
         .getInstance(); // SharedPreferences 인스턴스 생성
     User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
     int? userId = user.id;
-    Map<String, List> faqs = {};
 
     // FAQ api 요청
     http.Response? faq = await rq.Request.getRequest(
@@ -199,14 +218,60 @@ class _FAQScreenSate extends State<FAQScreen>{
     Map<String, dynamic> faqdata = jsonDecode(utf8.decode(faq!.bodyBytes));
     // test
     print(faqdata);
-    // faq {A:[{a:b}, {a:b}], B:[{a:b}, {a:b}]}
+    print(faqdata["supportList"]);
+    // faqdata {A:[{a:b}, {a:b}], B:[{a:b}, {a:b}]}
 
-    return faqs;
+    return faqdata;
   }
-/*
-  1 버튼은 supportList, subjectList, jobList, creditList, etcList
-    faq map에서 버튼 하나씩 빼감
-   */
-
-
 }
+
+class FAQList extends StatelessWidget {
+  final List<dynamic> faqmap;
+
+  FAQList(this.faqmap); //생성자
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: faqmap.length,
+      itemBuilder: (context, index) {
+        final item = faqmap[index];
+        return FAQItem(
+          question: item['question']!,
+          answer: item['answer']!,
+        );
+      },
+    );
+  }
+}
+
+class FAQItem extends StatelessWidget {
+  final String question;
+  final String answer;
+
+  FAQItem({required this.question, required this.answer});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Q: $question',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text('A: $answer'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
