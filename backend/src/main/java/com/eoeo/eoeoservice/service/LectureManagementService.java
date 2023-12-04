@@ -2,8 +2,6 @@ package com.eoeo.eoeoservice.service;
 
 import com.eoeo.eoeoservice.domain.core_lecture_type.CoreLectureType;
 import com.eoeo.eoeoservice.domain.core_lecture_type.CoreLectureTypeRepository;
-import com.eoeo.eoeoservice.domain.course_type.CourseType;
-import com.eoeo.eoeoservice.domain.course_type.CourseTypeRepository;
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
 import com.eoeo.eoeoservice.domain.lecture.LectureRepository;
 import com.eoeo.eoeoservice.domain.prerequisite.Prerequisite;
@@ -24,7 +22,6 @@ import java.util.NoSuchElementException;
 public class LectureManagementService {
 
     private final LectureRepository lectureRepository;
-    private final CourseTypeRepository courseTypeRepository;
     private final CoreLectureTypeRepository coreLectureTypeRepository;
     private final PrerequisiteRepository prerequisiteRepository;
     private final SubstituteLectureRepository substituteLectureRepository;

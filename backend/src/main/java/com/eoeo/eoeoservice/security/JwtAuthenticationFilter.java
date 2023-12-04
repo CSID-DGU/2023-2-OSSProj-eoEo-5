@@ -2,7 +2,9 @@ package com.eoeo.eoeoservice.security;
 
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,10 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         token = authorizationHeader.substring(7);
 
+
         try{
             authToken = jwtProvider.authenticate(token);
         } catch(Exception e){
-            System.out.println(e);
+            response.setContentType(MediaType.TEXT_PLAIN_VALUE);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Authorization failed");
             return;
         }
 
