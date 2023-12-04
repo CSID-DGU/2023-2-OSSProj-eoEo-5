@@ -13,7 +13,7 @@ public class AddTakenLectureRequestDto {
 
     private Long accountId;
 
-    private Long lectureId;
+    private String lectureNumber;
 
     private Boolean isCoreLecture;
 
@@ -21,6 +21,6 @@ public class AddTakenLectureRequestDto {
 
     private Boolean isSubstitute;
 
-    private Long substituteId;
+    private String originalLectureNumber;
 
 }

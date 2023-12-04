@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class LectureTakenDto {
 
-    private Long lectureId;
+    private String lectureNumber;
 
     private Boolean isCoreLecture;
 
@@ -19,6 +19,6 @@ public class LectureTakenDto {
 
     private Boolean isSubstitute;
 
-    private Long substituteId;
+    private String originalLectureNumber;
 
 }
