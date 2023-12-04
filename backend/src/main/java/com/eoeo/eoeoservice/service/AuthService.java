@@ -2,10 +2,9 @@ package com.eoeo.eoeoservice.service;
 
 import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.domain.account.AccountRepository;
+import com.eoeo.eoeoservice.domain.account.AccountRole;
 import com.eoeo.eoeoservice.domain.major.Major;
 import com.eoeo.eoeoservice.domain.major.MajorRepository;
-import com.eoeo.eoeoservice.domain.school.School;
-import com.eoeo.eoeoservice.domain.school.SchoolRepository;
 import com.eoeo.eoeoservice.dto.auth.*;
 import com.eoeo.eoeoservice.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +56,7 @@ public class AuthService {
                 .isSecondMajor(request.getIsSecondMajor())
                 .salt(salt)
                 .password(passwordEncoder.encode(salt + request.getPassword()))
+                .role(AccountRole.USER)
                 .build();
 
         if(request.getIsSecondMajor()){

@@ -1,7 +1,6 @@
 package com.eoeo.eoeoservice.domain.account;
 
 import com.eoeo.eoeoservice.domain.BaseEntity;
-import com.eoeo.eoeoservice.domain.lecture.Lecture;
 import com.eoeo.eoeoservice.domain.major.Major;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +10,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -39,6 +39,10 @@ public class Account extends BaseEntity implements UserDetails{
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AccountRole role;
+
+    @Column(nullable = false)
     private String salt;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -58,7 +62,9 @@ public class Account extends BaseEntity implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getKey()));
+        return authorities;
     }
 
     @Override
@@ -87,5 +93,9 @@ public class Account extends BaseEntity implements UserDetails{
 
     public void setSecondMajor(Major major){
         secondMajor = major;
+    }
+
+    public void logout(){
+        validationToken = "";
     }
 }

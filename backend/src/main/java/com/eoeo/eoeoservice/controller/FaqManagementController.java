@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/faqmanagement")
+@RequestMapping("/management/faq")
 @RequiredArgsConstructor
 public class FaqManagementController {
 
