@@ -1,171 +1,212 @@
-import 'package:flutter/material.dart';
 
-class FAQScreen extends StatefulWidget {
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:frontend/module/Request.dart' as rq;
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../data/User.dart';
+import '../widget/textwriter.dart';
+
+class FAQScreen extends StatefulWidget{
+
   @override
-  _FAQScreenState createState() => _FAQScreenState();
+  _FAQScreenSate createState() => _FAQScreenSate();
 }
 
-class _FAQScreenState extends State<FAQScreen> {
-  String selectedCategory = '지원'; // 초기 선택 카테고리
+class _FAQScreenSate extends State<FAQScreen>{
+
+  late SharedPreferences pref;
+  bool isFaqDataLoaded = false;
 
   @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+  void initState(){ // 초기화 메서드
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: Text(
-          'FAQ',
-          style: TextStyle(
-            color: Colors.white,
+    super.initState();
+    SharedPreferences.getInstance().then((response){
+      pref = response;
+      loadFaq().then((response){
+        setState(() {
+          isFaqDataLoaded = true;
+        });
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) { // build method
+
+    if(isFaqDataLoaded){
+      return faqScreen();
+    } else{
+      return Container();
+    }
+
+  }
+
+  Widget faqScreen(){ // rendering screen
+    Size screenSize = MediaQuery.of(context).size;
+    double width = screenSize.width;
+    double height = screenSize.height;
+
+    return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              TextWriter(width: width, fontSize: 18, contents:"FAQ", fontWeight:FontWeight.bold, textColor: Colors.black),
+              Container(
+                padding: EdgeInsets.only(bottom: width * 0.001),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 가로로 동일한 간격으로 배치
+                  children: <Widget>[
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'support',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'subject',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'job',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'credit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'etc',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(
-                        selectedCategory == '지원'
-                            ? Colors.blue
-                            : Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    changeCategory('지원');
-                  },
-                  child: Text(
-                    '지원',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(
-                        selectedCategory == '교과'
-                            ? Colors.blue
-                            : Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    changeCategory('교과');
-                  },
-                  child: Text(
-                    '교과',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(
-                        selectedCategory == '학점인정'
-                            ? Colors.blue
-                            : Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    changeCategory('학점인정');
-                  },
-                  child: Text(
-                    '학점인정',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 13), // 필요에 따라 간격 조절
+          bottomNavigationBar: Row(
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(
-                        selectedCategory == '졸업'
-                            ? Colors.blue
-                            : Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    changeCategory('졸업');
-                  },
-                  child: Text(
-                    '졸업',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(
-                        selectedCategory == '취업'
-                            ? Colors.blue
-                            : Colors.lightBlueAccent),
-                  ),
-                  onPressed: () {
-                    changeCategory('취업');
-                  },
-                  child: Text(
-                    '취업',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16), // 필요에 따라 간격 조절
+          ),
 
-            // FAQ 항목 출력
-            ListTile(
-              title: Text('$selectedCategory FAQ1'),
-              subtitle: Text('$selectedCategory에 관한 자주 묻는 질문에 대한 답변'),
-              onTap: () {
-                // FAQ1을 눌렀을 때 처리할 로직 작성
-              },
-            ),
-            ListTile(
-              title: Text('$selectedCategory FAQ2'),
-              subtitle: Text('$selectedCategory에 관한 자주 묻는 질문에 대한 답변'),
-              onTap: () {
-                // FAQ2를 눌렀을 때 처리할 로직 작성
-              },
-            ),
-          ],
-        ),
-      ),
+        )
     );
   }
 
-  void changeCategory(String category) {
-    setState(() {
-      selectedCategory = category;
-    });
+  Future<Map<String ,List>> loadFaq() async{
+    SharedPreferences pref = await SharedPreferences
+        .getInstance(); // SharedPreferences 인스턴스 생성
+    User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
+    int? userId = user.id;
+    Map<String, List> faqs = {};
+
+    // FAQ api 요청
+    http.Response? faq = await rq.Request.getRequest(
+        "https://eoeoservice.site/faq/getfaq",
+        {"userId": "$userId"},
+        true,
+        true,
+        context);
+
+    // map 형식으로 faq 데이터를 받아옴
+    Map<String, dynamic> faqdata = jsonDecode(utf8.decode(faq!.bodyBytes));
+    // test
+    print(faqdata);
+    // faq {A:[{a:b}, {a:b}], B:[{a:b}, {a:b}]}
+
+    return faqs;
   }
+/*
+  1 버튼은 supportList, subjectList, jobList, creditList, etcList
+    faq map에서 버튼 하나씩 빼감
+   */
+
+
 }
