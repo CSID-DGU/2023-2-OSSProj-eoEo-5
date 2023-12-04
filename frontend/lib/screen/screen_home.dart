@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
-import 'package:frontend/module/Request.dart';
-import 'package:frontend/screen/set.dart';
 import 'package:frontend/widget/chartwidget.dart';
 import 'package:frontend/widget/textwriter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,33 +23,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   late SharedPreferences pref;
-
   bool isUserDataLoaded = false;
-
-  String testText ="";
-
-  Widget? text;
 
   // request module 사용하기 위해 필요한 함수
   @override
   void initState(){
+
     SharedPreferences.getInstance().then((response){
       pref = response;
       setState(() {
         isUserDataLoaded = true;
       });
     });
-  }
-
-
-  Widget titleText(String test){
-    return Text(
-      //'Team eoEo',
-      test,
-      style: TextStyle(
-        color: Colors.black,
-      ),
-    );
   }
 
   @override
@@ -74,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String name = user.name;
     String major = user.major;
-
 
     return SafeArea(
       child: Scaffold(

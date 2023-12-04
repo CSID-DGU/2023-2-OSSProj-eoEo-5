@@ -46,7 +46,7 @@ class _BarChart extends State<BarChart> {
                   yValueMapper: (BARData data, _) => data.ratio,
                   pointColorMapper: (BARData, _) {
                     if (BARData.mydata == "달성도") {
-                      return Colors.lightBlueAccent;
+                      return Colors.lightBlue;
                     }
                   },
                   dataLabelSettings: DataLabelSettings(isVisible: true),
@@ -78,7 +78,7 @@ class _BarChart extends State<BarChart> {
       major += lectures[0][i]['credit'];
     }
 
-    major = (major/130) * 100;
+    major = ((major/130) * 100).floorToDouble();
 
     final List<BARData> chartData = [
       BARData('major', major),

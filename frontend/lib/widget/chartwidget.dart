@@ -8,6 +8,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
 
+/*
+1. 기수강 과목 데이터 모델 클래스 생성
+ */
+
+
 class ChartWidget extends StatefulWidget {
   ChartWidget({Key? key, required this.title}) : super(key: key);
 
@@ -24,9 +29,8 @@ class _ChartWidget extends State<ChartWidget> {
 
   @override
   void initState() {
-    someFunction(); // initState에서 비동기 작업 수행
-   // _chartData = getChartData();
     super.initState();
+    someFunction(); // initState에서 비동기 작업 수행
   }
 
   @override
@@ -78,68 +82,95 @@ class _ChartWidget extends State<ChartWidget> {
     );
   }
 
-  Future<List<List>> loadLectures() async {
-
-    List<List> response = [];
+  Future<Map<String, List<List>>> takenload() async{
     SharedPreferences pref = await SharedPreferences
         .getInstance(); // SharedPreferences 인스턴스 생성
     User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
     int? takenCourseId = user.id; // 사용자의 기수강 ID
 
     // 기수강 중 주전공 api 요청
-    http.Response? takenLectures = await rq.Request.getRequest( // 서버에서 강의 정보 분류 요청
+    List<List> response1 = [];
+    http.Response? takenLectures1 = await rq.Request.getRequest( // 서버에서 강의 정보 분류 요청
         "https://eoeoservice.site/lecture/getfirstmajorlecturetaken",
         {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
         true,
         true,
         context);
-
+    // 기수강 과목 리스트: 주전공
     List takenLectureList = jsonDecode(
-        utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
+        utf8.decode(takenLectures1!.bodyBytes)); // 응답데이터 디코딩
+    response1.add(takenLectureList);
 
-    response.add(takenLectureList);
+    // 기수강 중 복수전공 api 요청
+    List<List> response2 = [];
+    http.Response? takenLectures2 = await rq.Request.getRequest( // 서버에서 강의 정보 분류 요청
+        "https://eoeoservice.site/lecture/getcorelecturetaken",
+        {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
+        true,
+        true,
+        context);
+    // 기수강 과목 리스트: 복수전공
+    List takenLectureList2 = jsonDecode(
+        utf8.decode(takenLectures2!.bodyBytes)); // 응답데이터 디코딩
+    response2.add(takenLectureList2);
 
-    return response;
+    // 기수강 중 교양 api 요청
+    List<List> response3 = [];
+    http.Response? takenLectures3 = await rq.Request.getRequest( // 서버에서 강의 정보 분류 요청
+        "https://eoeoservice.site/lecture/getcorelecturetaken",
+        {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
+        true,
+        true,
+        context);
+    // 기수강 과목 리스트: 교양
+    List takenLectureList3 = jsonDecode(
+        utf8.decode(takenLectures3!.bodyBytes)); // 응답데이터 디코딩
+    response3.add(takenLectureList3);
+
+    Map<String, List<List>> lectures ={
+      "firstmajor":response1,
+      "secondmajor":response2,
+      "corelecture":response3
+    };
+
+    return lectures; // 맵형식
   }
 
   Future<void> someFunction() async {
-    List<List> lecturesData = await loadLectures(); // 기수강 정보를 비동기로 받아옴
-
-    List<data> chartData = getChartData(lecturesData);
+    Map<String, List<List>> lecturesData = await takenload();
+    List<data> chartData = getData(lecturesData);
     setState(() {
-      _chartData = chartData; // _chartData를 업데이트하고 화면을 리프레시
-
-      }
-    );
+      _chartData = chartData;
+    });
   }
+
 }
 
 
-  // 2차원 리스트를 파라미터로 받아서 수치를 더한 후, data 클래스에 입력하는 코드
-  List<data> getChartData(List<List> lectures) {
-
+  List<data> getData(Map<String, List<List>> lectures){
     double major = 0;
     double doublemajor = 0;
     double liberalarts = 0;
 
-    for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
-      major += lectures[0][i]['credit'];
-      doublemajor += lectures[0][i]['credit'];
-      liberalarts += lectures[0][i]['credit'];
+    for (int i = 0; i < lectures['firstmajor']![0].length; i++){
+      major += lectures['firstmajor']![0][i]['credit'];
     }
+    major = ((major/54)*100).floorToDouble();
 
-    major = (major/54*100).floorToDouble();
-    doublemajor = (doublemajor/36*100).floorToDouble();
-    liberalarts = (liberalarts/40*100).floorToDouble();
+    for (int i = 0; i < lectures['secondmajor']![0].length; i++){
+      doublemajor += lectures['secondmajor']![0][i]['credit'];
+    }
+    doublemajor = ((doublemajor/36)*100).floorToDouble();
 
+    for (int i = 0; i < lectures['corelecture']![0].length; i++){
+      liberalarts += lectures['corelecture']![0][i]['credit'];
+    }
+    liberalarts = ((liberalarts/36) * 100).floorToDouble();
 
     final List<data> chartData = [
       data('major', major),
       data('double major', doublemajor),
       data('liberal arts', liberalarts),
     ];
-
     return chartData;
   }
-
-

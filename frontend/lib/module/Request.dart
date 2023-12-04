@@ -7,12 +7,15 @@ import '../screen/login.dart';
 
 class Request{
 
+  // getRequest: url, 데이터 맵, 인증필요여부, 매개변수 존재 여부, buildcontext
   static Future<http.Response?> getRequest(String url, Map<String, dynamic> data, bool isAuthRequired, bool isThereParameter, BuildContext context) async {
+    // header: json data
     Map<String, String> headers = {
       "Content-Type" : "application/json",
       "Accept" : "application/json"
     };
 
+    // 인증이 필요할 경우, 헤더에 액세스 토큰 추가
     if(isAuthRequired){
       SharedPreferences pref = await SharedPreferences.getInstance();
       String accessToken = pref.containsKey("accessToken") ? pref.getString("accessToken")! : " ";
@@ -20,6 +23,7 @@ class Request{
       headers.addAll(authToken);
     }
 
+    // 매개변수값을 확인하고, url에 추가
     if(isThereParameter){
       url = url + "?";
 
@@ -35,13 +39,15 @@ class Request{
       }
     }
 
+    // 응답 데이터
     var response = await http.get(Uri.parse(url), headers: headers);
 
+    // 응답 상태에 따른 최종 메서드 리턴값
     if(response.statusCode == 200){
       return response;
-    } else if(isAuthRequired){
+    } else if(isAuthRequired){ // 인증이 필요하면 리프레쉬 토큰 발급
       return getWithRefreshToken(url, data, isThereParameter, context);
-    } else{
+    } else{ // 데이터를 못 받아올 시, 로그아웃
       SharedPreferences pref = await SharedPreferences.getInstance();
       logout(context, pref);
       return null;

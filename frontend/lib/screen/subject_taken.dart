@@ -73,7 +73,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
     User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
     int? takenCourseId = user.id; // 사용자의 기수강 ID
 
-    http.Response? takenLectures = await Request.getRequest( // 서버에서 강의 정보 요청
+    http.Response? takenLectures = await Request.getRequest( // 서버에 강의 정보 요청
         "https://eoeoservice.site/lecture/getlecturetaken",
         {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
         true,
@@ -87,7 +87,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
     return response;
   }
 
-  void renderWidgets(List<List> lectures) { // 리스트를 위젯으로 렌더링하는 메소드
+  void renderWidgets(List<List> lectures) {// 리스트를 위젯으로 렌더링하는 메소드
     takenLectureWidgets = [];
 
     for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
