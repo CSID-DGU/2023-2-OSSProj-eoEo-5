@@ -70,7 +70,11 @@ class _RegisterpageState extends State<Registerpage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text("Username", style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 30),
+            Padding(
+              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("아이디", style: TextStyle(fontSize: 15)),
+            ),
             Container(
               height: 30,
               width: double.infinity,
@@ -89,13 +93,16 @@ class _RegisterpageState extends State<Registerpage> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: '사용할 아이디',
+                  //hintText: '사용할 아이디',
                   border: InputBorder.none,
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Password", style: TextStyle(fontSize: 20)),
+            Padding(
+              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("비밀번호", style: TextStyle(fontSize: 15)),
+            ),
             Container(
               height: 30,
               width: double.infinity,
@@ -114,13 +121,16 @@ class _RegisterpageState extends State<Registerpage> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: '사용할 비밀번호',
+                  //hintText: '사용할 비밀번호',
                   border: InputBorder.none,
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Name", style: TextStyle(fontSize: 20)),
+            Padding(
+              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("사용할 이름", style: TextStyle(fontSize: 15)),
+            ),
             Container(
               height: 30,
               width: double.infinity,
@@ -139,13 +149,16 @@ class _RegisterpageState extends State<Registerpage> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: '사용할 닉네임을 입력해주세요.',
+                  //hintText: '사용할 닉네임을 입력해주세요.',
                   border: InputBorder.none,
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Major", style: TextStyle(fontSize: 20)),
+            Padding(
+              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("주전공", style: TextStyle(fontSize: 15)),
+            ),
             Container(
               height: 30,
               width: double.infinity,
@@ -171,43 +184,51 @@ class _RegisterpageState extends State<Registerpage> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("SecondMajor", style: TextStyle(fontSize: 20)),
-            TextButton(
-              child: isThereSecondMajor
-                  ? Text("복수전공 선택 해제")
-                  : Text("복수전공 선택"),
+            ElevatedButton.icon(
+              icon: isThereSecondMajor
+                  ? Icon(Icons.remove)  // 선택 해제 상태에서는 제거 아이콘
+                  : Icon(Icons.add),     // 선택 상태에서는 추가 아이콘
+              label: Text(
+                isThereSecondMajor
+                    ? "복수전공 선택 해제"
+                    : "복수전공 선택",
+                style: TextStyle(fontSize: 16), // 원하는 폰트 크기로 설정
+              ),
               onPressed: () {
                 setState(() {
                   isThereSecondMajor = !isThereSecondMajor;
                 });
               },
             ),
-            Container(
-              height: 30,
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20), // 수정된 부분
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1.0,
+// SecondMajor Dropdown (Conditional)
+            if (isThereSecondMajor)
+              Container(
+                height: 30,
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                child: DropdownButton(
+                  value: selectedSecondMajor,
+                  items: majorItemList.map((value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSecondMajor = value.toString();
+                    });
+                  },
+                ),
               ),
-              child: isThereSecondMajor
-                  ? DropdownButton(
-                value: selectedSecondMajor,
-                items: majorItemList.map((value) {
-                  return DropdownMenuItem(
-                      value: value, child: Text(value));
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedSecondMajor = value.toString();
-                  });
-                },
-              )
-                  : Container(),
-            ),
+            const SizedBox(height: 100),
             ElevatedButton(
               child: Text("Register"),
               onPressed: () {
