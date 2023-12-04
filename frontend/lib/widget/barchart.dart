@@ -46,7 +46,7 @@ class _BarChart extends State<BarChart> {
                   yValueMapper: (BARData data, _) => data.ratio,
                   pointColorMapper: (BARData, _) {
                     if (BARData.mydata == "달성도") {
-                      return Colors.lightBlueAccent;
+                      return Colors.lightBlue;
                     }
                   },
                   dataLabelSettings: DataLabelSettings(isVisible: true),

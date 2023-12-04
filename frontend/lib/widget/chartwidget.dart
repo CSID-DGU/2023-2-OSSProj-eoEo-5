@@ -8,6 +8,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
 
+/*
+1. 기수강 과목 데이터 모델 클래스 생성
+ */
+
+
 class ChartWidget extends StatefulWidget {
   ChartWidget({Key? key, required this.title}) : super(key: key);
 
@@ -24,9 +29,8 @@ class _ChartWidget extends State<ChartWidget> {
 
   @override
   void initState() {
-    someFunction(); // initState에서 비동기 작업 수행
-   // _chartData = getChartData();
     super.initState();
+    someFunction(); // initState에서 비동기 작업 수행
   }
 
   @override
@@ -131,93 +135,37 @@ class _ChartWidget extends State<ChartWidget> {
 
     return lectures; // 맵형식
   }
-/*
-  Future<List<List>> loadLectures() async { // 비동기 리스트
-
-    List<List> response = [];
-    SharedPreferences pref = await SharedPreferences
-        .getInstance(); // SharedPreferences 인스턴스 생성
-    User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
-    int? takenCourseId = user.id; // 사용자의 기수강 ID
-
-    // 기수강 중 주전공 api 요청
-    http.Response? takenLectures = await rq.Request.getRequest( // 서버에서 강의 정보 분류 요청
-        "https://eoeoservice.site/lecture/getfirstmajorlecturetaken",
-        {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
-        true,
-        true,
-        context);
-    // 기수강 과목 리스트
-    List takenLectureList = jsonDecode(
-        utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
-    response.add(takenLectureList);
-    return response;
-  }
-
- */
 
   Future<void> someFunction() async {
-    //List<List> lecturesData = await loadLectures(); // 기수강 정보를 비동기로 받아옴
     Map<String, List<List>> lecturesData = await takenload();
-
-    //List<data> chartData = getChartData(lecturesData);
-    List<data> chartData = getD(lecturesData as Map<String, List<List>>);
+    List<data> chartData = getData(lecturesData);
     setState(() {
-      _chartData = chartData; // _chartData를 업데이트하고 화면을 리프레시
-      }
-    );
+      _chartData = chartData;
+    });
   }
+
 }
 
-/*
-  // 2차원 리스트를 파라미터로 받아서 수치를 더한 후, data 클래스에 입력하는 코드
-  List<data> getChartData(List<List> lectures) {
 
-    double major = 0;
-    double doublemajor = 0;
-    double liberalarts = 0;
-
-    for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
-      major += lectures[0][i]['credit'];
-      doublemajor += lectures[0][i]['credit'];
-      liberalarts += lectures[0][i]['credit'];
-    }
-
-    major = (major/54*100).floorToDouble();
-    doublemajor = (doublemajor/36*100).floorToDouble();
-    liberalarts = (liberalarts/40*100).floorToDouble();
-
-
-    final List<data> chartData = [
-      data('major', major),
-      data('double major', doublemajor),
-      data('liberal arts', liberalarts),
-    ];
-
-    return chartData;
-  }
-
- */
-
-  List<data> getD(Map<String, List<List>> lectures){
+  List<data> getData(Map<String, List<List>> lectures){
     double major = 0;
     double doublemajor = 0;
     double liberalarts = 0;
 
     for (int i = 0; i < lectures['firstmajor']![0].length; i++){
       major += lectures['firstmajor']![0][i]['credit'];
-      major = ((major/54)*100).floorToDouble();
     }
+    major = ((major/54)*100).floorToDouble();
 
     for (int i = 0; i < lectures['secondmajor']![0].length; i++){
       doublemajor += lectures['secondmajor']![0][i]['credit'];
-      doublemajor = ((doublemajor/36)*100).floorToDouble();
     }
+    doublemajor = ((doublemajor/36)*100).floorToDouble();
 
     for (int i = 0; i < lectures['corelecture']![0].length; i++){
       liberalarts += lectures['corelecture']![0][i]['credit'];
-      liberalarts = ((liberalarts/36) * 100).floorToDouble();
     }
+    liberalarts = ((liberalarts/36) * 100).floorToDouble();
 
     final List<data> chartData = [
       data('major', major),

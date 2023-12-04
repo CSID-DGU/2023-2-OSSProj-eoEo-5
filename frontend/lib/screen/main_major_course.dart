@@ -77,24 +77,26 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
   Future<List<List>> loadLectures() async { // 강의정보 불러오는 비동기 함수
     List<List> response = []; // 위젯에 렌더링할 리스트
     SharedPreferences pref = await SharedPreferences.getInstance(); // shared prefere
+    // 사용자 데이터
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
+    // 사용자 데이터: 주전공, 족수전공 id
     int? requiredCourseId = user.requiredCourseId;
     int? selectiveCourseId = user.selectiveCourseId;
 
-    print(requiredCourseId);
-
+    // 필수 강의 정보를 가져오는 HTTP 요청
     http.Response? requiredLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
         {"courseId": "$requiredCourseId"},
         true,
         true,
-        context); // 필수 강의 정보를 가져오는 HTTP 요청
+        context);
+    // 선택 강의 정보를 가져오는 HTTP 요청
     http.Response? selectiveLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
         {"courseId": "$selectiveCourseId"},
         true,
         true,
-        context); // 선택 강의 정보를 가져오는 HTTP 요청
+        context);
 
     List requiredLectureList =
         jsonDecode(utf8.decode(requiredLectures!.bodyBytes));
@@ -108,7 +110,6 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
   }
 
   void renderWidgets(List<List> lectures) {
-    print(lectures);
     requiredLectureWidgets = [];
     selectiveLectureWidgets = [];
 
