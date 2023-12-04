@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FAQScreen extends StatelessWidget {
+class FAQScreen extends StatefulWidget {
+  @override
+  _FAQScreenState createState() => _FAQScreenState();
+}
+
+class _FAQScreenState extends State<FAQScreen> {
+  String selectedCategory = '지원'; // 초기 선택 카테고리
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -27,10 +34,13 @@ class FAQScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                    MaterialStateProperty.all<Color>(
+                        selectedCategory == '지원'
+                            ? Colors.blue
+                            : Colors.lightBlueAccent),
                   ),
                   onPressed: () {
-                    _navigateToFAQPage(context, '지원');
+                    changeCategory('지원');
                   },
                   child: Text(
                     '지원',
@@ -44,10 +54,13 @@ class FAQScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                    MaterialStateProperty.all<Color>(
+                        selectedCategory == '교과'
+                            ? Colors.blue
+                            : Colors.lightBlueAccent),
                   ),
                   onPressed: () {
-                    _navigateToFAQPage(context, '교과');
+                    changeCategory('교과');
                   },
                   child: Text(
                     '교과',
@@ -61,10 +74,13 @@ class FAQScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                    MaterialStateProperty.all<Color>(
+                        selectedCategory == '학점인정'
+                            ? Colors.blue
+                            : Colors.lightBlueAccent),
                   ),
                   onPressed: () {
-                    _navigateToFAQPage(context, '학점인정');
+                    changeCategory('학점인정');
                   },
                   child: Text(
                     '학점인정',
@@ -85,10 +101,13 @@ class FAQScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                    MaterialStateProperty.all<Color>(
+                        selectedCategory == '졸업'
+                            ? Colors.blue
+                            : Colors.lightBlueAccent),
                   ),
                   onPressed: () {
-                    _navigateToFAQPage(context, '졸업');
+                    changeCategory('졸업');
                   },
                   child: Text(
                     '졸업',
@@ -102,10 +121,13 @@ class FAQScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                    MaterialStateProperty.all<Color>(
+                        selectedCategory == '취업'
+                            ? Colors.blue
+                            : Colors.lightBlueAccent),
                   ),
                   onPressed: () {
-                    _navigateToFAQPage(context, '취업');
+                    changeCategory('취업');
                   },
                   child: Text(
                     '취업',
@@ -119,50 +141,31 @@ class FAQScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16), // 필요에 따라 간격 조절
+
+            // FAQ 항목 출력
+            ListTile(
+              title: Text('$selectedCategory FAQ1'),
+              subtitle: Text('$selectedCategory에 관한 자주 묻는 질문에 대한 답변'),
+              onTap: () {
+                // FAQ1을 눌렀을 때 처리할 로직 작성
+              },
+            ),
+            ListTile(
+              title: Text('$selectedCategory FAQ2'),
+              subtitle: Text('$selectedCategory에 관한 자주 묻는 질문에 대한 답변'),
+              onTap: () {
+                // FAQ2를 눌렀을 때 처리할 로직 작성
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _navigateToFAQPage(BuildContext context, String category) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FAQCategoryScreen(category)),
-    );
-  }
-}
-
-class FAQCategoryScreen extends StatelessWidget {
-  final String category;
-
-  FAQCategoryScreen(this.category);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('$category FAQ'),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text('$category FAQ1'),
-            subtitle: Text('$category에 관한 자주 묻는 질문에 대한 답변'),
-            onTap: () {
-              // FAQ1을 눌렀을 때 처리할 로직 작성
-            },
-          ),
-          ListTile(
-            title: Text('$category FAQ2'),
-            subtitle: Text('$category에 관한 자주 묻는 질문에 대한 답변'),
-            onTap: () {
-              // FAQ2를 눌렀을 때 처리할 로직 작성
-            },
-          ),
-          // 다른 FAQ 항목들도 유사한 방식으로 추가할 수 있습니다.
-        ],
-      ),
-    );
+  void changeCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+    });
   }
 }
