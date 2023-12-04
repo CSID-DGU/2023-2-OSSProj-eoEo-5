@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/User.dart';
+import '../widget/textwriter.dart';
 
 class FAQScreen extends StatefulWidget{
 
@@ -16,8 +18,6 @@ class _FAQScreenSate extends State<FAQScreen>{
 
   late SharedPreferences pref;
   bool isFaqDataLoaded = false;
-
-  List<Widget> faqWidgets = []; // 전공선택 강의 위젯 목록
 
   @override
   void initState(){ // 초기화 메서드
@@ -51,12 +51,126 @@ class _FAQScreenSate extends State<FAQScreen>{
 
     return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-
-          ),
+          appBar: AppBar(),
           body: Column(
-            children: faqWidgets,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              TextWriter(width: width, fontSize: 18, contents:"FAQ", fontWeight:FontWeight.bold, textColor: Colors.black),
+              Container(
+                padding: EdgeInsets.only(bottom: width * 0.001),
 
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 가로로 동일한 간격으로 배치
+                  children: <Widget>[
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'support',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'subject',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'job',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'credit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),ButtonTheme(
+                      minWidth: width * 0.02,
+                      height: height * 0.00125,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        ),
+                        child: Text(
+                          'etc',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
           bottomNavigationBar: Row(
 
@@ -70,44 +184,29 @@ class _FAQScreenSate extends State<FAQScreen>{
     SharedPreferences pref = await SharedPreferences
         .getInstance(); // SharedPreferences 인스턴스 생성
     User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
-    int? faqId = user.id;
-
+    int? userId = user.id;
     Map<String, List> faqs = {};
 
     // FAQ api 요청
     http.Response? faq = await rq.Request.getRequest(
-      "https://eoeoservice.site/faq/getfaq",
-        {"userId": "$faqId"},
-      true,
-      true,
-      context);
+        "https://eoeoservice.site/faq/getfaq",
+        {"userId": "$userId"},
+        true,
+        true,
+        context);
 
-    Map<String, dynamic> faqList = jsonDecode(utf8.decode(faq!.bodyBytes));
-    print(faqList);
-    //faqs.add(faqList);
+    // map 형식으로 faq 데이터를 받아옴
+    Map<String, dynamic> faqdata = jsonDecode(utf8.decode(faq!.bodyBytes));
+    // test
+    print(faqdata);
+    // faq {A:[{a:b}, {a:b}], B:[{a:b}, {a:b}]}
 
     return faqs;
   }
-
-  void renderWidgets(List<List> faqs){
-    print(faqs);
-    faqWidgets=[];
-    for(int i=0; i< faqs.length; i++){
-      faqWidgets.add(
-        Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(8.0),
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                faqs[i][0],
-              ),
-            )
-          ],
-        )
-      );
-    }
-  }
+/*
+  1 버튼은 supportList, subjectList, jobList, creditList, etcList
+    faq map에서 버튼 하나씩 빼감
+   */
 
 
 }
