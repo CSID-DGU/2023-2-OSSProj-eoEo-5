@@ -7,10 +7,8 @@ import '../data/User.dart';
 import '../widget/textwriter.dart';
 
 class FAQScreen extends StatefulWidget{
-
   @override
   _FAQScreenSate createState() => _FAQScreenSate();
-
 }
 
 class _FAQScreenSate extends State<FAQScreen>{
@@ -114,7 +112,11 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            selectedCategory == "subjectList"
+                                ? Colors.blue // 선택된 카테고리는 다르게 표시
+                                : Colors.lightBlueAccent,
+                          ),
                         ),
                         child: Text(
                           'subject',
@@ -124,7 +126,9 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          updateAndLoadFAQ("subjectList");
+                        },
                       ),
                     ),
                     ButtonTheme(
@@ -135,7 +139,11 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            selectedCategory == "jobList"
+                                ? Colors.blue // 선택된 카테고리는 다르게 표시
+                                : Colors.lightBlueAccent,
+                          ),
                         ),
                         child: Text(
                           'job',
@@ -145,7 +153,9 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          updateAndLoadFAQ("jobList");
+                        },
                       ),
                     ),
                     ButtonTheme(
@@ -156,7 +166,11 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            selectedCategory == "creditList"
+                                ? Colors.blue // 선택된 카테고리는 다르게 표시
+                                : Colors.lightBlueAccent,
+                          ),
                         ),
                         child: Text(
                           'credit',
@@ -166,7 +180,9 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          updateAndLoadFAQ("creditList");
+                        },
                       ),
                     ),ButtonTheme(
                       minWidth: width * 0.02,
@@ -176,7 +192,11 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            selectedCategory == "etcList"
+                                ? Colors.blue // 선택된 카테고리는 다르게 표시
+                                : Colors.lightBlueAccent,
+                          ),
                         ),
                         child: Text(
                           'etc',
@@ -186,7 +206,9 @@ class _FAQScreenSate extends State<FAQScreen>{
                             fontSize: 13,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          updateAndLoadFAQ("etcList");
+                        },
                       ),
                     ),
                   ],
