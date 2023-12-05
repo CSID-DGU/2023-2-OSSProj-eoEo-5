@@ -30,17 +30,25 @@ class _LogInState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('모두의 융소'),
-        elevation: 0.0,
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        actions: <Widget>[
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Text('모두의 융소'),
+      //   elevation: 0.0,
+      //   backgroundColor: Colors.blue,
+      //   centerTitle: true,
+      //   actions: <Widget>[
+      //   ],
+      // ),
       body: Column(
         children: [
           Padding(padding: EdgeInsets.only(top: 100)),
+          // 원하는 이미지 파일을 사용하여 Image 위젯 추가
+          Image.asset(
+            'assets/images/login_logo_.png', // 여기에 실제 이미지 파일 경로를 넣어주세요
+            height: 230.0, // 필요에 따라 높이 조절
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Padding(padding: EdgeInsets.only(top: 10)), // 이미지 아래에 약간의 여백 추가
           Form(
               child: Theme(
             data: ThemeData(
@@ -48,7 +56,7 @@ class _LogInState extends State<LoginScreen> {
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: TextStyle(color: Colors.teal, fontSize: 15.0))),
             child: Container(
-                padding: EdgeInsets.all(50.0),
+                padding: EdgeInsets.all(30.0),
                 // 키보드가 올라와서 만약 스크린 영역을 차지하는 경우 스크롤이 되도록
                 // SingleChildScrollView으로 감싸 줌
                 child: SingleChildScrollView(
@@ -127,7 +135,7 @@ class _LogInState extends State<LoginScreen> {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              
+
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
