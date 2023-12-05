@@ -54,6 +54,27 @@ class _ShowUserState extends State<ShowUser> {
           ),
           body: Column(
             children: <Widget>[
+              ButtonTheme(
+                minWidth: width * 0.02,
+                height: height * 0.00125,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(1),
+                ),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                  ),
+                  child: Text(
+                    '내가 들은 과목 추가',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
               TextWriter(width:width, fontSize:20, contents: "$name", textColor: Colors.black, fontWeight: FontWeight.bold),
               TextWriter(width: width, fontSize: 18, contents:"$major", fontWeight:FontWeight.bold, textColor: Colors.black),
             ]
