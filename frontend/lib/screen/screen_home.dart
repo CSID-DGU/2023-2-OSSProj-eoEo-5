@@ -21,14 +21,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   late SharedPreferences pref;
   bool isUserDataLoaded = false;
 
   // request module 사용하기 위해 필요한 함수
   @override
   void initState(){
-
     SharedPreferences.getInstance().then((response){
       pref = response;
       setState(() {
@@ -196,16 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Container( // 차트 들어갈 공간
               child: ChartWidget(title: '',),
             ),
-            /*
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: width * 0.00,
-                top: width * 0.00,
-                left: width * 0.00,
-                right: width * 0.00,
-              ),
-            ),
-             */
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
               children: <Widget>[
@@ -236,57 +224,51 @@ class _HomeScreenState extends State<HomeScreen> {
             Center( // 차트 들어갈 공간
               child: BarChart(title: '',),
             ),
-
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: width * 0.024,
-                top: width * 0.024,
-                left: width * 0.024,
-                right: width * 0.024,
-              ),
-            ),
             // 가로로 배치된 Elevated 버튼
             Divider(),
-          ],
-        ),
+          // 바텀 버튼
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.question_mark_rounded, // 검색 아이콘
+                    color: Colors.lightBlueAccent,
+                    size: 40,// 아이콘 색상
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
+                  },
+                ),
 
-        bottomNavigationBar: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+                /*
+                IconButton(
+                  icon: Icon(
+                    Icons.home_rounded, // 로그인 페이지 아이콘
+                    color: Colors.lightBlueAccent,
+                    size: 40,// 아이콘 색상
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                ),
 
-            IconButton(
-              icon: Icon(
-                Icons.question_mark_rounded, // 검색 아이콘
-                color: Colors.lightBlueAccent,
-                size: 40,// 아이콘 색상
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
-              },
+                 */
+
+                IconButton(
+                  icon: Icon(
+                    Icons.person, // 환경설정 아이콘
+                    color: Colors.lightBlueAccent,
+                    size: 40,// 아이콘 색상
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
+                  },
+                ),
+              ],
             ),
-
-            IconButton(
-              icon: Icon(
-                Icons.home_rounded, // 로그인 페이지 아이콘
-                color: Colors.lightBlueAccent,
-                size: 40,// 아이콘 색상
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
-            ),
-
-            IconButton(
-              icon: Icon(
-                Icons.settings_rounded, // 환경설정 아이콘
-                color: Colors.lightBlueAccent,
-                size: 40,// 아이콘 색상
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
-              },
-            ),
-
+          ),
           ],
         ),
       ),

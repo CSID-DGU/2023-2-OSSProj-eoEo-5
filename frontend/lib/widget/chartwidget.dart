@@ -8,11 +8,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
 
-/*
-1. 기수강 과목 데이터 모델 클래스 생성
- */
-
-
 class ChartWidget extends StatefulWidget {
   ChartWidget({Key? key, required this.title}) : super(key: key);
 
@@ -24,17 +19,32 @@ class ChartWidget extends StatefulWidget {
 }
 
 class _ChartWidget extends State<ChartWidget> {
-  late List<data> _chartData;
-  List<Widget> takenLectureWidgets = []; // 컨테이너에 띄울 리스트 위젯
+  bool isChartDataLoaded = false;
+  late Map<String, List<List>> chartData = {};
 
   @override
   void initState() {
     super.initState();
-    someFunction(); // initState에서 비동기 작업 수행
+    takenload().then((lectures){
+      setState(() {
+        isChartDataLoaded = true;
+        chartData = lectures;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if(isChartDataLoaded){
+      return ChartScreen();
+      }
+    else{
+      return Container();
+    }
+  }
+
+  Widget ChartScreen(){
+    List<data> _chartData = getData(chartData);
     return SafeArea(
         child: Container(
             width: 380,
@@ -135,15 +145,6 @@ class _ChartWidget extends State<ChartWidget> {
 
     return lectures; // 맵형식
   }
-
-  Future<void> someFunction() async {
-    Map<String, List<List>> lecturesData = await takenload();
-    List<data> chartData = getData(lecturesData);
-    setState(() {
-      _chartData = chartData;
-    });
-  }
-
 }
 
 
