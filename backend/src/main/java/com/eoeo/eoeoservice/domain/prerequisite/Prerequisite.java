@@ -18,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE Prerequisite SET isDeleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE prerequisite SET is_deleted = true WHERE id = ?")
 public class Prerequisite extends BaseEntity {
 
     @Id

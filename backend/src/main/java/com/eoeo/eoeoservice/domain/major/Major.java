@@ -20,7 +20,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE Major SET isDeleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE major SET is_deleted = true WHERE id = ?")
 public class Major extends BaseEntity {
 
     @Id

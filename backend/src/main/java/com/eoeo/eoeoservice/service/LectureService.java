@@ -254,4 +254,17 @@ public class LectureService {
         return response;
     }
 
+    @Transactional
+    public Boolean deleteTakenLecture(DeleteTakenLectureRequestDto request){
+        Account account = accountRepository.findByIdAndIsDeleted(request.getUserId(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such user"));
+        Lecture lecture = lectureRepository.findByLectureNumberAndIsDeleted(request.getLectureNumber(), false)
+                .orElseThrow(() -> new NoSuchElementException("No such lecture"));
+        LectureTaken takenLecture = lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false)
+                .orElseThrow(() -> new NoSuchElementException("No such taken lecture"));
+
+        lectureTakenRepository.delete(takenLecture);
+        return true;
+    }
+
 }

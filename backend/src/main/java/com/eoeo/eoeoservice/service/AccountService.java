@@ -4,14 +4,8 @@ import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.domain.account.AccountRepository;
 import com.eoeo.eoeoservice.dto.account.AccountDataRequestDto;
 import com.eoeo.eoeoservice.dto.account.AccountDataResponseDto;
-import com.eoeo.eoeoservice.dto.account.LogoutRequestDto;
-import com.eoeo.eoeoservice.dto.auth.UserLoginRequestDto;
-import com.eoeo.eoeoservice.dto.auth.UserLoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -38,19 +32,11 @@ public class AccountService {
                 .selectiveCredit(account.getMajor().getSelectiveCourseCredit())
                 .build();
 
-        if(account.getIsSecondMajor()){
+        if (account.getIsSecondMajor()) {
             accountDataResponseDto.setSecondMajor(account.getSecondMajor());
         }
 
         return accountDataResponseDto;
-    }
-
-    @Transactional
-    public Boolean logout(LogoutRequestDto request){
-        Account account = accountRepository.findByIdAndIsDeleted(request.getId(), false).orElseThrow(() -> new NoSuchElementException("No such user"));
-        account.logout();
-
-        return true;
     }
 
 }

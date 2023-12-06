@@ -1,5 +1,6 @@
 package com.eoeo.eoeoservice.controller;
 
+import com.eoeo.eoeoservice.dto.account.LogoutRequestDto;
 import com.eoeo.eoeoservice.dto.auth.*;
 import com.eoeo.eoeoservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public UserRegisterResponseDto register(@RequestBody UserRegisterRequestDto request) throws Exception{
+    public UserRegisterResponseDto register(@RequestBody UserRegisterRequestDto request) {
         return authService.register(request);
     }
 
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto request) throws Exception {
+    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto request) {
         return authService.login(request);
     }
 
@@ -32,6 +33,11 @@ public class AuthController {
     @GetMapping("/majorlist")
     public List<AuthMajorResponseDto> getMajorList(){
         return authService.getMajorList();
+    }
+
+    @PostMapping("/logout")
+    public Boolean logout(LogoutRequestDto request){
+        return authService.logout(request);
     }
 
 }
