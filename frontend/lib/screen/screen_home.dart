@@ -9,6 +9,7 @@ import '../module/show_user.dart';
 import '../widget/barchart.dart';
 import 'FAQ.dart';
 import 'login.dart';
+import 'package:frontend/module/Request.dart' as rq;
 import 'subject_taken.dart'; //기수강과목 불러오기
 import 'main_major_course.dart'; //주전공 이수체계도 불러오기
 import 'double_major_course.dart'; //주전공 이수체계도 불러오기
@@ -75,10 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.black, // 아이콘 색상
                 ),
                 onPressed: () {
-                  SharedPreferences.getInstance().then((response){
+                  rq.Request.logout(context, pref);
+                  /*SharedPreferences.getInstance().then((response){
                     response.clear();
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
-                  });
+                  });*/
 
                 },
               ),

@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../data/User.dart';
 import '../screen/login.dart';
 
 class Request{
@@ -268,8 +269,13 @@ class Request{
   }
 
   static void logout(BuildContext context, SharedPreferences pref){
-    pref.clear();
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
+    User user = User.fromJson(jsonDecode(pref.getString("user")!));
+    http.post(Uri.parse("https://eoeoservice.site/auth/logout?id=${user.id}")).then((response){
+      print(response.body);
+      pref.clear();
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
+    });
+
   }
 
 }
