@@ -22,9 +22,17 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   List<Widget> takenLectureWidgets = []; // 컨테이너에 띄울 리스트 위젯
   late List<List> lectureList; // 리스트를 담을 리스트
 
+  // checkbox
+  bool? ismajor;
+  bool? issecond;
+  bool? iscore;
+  bool? issub;
+  // addData
+  Map<String, dynamic> addData = {};
+
   @override
-  void initState() { // 초기화 메서드
-    
+  void initState() {
+    // 초기화 메서드
     super.initState();
     loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
       lectureList = response; // 불러온 강의 정보를 lectureList에 저장
@@ -33,11 +41,11 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         isDataLoaded = true; // 데이터가 로드되었음을 표시
       });
     });
-
   }
 
   @override
-  Widget build(BuildContext context) { // 위젯 빌드 메서드
+  Widget build(BuildContext context) {
+    // 위젯 빌드 메서드
     if (isDataLoaded) {
       return renderScreen();
     } else {
@@ -49,9 +57,12 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: Text("taken subject", style: TextStyle(color: Colors.white,fontSize: 25 , fontWeight: FontWeight.bold)),
-          centerTitle: true, // Title을 가운데 정렬
-          elevation: 0.8, // 그림자 조절
+          title: Text("taken subject", style: TextStyle(
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
+          centerTitle: true,
+          // Title을 가운데 정렬
+          elevation: 0.8,
+          // 그림자 조절
           leading: Container(),
           actions: <Widget>[
             Padding(
@@ -61,7 +72,9 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                   Icons.add_box_outlined, // 추가 아이콘
                   color: Colors.white, // 아이콘 색상
                 ),
-                onPressed: () {showadd();},
+                onPressed: () {
+                  showadd();
+                },
               ),
             ),
           ],
@@ -74,19 +87,22 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         body: Container(
             padding: const EdgeInsets.all(16.0),
             child: Column(children: [
-              Text("기수강 과목", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Text("기수강 과목",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Column(
                 children: takenLectureWidgets,
               )
             ]
-          )
+            )
         )
     );
   }
 
-  Future<List<List>> loadLectures() async { // 강의 정보를 불러오는 비동기 함수
+  Future<List<List>> loadLectures() async {
+    // 강의 정보를 불러오는 비동기 함수
     List<List> response = []; // 응답 데이터를 담을 2차원 리스트
-    SharedPreferences pref = await SharedPreferences.getInstance(); // SharedPreferences 인스턴스 생성
+    SharedPreferences pref = await SharedPreferences
+        .getInstance(); // SharedPreferences 인스턴스 생성
     User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
     int? takenCourseId = user.id; // 사용자의 기수강 ID
 
@@ -97,14 +113,16 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         true,
         context);
 
-    List takenLectureList = jsonDecode(utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
+    List takenLectureList = jsonDecode(
+        utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
 
     response.add(takenLectureList);
 
     return response;
   }
 
-  void renderWidgets(List<List> lectures) {// 리스트를 위젯으로 렌더링하는 메소드
+  void renderWidgets(List<List> lectures) {
+    // 리스트를 위젯으로 렌더링하는 메소드
     takenLectureWidgets = [];
 
     for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
@@ -113,7 +131,10 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(8.0),
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: Text(
                   lectures[0][i]['name'],
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -128,10 +149,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
 
   void showadd() {
-    bool? ismajor;
-    bool? issecond;
-    bool? iscore;
-    bool? issub;
+
+    print(ismajor); // test
 
     showDialog<String>(
       context: context,
@@ -179,7 +198,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                     const SizedBox(height: 20),
                     const Text(
                       "내가 들은 과목 추가",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight
+                          .bold),
                     ),
                     TextFormField(
                       textAlign: TextAlign.center,
@@ -198,12 +218,36 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Checkbox(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13),), value: ismajor ?? false, onChanged: (value){setState(() {ismajor=value;});}),
-                          Text("전공", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
-                          Checkbox(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)), value: issecond ?? false, onChanged: (value){setState(() {issecond=value;});}),
-                          Text("복수전공", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
-                          Checkbox(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)), value: iscore ?? false, onChanged: (value){setState(() {iscore=value;});}),
-                          Text("교양", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
+                          Checkbox(shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13),),
+                              value: ismajor ?? false,
+                              onChanged: (value) {
+                                setState(() {
+                                  ismajor = value;
+                                });
+                              }),
+                          Text("전공", style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 13),),
+                          Checkbox(shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(13)),
+                              value: issecond ?? false,
+                              onChanged: (value) {
+                                setState(() {
+                                  issecond = value;
+                                });
+                              }),
+                          Text("복수전공", style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 13),),
+                          Checkbox(shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(13)),
+                              value: iscore ?? false,
+                              onChanged: (value) {
+                                setState(() {
+                                  iscore = value;
+                                });
+                              }),
+                          Text("교양", style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 13),),
                         ],
                       ),
                     ),
@@ -214,8 +258,16 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Checkbox(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15),), value: issub ?? false, onChanged: (value){setState(() {issub=value;});}),
-                          Text("대체 과목 여부", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
+                          Checkbox(shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),),
+                              value: issub ?? false,
+                              onChanged: (value) {
+                                setState(() {
+                                  issub = value;
+                                });
+                              }),
+                          Text("대체 과목 여부", style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 13),),
                         ],
                       ),
                     ),
@@ -228,14 +280,17 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       width: 60,
                       height: 30,
                       child: ElevatedButton(
-
                           onPressed: () {
                             // Navigator.pop에서 result값을 넣어주면
                             // showDialog의 return 값이 됩니다.
                             print("Confirmed"); // test
                             Navigator.pop(context, "return value");
+                            print(ismajor);
+                            print(context);
+
                           },
-                          child: const Text("확인")),
+                          child: const Text("확인")
+                      ),
                     ),
                   ],
                 )),
@@ -248,7 +303,81 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     }).whenComplete(() {
       /// 다이얼로그가 종료됐을 때 호출됩니다.
     });
+
   }
+
+  Future<Map<String, dynamic>> loadAddValue(String lectureNumber) async {
+    Map<String, dynamic> map = {};
+
+    SharedPreferences pref = await SharedPreferences
+        .getInstance(); // SharedPreferences 인스턴스 생성
+    User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
+    int? accountId = user.id; // 사용자의 기수강 ID
+
+    if (!issub!) {
+      if (ismajor!) {
+        map = {
+          "accountId": accountId, // int
+          "isCoreLecture": false, // bool
+          "isSecondMajor": false, // bool
+          "isSubstitute": false, // bool
+          "lectureNumber": lectureNumber, // string
+        };
+      }
+      else if (issecond!) {
+        map = {
+          "accountId": accountId, // int
+          "isCoreLecture": false, // bool
+          "isSecondMajor": true, // bool
+          "isSubstitute": false, // bool
+          "lectureNumber": lectureNumber, // string
+        };
+      }
+      else if (iscore!) {
+        map = {
+          "accountId": accountId, // int
+          "isCoreLecture": true, // bool
+          "isSecondMajor": false, // bool
+          "isSubstitute": false, // bool
+          "lectureNumber": lectureNumber, // string
+        };
+      }
+    }
+    else if (issub!) {
+      if (ismajor!) {
+        map = {
+          "accountId": accountId, // int
+          "isCoreLecture": false, // bool
+          "isSecondMajor": false, // bool
+          "isSubstitute": false, // bool
+          "lectureNumber": lectureNumber, // string
+          //"originalLectureNumber": originalLectureNumber, // string
+        };
+      }
+      else if (issecond!) {
+        map = {
+          "accountId": accountId, // int
+          "isCoreLecture": false, // bool
+          "isSecondMajor": true, // bool
+          "isSubstitute": true, // bool
+          "lectureNumber": lectureNumber, // string
+          //"originalLectureNumber": originalLectureNumber, // string
+        };
+      }
+      else if (issub!) {
+        map = {
+          "accountId": accountId, // int
+          "isCoreLecture": true, // bool
+          "isSecondMajor": false, // bool
+          "isSubstitute": true, // bool
+          "lectureNumber": lectureNumber, // string
+          //"originalLectureNumber": originalLectureNumber, // string
+        };
+      }
+    };
+    return map;
+  }
+
 }
 
 

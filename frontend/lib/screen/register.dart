@@ -200,7 +200,7 @@ class _RegisterpageState extends State<Registerpage> {
                 });
               },
             ),
-// SecondMajor Dropdown (Conditional)
+            // SecondMajor Dropdown (Conditional)
             if (isThereSecondMajor)
               Container(
                 height: 30,
