@@ -68,6 +68,8 @@ class Request{
 
     var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(data));
 
+    print(response.statusCode);
+
     if(response.statusCode == 200){
       return response;
     } else if(isAuthRequired){

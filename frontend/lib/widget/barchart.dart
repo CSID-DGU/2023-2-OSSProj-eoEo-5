@@ -17,17 +17,27 @@ class BarChart extends StatefulWidget {
 }
 
 class _BarChart extends State<BarChart> {
-  late List<BARData> _chartData;
-
+  bool isBarChartDataLoaded = false;
+  List<List> chartData = [];
 
   @override
   void initState() {
-    someFunction();
     super.initState();
+    loadLectures().then((response){
+      chartData = response;
+      setState(() {
+        isBarChartDataLoaded = true;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    if (!isBarChartDataLoaded){
+      return CircularProgressIndicator();
+    }
+    //print(chartData); // test: 여기까지는 데이터가 잘 연동됨
     return SafeArea(
       child: Center(
         child: Container(
@@ -40,7 +50,7 @@ class _BarChart extends State<BarChart> {
               series: <ChartSeries>[
                 BarSeries<BARData, String>(
                   name: '',
-                  dataSource: _chartData,
+                  dataSource: getChartData(chartData),
                   xValueMapper: (BARData data, _) => data.mydata,
                   yValueMapper: (BARData data, _) => data.ratio,
                   pointColorMapper: (BARData, _) {
@@ -72,17 +82,13 @@ class _BarChart extends State<BarChart> {
 
   List<BARData> getChartData(List<List> lectures) {
     double major = 0;
-
     for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
       major += lectures[0][i]['credit'];
     }
-
     major = ((major/130) * 100).floorToDouble();
-
     final List<BARData> chartData = [
       BARData('major', major),
     ];
-
     return chartData;
   }
 
@@ -100,25 +106,12 @@ class _BarChart extends State<BarChart> {
         true,
         true,
         context);
-
     List takenLectureList = jsonDecode(
         utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
-
     response.add(takenLectureList);
-
     return response;
   }
-
-  Future<void> someFunction() async {
-    List<List> lecturesData = await loadLectures(); // 기수강 정보를 비동기로 받아옴
-
-    List<BARData> chartData = getChartData(lecturesData);
-    setState(() {
-      _chartData = chartData; // _chartData를 업데이트하고 화면을 리프레시
-    });
-  }
 }
-
 
 class BARData {
   BARData(this.mydata, this.ratio);
