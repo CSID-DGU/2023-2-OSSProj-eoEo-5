@@ -175,3 +175,4 @@ class _ChartWidget extends State<ChartWidget> {
     return chartData;
   }
 }
+

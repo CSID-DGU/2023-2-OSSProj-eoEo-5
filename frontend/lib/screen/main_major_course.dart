@@ -21,6 +21,7 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
   @override
   void initState() { // 초기화 메서드
     super.initState();
+
     loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
       lectureList = response;
       renderWidgets(response);

@@ -28,7 +28,7 @@ class _RegisterpageState extends State<Registerpage> {
   void initState() {
     super.initState();
     rq.Request.getRequest("https://eoeoservice.site/auth/majorlist", {}, false, false, context)
-        .then((response) {
+        .then((response){
       majorList = jsonDecode(utf8.decode(response!.bodyBytes));
       for (int i = 0; i < majorList.length; i++) {
         majorItemList.add(majorList[i]['name']);
