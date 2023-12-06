@@ -10,4 +10,6 @@ public interface MajorRepository extends JpaRepository<Major, Long> {
     List<Major> findAllByIdAndIsDeleted(Long id, Boolean isDeleted);
 
     Optional<Major> findByIdAndIsDeleted(Long id, Boolean isDeleted);
+
+    List<Major> findAllByIsDeleted(Boolean isDeleted);
 }
