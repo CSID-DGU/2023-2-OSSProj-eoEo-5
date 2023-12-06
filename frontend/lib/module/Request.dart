@@ -18,7 +18,7 @@ class Request{
     if(isAuthRequired){
       SharedPreferences pref = await SharedPreferences.getInstance();
       String accessToken = pref.containsKey("accessToken") ? pref.getString("accessToken")! : " ";
-      Map<String, String> authToken = {"Authorization" : accessToken};
+      Map<String, String> authToken = {"Authorization" : "Bearer "+accessToken};
       headers.addAll(authToken);
     }
 
@@ -44,7 +44,8 @@ class Request{
     // 응답 상태에 따른 최종 메서드 리턴값
     if(response.statusCode == 200){
       return response;
-    } else if(isAuthRequired){ // 인증이 필요하면 리프레쉬 토큰 발급
+    } else if(isAuthRequired){
+      // 인증이 필요하면 리프레쉬 토큰 발급
       return getWithRefreshToken(url, data, isThereParameter, context);
     } else{ // 데이터를 못 받아올 시, 로그아웃
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -62,7 +63,7 @@ class Request{
     if(isAuthRequired){
       SharedPreferences pref = await SharedPreferences.getInstance();
       String accessToken = pref.containsKey("accessToken") ? pref.getString("accessToken")! : " ";
-      Map<String, String> authToken = {"Authorization" : accessToken};
+      Map<String, String> authToken = {"Authorization" : "Bearer " + accessToken};
       headers.addAll(authToken);
     }
 
