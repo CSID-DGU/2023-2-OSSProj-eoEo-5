@@ -14,7 +14,7 @@ class User {
         name: json['name'],
         major: json['major'],
         doublemajor: json['doublemajor'],
-        grade: json['gender']);
+        grade: json['grade']);
   }
 
   // USER 객체를 JSON 데이터로 변환하는 method
@@ -22,6 +22,6 @@ class User {
     'name': name,
     'major': major,
     'doublemajor': doublemajor,
-    'gender': grade,
+    'grade': grade,
   };
 }
