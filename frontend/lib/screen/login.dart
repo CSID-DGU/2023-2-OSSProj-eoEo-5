@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
 import 'package:frontend/screen/register.dart';
 import 'package:frontend/screen/screen_home.dart';
+import 'package:frontend/widget/textwritercenter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,25 +30,21 @@ class _LogInState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('모두의 융소'),
-      //   elevation: 0.0,
-      //   backgroundColor: Colors.blue,
-      //   centerTitle: true,
-      //   actions: <Widget>[
-      //   ],
-      // ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(padding: EdgeInsets.only(top: 100)),
+          Padding(padding: EdgeInsets.only(top: 10)),
           // 원하는 이미지 파일을 사용하여 Image 위젯 추가
           Image.asset(
-            'assets/images/login_logo_.png', // 여기에 실제 이미지 파일 경로를 넣어주세요
-            height: 230.0, // 필요에 따라 높이 조절
-            width: double.infinity,
+            'assets/images/login_logo_ rmbg.png', // 여기에 실제 이미지 파일 경로를 넣어주세요
+            height: 100.0, // 필요에 따라 높이 조절
+            width: 100,
             fit: BoxFit.cover,
           ),
-          Padding(padding: EdgeInsets.only(top: 10)), // 이미지 아래에 약간의 여백 추가
+          TextWritercenter(width: 20, fontSize: 20, contents: "융합소프트웨어를 더 현명하게", textColor: Colors.grey, fontWeight: FontWeight.w600),
+          TextWritercenter(width: 20, fontSize: 28, contents: "모두의 융소", textColor: Colors.lightBlue, fontWeight: FontWeight.w900),
+          Padding(padding: EdgeInsets.only(top: 0.5)), // 이미지 아래에 약간의 여백 추가
           Form(
               child: Theme(
             data: ThemeData(
@@ -56,13 +52,14 @@ class _LogInState extends State<LoginScreen> {
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: TextStyle(color: Colors.teal, fontSize: 15.0))),
             child: Container(
-                padding: EdgeInsets.all(30.0),
+                padding: EdgeInsets.all(10.0),
                 // 키보드가 올라와서 만약 스크린 영역을 차지하는 경우 스크롤이 되도록
                 // SingleChildScrollView으로 감싸 줌
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       Container(
+                        width: 300,
                         height:45.0,
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -74,17 +71,23 @@ class _LogInState extends State<LoginScreen> {
                         child: TextField(
                           controller: controller,
                           decoration: InputDecoration(
-                            labelText: '  아이디',
+                            hintText: 'ID',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey
+                            ),
                             border: InputBorder.none, // Remove internal TextField border
                           ),
                           keyboardType: TextInputType.text,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey, // 텍스트의 색상을 회색으로 변경
                           ),
                         ),
                       ),
-                      SizedBox(height: 5.0), // Add some spacing between the text fields
+                      SizedBox(height: 5.0,), // Add some spacing between the text fields
                       Container(
+                        width: 300,
                         height:45.0,
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -95,8 +98,13 @@ class _LogInState extends State<LoginScreen> {
                         ),
                         child: TextField(
                           controller: controller2,
+                          textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                            labelText: '  비밀번호',
+                            hintText: 'PASSWARD',
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey
+                            ),
                             border: InputBorder.none, // Remove internal TextField border
                           ),
                           keyboardType: TextInputType.text,
@@ -108,9 +116,9 @@ class _LogInState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 0.5), // Add some spacing before the button
                       Container(
-                        width: double.infinity, // Make the width match the parent
+                        width: 300, // Make the width match the parent
                         child: ButtonTheme(
-                          minWidth: double.infinity, // Set the minWidth to match the parent's width
+                          // Set the minWidth to match the parent's width
                           height: 50.0,
                           child: ElevatedButton(
                             onPressed: () {
@@ -129,13 +137,13 @@ class _LogInState extends State<LoginScreen> {
                               });
                             },
                             child: Text(
-                              '모두의 융소 로그인',
+                              'login',
                               style: TextStyle(
                                 fontSize: 16.0,
+                                fontWeight: FontWeight.bold
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -143,9 +151,9 @@ class _LogInState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0), // Adjust spacing before the Register button
+                      // SizedBox(height: 1.0), // Adjust spacing before the Register button
                       TextButton(
-                        child: Text("회원가입", style: TextStyle(color: Colors.black)),
+                        child: Text("sign up", style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold)),
                         onPressed: () {
                           Navigator.push(
                             context,

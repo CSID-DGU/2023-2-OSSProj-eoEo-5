@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
@@ -12,11 +11,9 @@ class Subject_takenScreen extends StatefulWidget {
 }
 
 /*
-
 1. 서버에서 response응답을 받아옴
 2. lectureList에 response 저장
 3. renderWidgets 메서드에 response
-
  */
 
 class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_takenScreen 위젯의 상태 클래스
@@ -49,11 +46,26 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
   Widget renderScreen() {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
-          title: Text(
-            '기수강 과목',
-            style: TextStyle(
-              color: Colors.white,
+          backgroundColor: Colors.blue,
+          title: Text("taken subject", style: TextStyle(color: Colors.white,fontSize: 25 , fontWeight: FontWeight.bold)),
+          centerTitle: true, // Title을 가운데 정렬
+          elevation: 0.8, // 그림자 조절
+          leading: Container(),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(8.0), // 오른쪽 패딩 추가
+              child: IconButton(
+                icon: Icon(
+                  Icons.add_box_outlined, // 추가 아이콘
+                  color: Colors.white, // 아이콘 색상
+                ),
+                onPressed: () {showadd();},
+              ),
+            ),
+          ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10), // AppBar의 하단 모서리를 둥글게 설정
             ),
           ),
         ),
@@ -64,7 +76,10 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
               Column(
                 children: takenLectureWidgets,
               )
-            ])));
+            ]
+          )
+        )
+    );
   }
 
   Future<List<List>> loadLectures() async { // 강의 정보를 불러오는 비동기 함수
@@ -108,7 +123,108 @@ class _Subject_takenScreen extends State<Subject_takenScreen> { // Subject_taken
       );
     }
   }
+
+  void showadd() {
+    showDialog<String>(
+      context: context,
+      // 다이얼로그 배경을 터치했을 때 다이얼로그를 닫을지 말지 결정
+      // true = 닫을 수 있음, false = 닫을 수 없음
+      barrierDismissible: true,
+
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.grey.shade100,
+          shadowColor: Colors.blue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+
+          // z축 높이, elevation의 값이 높을 수록 그림자가 아래 위치하게 됩니다.
+          elevation: 10,
+
+          // 다이얼로그의 위치 설정, 기본값은 center
+          alignment: Alignment.bottomCenter,
+          /*
+          Dialog의 padding 값입니다..
+          sizedBox의 가로세로 값읠 infinity로 설정해놓고
+          가로패딩 50, 세로 패딩 200을 줬습니다.
+          이렇게 하면 좌우 50, 위아래 200만큼의 패딩이 생기고 배경이 나오게 됩니다.
+          여기서 vertical의 값을 많이 주면,
+          키보드가 올라왔을 때 공간이 부족해서 overflow가 발생할 수 있습니다.
+           */
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 50,
+            vertical: 100,
+          ),
+          // 소프트키보드가 올라왔을 때 다이얼로그의 사이즈가 조절되는 시간
+          insetAnimationDuration: const Duration(milliseconds: 1000),
+
+          // 소프트키보드가 올라왔을 때 다이얼로그 사이즈 변경 애니메이션
+          insetAnimationCurve: Curves.bounceOut,
+
+          child: SizedBox(
+              width: 100,
+              height: 200,
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  const Text(
+                    "내가 들은 과목 추가",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      hintText: "기수강 과목을 입력해주세요 !",
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 80,
+                    height: 40,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          // Navigator.pop에서 result값을 넣어주면
+                          // showDialog의 return 값이 됩니다.
+                          Navigator.pop(context, "return value");
+                        },
+                        child: const Text("확인")),
+                  ),
+                ],
+              )),
+        );
+      },
+    ).then((value) {
+      /// Navigator.pop 의 return 값이 들어옵니다.
+    }).whenComplete(() {
+      /// 다이얼로그가 종료됐을 때 호출됩니다.
+    });
+  }
+
+
+
+
+
+
 }
 
 
+// 기수강과목 추가 기능
+/*
+    Future<boo> addlecturetaken(int id, list lectures) async {
+    Map<int, list> addlecturetakendata = {
+      "accountId":id
+      "lectures":lectures
+      };
+
+     // api요청 코드
+
+     // if id가 맞다면, 데이터 처리 후 true
+
+    }
+     */
 

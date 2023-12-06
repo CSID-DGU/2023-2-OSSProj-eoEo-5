@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../screen/login.dart';
 
 class Request{
-
   // getRequest: url, 데이터 맵, 인증필요여부, 매개변수 존재 여부, buildcontext
   static Future<http.Response?> getRequest(String url, Map<String, dynamic> data, bool isAuthRequired, bool isThereParameter, BuildContext context) async {
     // header: json data
