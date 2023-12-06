@@ -147,7 +147,7 @@ public class AuthService {
     public List<AuthMajorResponseDto> getMajorList(){
         List<AuthMajorResponseDto> response = new LinkedList<AuthMajorResponseDto>();
 
-        List<Major> majorList = majorRepository.findAll();
+        List<Major> majorList = majorRepository.findAllByIsDeleted(false);
 
         for(Major major : majorList){
             response.add(AuthMajorResponseDto.builder()

@@ -39,7 +39,7 @@ public class LectureService {
         Account account = accountRepository.findById(request.getAccountId())
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
 
-        Lecture lecture = lectureRepository.findById(request.getLectureId())
+        Lecture lecture = lectureRepository.findByLectureNumberAndIsDeleted(request.getLectureNumber(), false)
                 .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
 
         Optional<LectureTaken> existedLectureTaken = lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false);
@@ -50,8 +50,11 @@ public class LectureService {
 
             if (request.getIsSubstitute()) {
 
-                SubstituteLecture substituteLecture = substituteLectureRepository.findByIdAndIsDeleted(request.getSubstituteId(), false)
-                        .orElseThrow(() -> new NoSuchElementException("No such prerequisite"));
+                Lecture originalLecture = lectureRepository.findByLectureNumberAndIsDeleted(request.getOriginalLectureNumber(), false)
+                        .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
+
+                SubstituteLecture substituteLecture = substituteLectureRepository.findByOriginalLectureAndSubstituteLectureAndIsDeleted(originalLecture, lecture, false)
+                        .orElseThrow(() -> new NoSuchElementException("No such substitute"));
 
                 lectureTaken = LectureTaken.builder()
                         .account(account)
@@ -84,7 +87,7 @@ public class LectureService {
                 .orElseThrow(() -> new NoSuchElementException("No such user"));
 
         for (LectureTakenDto dto : requests.getLectures()) {
-            Lecture lecture = lectureRepository.findById(dto.getLectureId()).orElseThrow(() -> new NoSuchElementException("No such lecture"));
+            Lecture lecture = lectureRepository.findByLectureNumberAndIsDeleted(dto.getLectureNumber(), false).orElseThrow(() -> new NoSuchElementException("No such lecture"));
             if (lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false).isPresent()) {
                 continue;
             }
@@ -97,8 +100,10 @@ public class LectureService {
                     .build();
 
             if (dto.getIsSubstitute()) {
-                SubstituteLecture substituteLecture = substituteLectureRepository.findByIdAndIsDeleted(dto.getSubstituteId(), false)
-                        .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
+                Lecture originalLecture = lectureRepository.findByLectureNumberAndIsDeleted(dto.getOriginalLectureNumber(), false)
+                        .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
+                SubstituteLecture substituteLecture = substituteLectureRepository.findByOriginalLectureAndSubstituteLectureAndIsDeleted(originalLecture, lecture, false)
+                                .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
                 lectureTaken.setSubstitute(substituteLecture);
             }
 
@@ -248,4 +253,5 @@ public class LectureService {
 
         return response;
     }
+
 }

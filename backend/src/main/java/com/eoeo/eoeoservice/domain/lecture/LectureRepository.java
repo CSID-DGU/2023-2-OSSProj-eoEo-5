@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
     Optional<Lecture> findByIdAndIsDeleted(Long id, Boolean isDeleted);
+
+    Optional<Lecture> findByLectureNumberAndIsDeleted(String lectureNumber, Boolean isDeleted);
 }
