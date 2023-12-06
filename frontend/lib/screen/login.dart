@@ -137,7 +137,7 @@ class _LogInState extends State<LoginScreen> {
                               });
                             },
                             child: Text(
-                              'login',
+                              '로그인',
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold
@@ -153,7 +153,7 @@ class _LogInState extends State<LoginScreen> {
                       ),
                       // SizedBox(height: 1.0), // Adjust spacing before the Register button
                       TextButton(
-                        child: Text("sign up", style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold)),
+                        child: Text("회원가입", style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold)),
                         onPressed: () {
                           Navigator.push(
                             context,
