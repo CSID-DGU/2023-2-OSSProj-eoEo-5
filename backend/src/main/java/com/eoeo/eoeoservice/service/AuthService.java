@@ -5,6 +5,7 @@ import com.eoeo.eoeoservice.domain.account.AccountRepository;
 import com.eoeo.eoeoservice.domain.account.AccountRole;
 import com.eoeo.eoeoservice.domain.major.Major;
 import com.eoeo.eoeoservice.domain.major.MajorRepository;
+import com.eoeo.eoeoservice.dto.account.LogoutRequestDto;
 import com.eoeo.eoeoservice.dto.auth.*;
 import com.eoeo.eoeoservice.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     @Transactional
-    public UserRegisterResponseDto register(UserRegisterRequestDto request) throws Exception{
+    public UserRegisterResponseDto register(UserRegisterRequestDto request) {
 
         Major major;
         Major secondMajor;
@@ -145,7 +146,7 @@ public class AuthService {
     }
 
     public List<AuthMajorResponseDto> getMajorList(){
-        List<AuthMajorResponseDto> response = new LinkedList<AuthMajorResponseDto>();
+        List<AuthMajorResponseDto> response = new LinkedList<>();
 
         List<Major> majorList = majorRepository.findAllByIsDeleted(false);
 
@@ -157,6 +158,14 @@ public class AuthService {
         }
 
         return response;
+    }
+
+    @Transactional
+    public Boolean logout(LogoutRequestDto request){
+        Account account = accountRepository.findByIdAndIsDeleted(request.getId(), false).orElseThrow(() -> new NoSuchElementException("No such user"));
+        account.logout();
+
+        return true;
     }
 
 
