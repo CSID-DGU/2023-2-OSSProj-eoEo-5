@@ -19,7 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE Lecture SET isDeleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE lecture SET is_deleted = true WHERE id = ?")
 public class Lecture extends BaseEntity {
 
     @Id

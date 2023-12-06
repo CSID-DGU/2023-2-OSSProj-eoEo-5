@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE CoreLectureType SET isDeleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE core_lecture_type SET is_deleted = true WHERE id = ?")
 public class CoreLectureType extends BaseEntity {
 
     @Id

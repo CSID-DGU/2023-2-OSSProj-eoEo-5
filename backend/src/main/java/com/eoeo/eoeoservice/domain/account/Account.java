@@ -22,7 +22,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE Account SET isDeleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE account SET is_deleted = true WHERE id = ?")
 public class Account extends BaseEntity implements UserDetails{
 
     @Id
