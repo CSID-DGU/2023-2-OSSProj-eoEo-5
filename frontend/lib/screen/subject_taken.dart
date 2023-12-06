@@ -21,6 +21,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool isDataLoaded = false; // 데이터가 로드되었는지 여부를 나타내는 플래그
   List<Widget> takenLectureWidgets = []; // 컨테이너에 띄울 리스트 위젯
   late List<List> lectureList; // 리스트를 담을 리스트
+  TextEditingController tec = TextEditingController();
 
   // checkbox
   bool? ismajor;
@@ -201,7 +202,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight
                           .bold),
                     ),
-                    TextFormField(
+                    TextField(
+                      controller: tec,
                       textAlign: TextAlign.center,
                       decoration: const InputDecoration(
                         hintText: "학수번호를 입력해주세요 !",
@@ -280,14 +282,35 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       width: 60,
                       height: 30,
                       child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // Navigator.pop에서 result값을 넣어주면
                             // showDialog의 return 값이 됩니다.
                             print("Confirmed"); // test
                             Navigator.pop(context, "return value");
-                            print(ismajor);
-                            print(context);
+                            print(ismajor); // test: 여기까지 찍힘
 
+                            // 초기화: 비동기 데이터 가져오기
+                            Map<String, dynamic> addvalue = await loadAddLecture(tec.text);
+
+                            // 화면이 존재하는 경우에만 setState호출
+                            if (context != null){
+                              setState((){
+                                addData = addvalue;
+                              });
+                            }
+
+                            print(ismajor);
+
+                            // api 요청
+                            Request.postRequestWithBody(
+                                "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
+                            ).then((response) {
+                              if (response?.statusCode == 200) {
+                                Navigator.pop(context);
+                              } else {
+                                setState(() {});
+                              }
+                            });
                           },
                           child: const Text("확인")
                       ),
@@ -306,8 +329,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
   }
 
-  Future<Map<String, dynamic>> loadAddValue(String lectureNumber) async {
-    Map<String, dynamic> map = {};
+  Future<Map<String, dynamic>> loadAddLecture(String lectureNumber) async {
+    Map<String, dynamic> addvalue = {};
 
     SharedPreferences pref = await SharedPreferences
         .getInstance(); // SharedPreferences 인스턴스 생성
@@ -316,7 +339,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
     if (!issub!) {
       if (ismajor!) {
-        map = {
+        addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
           "isSecondMajor": false, // bool
@@ -325,7 +348,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
       else if (issecond!) {
-        map = {
+        addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
           "isSecondMajor": true, // bool
@@ -334,7 +357,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
       else if (iscore!) {
-        map = {
+        addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": true, // bool
           "isSecondMajor": false, // bool
@@ -345,7 +368,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     }
     else if (issub!) {
       if (ismajor!) {
-        map = {
+        addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
           "isSecondMajor": false, // bool
@@ -355,7 +378,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
       else if (issecond!) {
-        map = {
+        addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
           "isSecondMajor": true, // bool
@@ -365,7 +388,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
       else if (issub!) {
-        map = {
+        addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": true, // bool
           "isSecondMajor": false, // bool
@@ -375,24 +398,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
     };
-    return map;
+    return addvalue;
   }
 
 }
-
-
-
-// 이름입력하면 학수번호 조회
-// 주전공인지, 복수전공인지, 교양인지
-// 대체과목인지
-
-/*
-addLectureValue = {
-  "accountId": accountId, // string
-  "isCoreLecture": isCoreLecture, // bool
-  "isSecondMajor": isSecondMajor, // bool
-  "isSubstitute": isSubstitute, // bool
-  "lectureNumber": lectureNumber, // string
-  "originalLectureNumber": originalLectureNumber, // string
-  }
-*/
