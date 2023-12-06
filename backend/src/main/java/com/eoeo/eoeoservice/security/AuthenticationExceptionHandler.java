@@ -1,4 +1,4 @@
-package com.eoeo.eoeoservice.component;
+package com.eoeo.eoeoservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

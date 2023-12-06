@@ -1,6 +1,7 @@
 package com.eoeo.eoeoservice.configuration;
 
-import com.eoeo.eoeoservice.component.AuthenticationExceptionHandler;
+import com.eoeo.eoeoservice.security.AuthenticationAccessDeniedHandler;
+import com.eoeo.eoeoservice.security.AuthenticationExceptionHandler;
 import com.eoeo.eoeoservice.domain.account.AccountRole;
 import com.eoeo.eoeoservice.security.JwtAuthenticationFilter;
 import com.eoeo.eoeoservice.security.JwtProvider;
@@ -29,6 +30,7 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
     private final AuthenticationExceptionHandler authenticationExceptionhandler;
+    private final AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -57,6 +59,7 @@ public class SecurityConfig {
                         )
                 ).addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
+                .accessDeniedHandler(authenticationAccessDeniedHandler)
                 .authenticationEntryPoint(authenticationExceptionhandler);
         return http.build();
     }
