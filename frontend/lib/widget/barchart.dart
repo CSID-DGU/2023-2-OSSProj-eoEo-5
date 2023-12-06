@@ -23,7 +23,6 @@ class _BarChart extends State<BarChart> {
   @override
   void initState() {
     someFunction();
-    //_chartData = getChartData();
     super.initState();
   }
 
@@ -46,7 +45,7 @@ class _BarChart extends State<BarChart> {
                   yValueMapper: (BARData data, _) => data.ratio,
                   pointColorMapper: (BARData, _) {
                     if (BARData.mydata == "달성도") {
-                      return Colors.lightBlue;
+                      return Colors.blue;
                     }
                   },
                   dataLabelSettings: DataLabelSettings(isVisible: true),

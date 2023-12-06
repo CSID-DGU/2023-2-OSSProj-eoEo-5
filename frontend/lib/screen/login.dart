@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
@@ -71,10 +70,15 @@ class _LogInState extends State<LoginScreen> {
                         child: TextField(
                           controller: controller,
                           decoration: InputDecoration(
-                            labelText: '아이디',
+                            hintText: 'ID',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey
+                            ),
                             border: InputBorder.none, // Remove internal TextField border
                           ),
                           keyboardType: TextInputType.text,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey, // 텍스트의 색상을 회색으로 변경
                           ),
@@ -92,8 +96,13 @@ class _LogInState extends State<LoginScreen> {
                         ),
                         child: TextField(
                           controller: controller2,
+                          textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                            labelText: '비밀번호',
+                            hintText: 'PASSWARD',
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey
+                            ),
                             border: InputBorder.none, // Remove internal TextField border
                           ),
                           keyboardType: TextInputType.text,
@@ -126,7 +135,7 @@ class _LogInState extends State<LoginScreen> {
                               });
                             },
                             child: Text(
-                              '모두의 융소 로그인',
+                              'login',
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold
@@ -142,7 +151,7 @@ class _LogInState extends State<LoginScreen> {
                       ),
                       // SizedBox(height: 1.0), // Adjust spacing before the Register button
                       TextButton(
-                        child: Text("회원가입", style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold)),
+                        child: Text("sign up", style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold)),
                         onPressed: () {
                           Navigator.push(
                             context,

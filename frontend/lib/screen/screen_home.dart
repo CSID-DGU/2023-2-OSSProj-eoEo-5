@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Divider(),
+
             Container( // 차트 들어갈 공간
               child: ChartWidget(title: '',),
             ),
@@ -235,32 +235,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(
                     Icons.question_mark_rounded, // 검색 아이콘
                     color: Colors.lightBlueAccent,
-                    size: 40,// 아이콘 색상
+                    size: 45,
                   ),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
                   },
                 ),
-
-                /*
-                IconButton(
-                  icon: Icon(
-                    Icons.home_rounded, // 로그인 페이지 아이콘
-                    color: Colors.lightBlueAccent,
-                    size: 40,// 아이콘 색상
-                  ),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                  },
-                ),
-
-                 */
-
                 IconButton(
                   icon: Icon(
                     Icons.person, // 환경설정 아이콘
                     color: Colors.lightBlueAccent,
-                    size: 40,// 아이콘 색상
+                    size: 45,
                   ),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
