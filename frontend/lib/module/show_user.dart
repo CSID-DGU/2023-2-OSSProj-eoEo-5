@@ -33,30 +33,7 @@ class _ShowUserState extends State<ShowUser> {
           appBar: AppBar(
             title: TextWriter(width: 0, fontSize: 18, contents:"USER", fontWeight:FontWeight.bold, textColor: Colors.white),
           ),
-          body: Column(
-            children: <Widget>[
-              ButtonTheme(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(1),
-                   ),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                   backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
-                   ),
-                  child: Text(
-                    '내가 들은 과목 추가',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      ),
-                   ),
-                  onPressed: () {},
-                  ),
-                ),
-          showUser(),
-           ],
-          ),
+          body: showUser(),
         ),
       );
     } else{
