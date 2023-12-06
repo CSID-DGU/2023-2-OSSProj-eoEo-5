@@ -27,8 +27,9 @@ class _ChartWidget extends State<ChartWidget> {
     super.initState();
     takenload().then((lectures) {
       chartData = lectures;
-      isChartDataLoaded = true;
-      setState(() {});
+      setState(() {
+        isChartDataLoaded = true;
+      });
     });
   }
 
