@@ -83,4 +83,10 @@ public class LectureController {
         return lectureService.getOriginalLectures(request);
     }
 
+    @ApiOperation(value = "기수강 과목 삭제")
+    @DeleteMapping("/deletetakenlecture")
+    public Boolean deleteTakenLecture(DeleteTakenLectureRequestDto request){
+        return lectureService.deleteTakenLecture(request);
+    }
+
 }
