@@ -32,7 +32,7 @@ public class LectureService {
 
 
     @Transactional
-    public Long addTakenLecture(AddTakenLectureRequestDto request) {
+    public AddTakenLectureResponseDto addTakenLecture(AddTakenLectureRequestDto request) {
 
         LectureTaken lectureTaken;
 
@@ -78,7 +78,10 @@ public class LectureService {
 
         }
 
-        return lectureTaken.getId();
+        return AddTakenLectureResponseDto.builder()
+                .id(lectureTaken.getId())
+                .lectureName(lectureTaken.getLecture().getName())
+                .build();
     }
 
     @Transactional

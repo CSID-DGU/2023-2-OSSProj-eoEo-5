@@ -20,7 +20,7 @@ public class LectureController {
             notes = "기수강 과목 단건 추가 Api"
     )
     @PostMapping("/addlecturetaken")
-    public Long addLectureTaken(@RequestBody AddTakenLectureRequestDto request){
+    public AddTakenLectureResponseDto addLectureTaken(@RequestBody AddTakenLectureRequestDto request){
         return lectureService.addTakenLecture(request);
     }
 
