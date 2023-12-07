@@ -29,7 +29,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool? iscore = false;
   bool? issub = false;
   bool isAddDataLoad = false;
-
+  String? addlectureName;
 
   @override
   void initState() {
@@ -147,7 +147,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
       );
     }
   }
-
 
   void showadd() {
     Map<String, dynamic> addData = {};
@@ -282,46 +281,40 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       height: 30,
                       child: ElevatedButton(
                           onPressed: () async {
-
+                            // 사용자 추가 데이터 불러오기: (비동기)
                             var addValue = await loadAddLecture(tec.text);
-
                             addData = addValue;
+                            // 데이터 로드
                             setState(() {
                               isAddDataLoad = true;
                             });
-                                /*
-                                // 초기화: 추가과목 가져오기(비동기)
-                                loadAddLecture(tec.text).then((addValue){
-                                  addData = addValue;
-                                  setState((){
-                                    isAddDataLoad = true;
-                                  });
+                            // test log
+                            print(isAddDataLoad); // false이면 데이터를 못 가져옴
+                            // 데이터가 로딩되면, post api요청
+                            if (isAddDataLoad){
+
+                              try{
+                                Request.postRequestWithBody(
+                                    "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
+                                ).then((response) {
+                                  if (response?.statusCode == 200) {
+
+                                    Map<String, dynamic> responseData = jsonDecode(utf8.decode(response?.bodyBytes as List<int>));
+                                    addlectureName = responseData["lectureName"];
+                                    Navigator.pop(context);
+                                    setState(() {});
+                                    print(addlectureName); // 새로 추가한 과목의 이름
+
+                                  } else {
+                                    setState(() {});
+                                  }
                                 });
-
-                                 */
-
-                                print(isAddDataLoad); // false이면 데이터를 못 가져옴
-
-                                if (isAddDataLoad){
-                                  Request.postRequestWithBody(
-                                      "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
-                                  ).then((response) {
-                                    if (response?.statusCode == 200) {
-                                      Navigator.pop(context);
-                                    } else {
-                                      setState(() {
-                                      });
-                                    }
-                                  });
-                                }
-
-
-
-                            // Navigator.pop에서 result값을 넣어주면
-                            // showDialog의 return 값이 됩니다.
-                            print("Confirmed"); // test
-                            Navigator.pop(context, "return value");
+                              } catch(error){
+                                print("Error occurred: $error");
+                              }
+                            }
                             // log test
+                            print("Confirmed");
                             print(issub);
                             print(ismajor);
                             print(issecond);
@@ -332,17 +325,15 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       ),
                     ),
                   ],
-                )),
-          );
-        }
+                )
+              ),
+            );
+          }
         );
       },
     ).then((value) {
-      /// Navigator.pop 의 return 값이 들어옵니다.
-    }).whenComplete(() {
-      /// 다이얼로그가 종료됐을 때 호출됩니다.
-    });
-
+      // Navigator.pop 의 return 값이 들어옵니다.
+    }).whenComplete(() {});
   }
 
   Future<Map<String, dynamic>> loadAddLecture(String lectureNumber) async {
@@ -381,7 +372,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
     }
-
     else if (issub!) {
       if (ismajor!) {
         addvalue = {
@@ -414,7 +404,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
     };
-
     return addvalue;
   }
 
