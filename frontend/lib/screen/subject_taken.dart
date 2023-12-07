@@ -24,12 +24,12 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   TextEditingController tec = TextEditingController();
 
   // checkbox
-  bool? ismajor;
-  bool? issecond;
-  bool? iscore;
-  bool? issub;
-  // addData
-  Map<String, dynamic> addData = {};
+  bool? ismajor = false;
+  bool? issecond = false;
+  bool? iscore = false;
+  bool? issub = false;
+  bool isAddDataLoad = false;
+
 
   @override
   void initState() {
@@ -150,8 +150,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
 
   void showadd() {
-
-    print(ismajor); // test
+    Map<String, dynamic> addData = {};
 
     showDialog<String>(
       context: context,
@@ -283,34 +282,51 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       height: 30,
                       child: ElevatedButton(
                           onPressed: () async {
+
+                            var addValue = await loadAddLecture(tec.text);
+
+                            addData = addValue;
+                            setState(() {
+                              isAddDataLoad = true;
+                            });
+                                /*
+                                // 초기화: 추가과목 가져오기(비동기)
+                                loadAddLecture(tec.text).then((addValue){
+                                  addData = addValue;
+                                  setState((){
+                                    isAddDataLoad = true;
+                                  });
+                                });
+
+                                 */
+
+                                print(isAddDataLoad); // false이면 데이터를 못 가져옴
+
+                                if (isAddDataLoad){
+                                  Request.postRequestWithBody(
+                                      "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
+                                  ).then((response) {
+                                    if (response?.statusCode == 200) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      setState(() {
+                                      });
+                                    }
+                                  });
+                                }
+
+
+
                             // Navigator.pop에서 result값을 넣어주면
                             // showDialog의 return 값이 됩니다.
                             print("Confirmed"); // test
                             Navigator.pop(context, "return value");
-                            print(ismajor); // test: 여기까지 찍힘
-
-                            // 초기화: 비동기 데이터 가져오기
-                            Map<String, dynamic> addvalue = await loadAddLecture(tec.text);
-
-                            // 화면이 존재하는 경우에만 setState호출
-                            if (context != null){
-                              setState((){
-                                addData = addvalue;
-                              });
-                            }
-
+                            // log test
+                            print(issub);
                             print(ismajor);
-
-                            // api 요청
-                            Request.postRequestWithBody(
-                                "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
-                            ).then((response) {
-                              if (response?.statusCode == 200) {
-                                Navigator.pop(context);
-                              } else {
-                                setState(() {});
-                              }
-                            });
+                            print(issecond);
+                            print(iscore);
+                            print(addData);
                           },
                           child: const Text("확인")
                       ),
@@ -330,14 +346,13 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   }
 
   Future<Map<String, dynamic>> loadAddLecture(String lectureNumber) async {
-    Map<String, dynamic> addvalue = {};
+    Map<String, dynamic>? addvalue = {};
 
-    SharedPreferences pref = await SharedPreferences
-        .getInstance(); // SharedPreferences 인스턴스 생성
-    User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
-    int? accountId = user.id; // 사용자의 기수강 ID
+    SharedPreferences? pref = await SharedPreferences.getInstance(); // SharedPreferences 인스턴스 생성
+    User user = User.fromJson(jsonDecode(pref?.getString("user") ?? "{}")!); // 사용자 정보
+    int? accountId = user.id;
 
-    if (!issub!) {
+    if (issub! == false) {
       if (ismajor!) {
         addvalue = {
           "accountId": accountId, // int
@@ -356,7 +371,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "lectureNumber": lectureNumber, // string
         };
       }
-      else if (iscore!) {
+      else if (iscore! == true) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": true, // bool
@@ -366,6 +381,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
     }
+
     else if (issub!) {
       if (ismajor!) {
         addvalue = {
@@ -398,6 +414,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         };
       }
     };
+
     return addvalue;
   }
 
