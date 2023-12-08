@@ -274,7 +274,5 @@ class Request{
       pref.clear();
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
     });
-
   }
-
 }

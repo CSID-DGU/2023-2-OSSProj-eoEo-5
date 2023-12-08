@@ -20,7 +20,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   // Subject_takenScreen 위젯의 상태 클래스
   bool isDataLoaded = false; // 데이터가 로드되었는지 여부를 나타내는 플래그
   List<Widget> takenLectureWidgets = []; // 컨테이너에 띄울 리스트 위젯
-  late List<List> lectureList; // 리스트를 담을 리스트
+  late List<List> lectureList; // 강의 리스트를 담을 리스트
   TextEditingController tec = TextEditingController();
 
   // checkbox
@@ -31,6 +31,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool isAddDataLoad = false;
   bool isDeleteDataLoad = false;
   String? addlectureName;
+  String? deletelectureName;
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   Widget build(BuildContext context) {
     // 위젯 빌드 메서드
     if (isDataLoaded) {
+      print(lectureList); // test log
       return renderScreen();
     } else {
       return Container();
@@ -252,15 +254,16 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     "https://eoeoservice.site/lecture/deletetakenlecture", deleteData, true, true, context
                                 ).then((response) {
                                   if (response?.statusCode == 200) {
-
-                                    /*
-                                    Map<String, dynamic> responseData = jsonDecode(utf8.decode(response?.bodyBytes as List<int>));
-                                    addlectureName = responseData["lectureName"];
-                                    print(addlectureName); // 삭제한 과목의 이름
-                                     */
                                     Navigator.pop(context);
                                     setState(() {});
                                     // 리스트에서 삭제하는 코드 작성
+                                    // 로컬에서 들고 있는 강의 정보 중에서 강의 이름 찾기
+                                    for(int i=0; i<lectureList[0].length; i++){
+                                      if(lectureList[0][i]["lectureNumber"] == deleteData["lectureNumber"]){
+                                        deletelectureName = lectureList[0][i]["name"];
+                                      }
+                                    }
+                                    print(deletelectureName);
                                   } else {
                                     setState(() {});
                                   }
