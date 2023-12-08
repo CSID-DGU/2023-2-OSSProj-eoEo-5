@@ -29,6 +29,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool? iscore = false;
   bool? issub = false;
   bool isAddDataLoad = false;
+  bool isDeleteDataLoad = false;
   String? addlectureName;
 
   @override
@@ -59,15 +60,17 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
         appBar: AppBar(
           backgroundColor: Colors.blue,
           title: Text("taken subject", style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-          centerTitle: true,
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold
+            )
+          ),
           // Title을 가운데 정렬
+          centerTitle: true,
           elevation: 0.8,
           // 그림자 조절
           leading: Container(),
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.all(8.0), // 오른쪽 패딩 추가
+              padding: EdgeInsets.all(0.0),
               child: IconButton(
                 icon: Icon(
                   Icons.add_box_outlined, // 추가 아이콘
@@ -75,6 +78,18 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                 ),
                 onPressed: () {
                   showadd();
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(0.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.delete_outline_sharp, // 추가 아이콘
+                  color: Colors.white, // 아이콘 색상
+                ),
+                onPressed: () {
+                  delete();
                 },
               ),
             ),
@@ -146,9 +161,134 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           )
       );
     }
-
   }
 
+  // 삭제 기능 메서드
+  void delete(){
+    Map<String, dynamic> deleteData = {};
+    showDialog<String>(
+      context: context,
+      // 다이얼로그 배경을 터치했을 때 다이얼로그를 닫을지 말지 결정
+      // true = 닫을 수 있음, false = 닫을 수 없음
+      barrierDismissible: true,
+
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return Dialog(
+            backgroundColor: Colors.grey.shade100,
+            shadowColor: Colors.blue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+
+            // z축 높이, elevation의 값이 높을 수록 그림자가 아래 위치하게 됩니다.
+            elevation: 10,
+
+            // 다이얼로그의 위치 설정, 기본값은 center
+            alignment: Alignment.bottomCenter,
+            /*
+          Dialog의 padding 값입니다..
+          sizedBox의 가로세로 값읠 infinity로 설정해놓고
+          가로패딩 50, 세로 패딩 200을 줬습니다.
+          이렇게 하면 좌우 50, 위아래 200만큼의 패딩이 생기고 배경이 나오게 됩니다.
+          여기서 vertical의 값을 많이 주면,
+          키보드가 올라왔을 때 공간이 부족해서 overflow가 발생할 수 있습니다.
+           */
+            insetPadding: const EdgeInsets.symmetric(
+              horizontal: 50,
+              vertical: 100,
+            ),
+            // 소프트키보드가 올라왔을 때 다이얼로그의 사이즈가 조절되는 시간
+            insetAnimationDuration: const Duration(milliseconds: 1000),
+
+            // 소프트키보드가 올라왔을 때 다이얼로그 사이즈 변경 애니메이션
+            insetAnimationCurve: Curves.bounceOut,
+
+            child: SizedBox(
+                width: 100,
+                height: 200,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      "내가 수강한 과목 삭제",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight
+                          .bold),
+                    ),
+                    TextField(
+                      controller: tec,
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        hintText: "학수번호를 입력해주세요 !",
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 5,
+                    ),
+
+                    SizedBox(
+                      width: 60,
+                      height: 30,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            // 사용자 추가 데이터 불러오기: (비동기)
+                            var deleteValue = await loadDeleteLecture(tec.text);
+                            deleteData = deleteValue;
+                            // 데이터 로드
+                            setState(() {
+                              isDeleteDataLoad = true;
+                            });
+                            // test log
+                            print(isDeleteDataLoad); // false이면 데이터를 못 가져옴
+                            // 데이터가 로딩되면, post api요청
+                            if (isDeleteDataLoad){
+                              try{
+                                Request.deleteRequest(
+                                    "https://eoeoservice.site/lecture/deletetakenlecture", deleteData, true, true, context
+                                ).then((response) {
+                                  if (response?.statusCode == 200) {
+
+                                    /*
+                                    Map<String, dynamic> responseData = jsonDecode(utf8.decode(response?.bodyBytes as List<int>));
+                                    addlectureName = responseData["lectureName"];
+                                    print(addlectureName); // 삭제한 과목의 이름
+                                     */
+                                    Navigator.pop(context);
+                                    setState(() {});
+                                    // 리스트에서 삭제하는 코드 작성
+                                  } else {
+                                    setState(() {});
+                                  }
+                                });
+                              } catch(error){
+                                print("Error occurred: $error");
+                              }
+                            }
+                            // log test
+                            print("Confirmed");
+                            print(deleteData);
+                          },
+                          child: const Text("확인")
+                      ),
+                    ),
+                  ],
+                )
+            ),
+          );
+        }
+        );
+      },
+    ).then((value) {
+      // Navigator.pop 의 return 값이 들어옵니다.
+    }).whenComplete(() {});
+  }
+
+  // 추가 기능 메서드
   void showadd() {
     Map<String, dynamic> addData = {};
 
@@ -354,6 +494,23 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     }).whenComplete(() {});
   }
 
+  Future<Map<String, dynamic>> loadDeleteLecture(String lectureNumber) async {
+    Map<String, dynamic>? deletevalue = {};
+    SharedPreferences? pref = await SharedPreferences.getInstance(); // SharedPreferences 인스턴스 생성
+    User user = User.fromJson(jsonDecode(pref?.getString("user") ?? "{}")!); // 사용자 정보
+    int? accountId = user.id;
+
+    // api 파라미터
+    deletevalue = {
+      "lectureNumber":lectureNumber,
+      "userId":"$accountId"
+    };
+
+    return deletevalue;
+  }
+
+
+  // post요청에 보낼 json데이터: user값을 불러와야해서 비동기로 처리
   Future<Map<String, dynamic>> loadAddLecture(String lectureNumber) async {
     Map<String, dynamic>? addvalue = {};
 
