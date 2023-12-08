@@ -109,7 +109,7 @@ class Request{
         url = url + "$key=$value";
 
         if(i != data.length-1){
-          url = url = "&";
+          url = url + "&";
         }
       }
     }
@@ -218,7 +218,6 @@ class Request{
   }
 
   static Future<http.Response?> deleteWithRefreshToken(String url, Map<String, dynamic> data , bool isThereParameter, BuildContext context) async{
-
     print("Refresh");
 
     SharedPreferences pref = await SharedPreferences.getInstance();

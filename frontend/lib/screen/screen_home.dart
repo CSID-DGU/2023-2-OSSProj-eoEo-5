@@ -56,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String name = user.name;
     String major = user.major;
-    int id = user.id;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
