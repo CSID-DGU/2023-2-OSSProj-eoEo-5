@@ -146,6 +146,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           )
       );
     }
+
   }
 
   void showadd() {
@@ -292,7 +293,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                             print(isAddDataLoad); // false이면 데이터를 못 가져옴
                             // 데이터가 로딩되면, post api요청
                             if (isAddDataLoad){
-
                               try{
                                 Request.postRequestWithBody(
                                     "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
@@ -304,7 +304,25 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     Navigator.pop(context);
                                     setState(() {});
                                     print(addlectureName); // 새로 추가한 과목의 이름
-
+                                    // 리스트 위젯에 추가
+                                    takenLectureWidgets.add(
+                                        Column(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.all(8.0),
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width,
+                                              child: Text(
+                                                addlectureName!,
+                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                            Divider(),
+                                          ],
+                                        )
+                                    );
                                   } else {
                                     setState(() {});
                                   }
