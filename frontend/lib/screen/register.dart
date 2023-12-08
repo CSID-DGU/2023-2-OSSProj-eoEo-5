@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/module/Request.dart' as rq;
 
+import '../widget/textwritercenter.dart';
+
 class Registerpage extends StatefulWidget {
   const Registerpage({super.key});
 
@@ -52,6 +54,7 @@ class _RegisterpageState extends State<Registerpage> {
 
   Widget renderRegisterScreen() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(titleText),
         elevation: 0.0,
@@ -66,14 +69,18 @@ class _RegisterpageState extends State<Registerpage> {
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1), // 수정된 부분
+        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
+            TextWritercenter(width: 20, fontSize: 20, contents: "환영합니다", textColor: Colors.black54, fontWeight: FontWeight.w600),
+            const SizedBox(height: 3),
+            TextWritercenter(width: 20, fontSize: 20, contents: "모두의 융소입니다!", textColor: Colors.black54, fontWeight: FontWeight.w600),
+            const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
-              child: const Text("아이디", style: TextStyle(fontSize: 15)),
+              padding: EdgeInsets.only(right: 260.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("아이디", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
             ),
             Container(
               height: 30,
@@ -89,7 +96,7 @@ class _RegisterpageState extends State<Registerpage> {
               child: TextField(
                 controller: userNameTextController,
                 keyboardType: TextInputType.text,
-                style: TextStyle(fontSize: 15), // 폰트 크기 수정
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700), // 폰트 크기 수정
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -100,8 +107,8 @@ class _RegisterpageState extends State<Registerpage> {
             ),
             const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
-              child: const Text("비밀번호", style: TextStyle(fontSize: 15)),
+              padding: EdgeInsets.only(right: 250.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("비밀번호", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
             ),
             Container(
               height: 30,
@@ -117,7 +124,7 @@ class _RegisterpageState extends State<Registerpage> {
               child: TextField(
                 controller: passwordTextController,
                 keyboardType: TextInputType.text,
-                style: TextStyle(fontSize: 15), // 폰트 크기 수정
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700), // 폰트 크기 수정
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -128,8 +135,8 @@ class _RegisterpageState extends State<Registerpage> {
             ),
             const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
-              child: const Text("사용할 이름", style: TextStyle(fontSize: 15)),
+              padding: EdgeInsets.only(right: 240.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("사용할 이름", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),),
             ),
             Container(
               height: 30,
@@ -145,7 +152,7 @@ class _RegisterpageState extends State<Registerpage> {
               child: TextField(
                 controller: nameTextController,
                 keyboardType: TextInputType.text,
-                style: TextStyle(fontSize: 15), // 폰트 크기 수정
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700), // 폰트 크기 수정
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -156,13 +163,12 @@ class _RegisterpageState extends State<Registerpage> {
             ),
             const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.only(right: 220.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
-              child: const Text("주전공", style: TextStyle(fontSize: 15)),
+              padding: EdgeInsets.only(right: 260.0), // 원하는 만큼의 왼쪽 여백을 지정하세요.
+              child: const Text("주전공", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
             ),
             Container(
               height: 30,
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20), //
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Colors.black,
@@ -171,7 +177,7 @@ class _RegisterpageState extends State<Registerpage> {
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
               child: DropdownButton(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 value: selectedMajor,
                 items: majorItemList.map((value) {
                   return DropdownMenuItem(value: value, child: Text(value));
@@ -192,7 +198,7 @@ class _RegisterpageState extends State<Registerpage> {
                 isThereSecondMajor
                     ? "복수전공 선택 해제"
                     : "복수전공 선택",
-                style: TextStyle(fontSize: 16), // 원하는 폰트 크기로 설정
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700), // 원하는 폰트 크기로 설정
               ),
               onPressed: () {
                 setState(() {
@@ -205,7 +211,7 @@ class _RegisterpageState extends State<Registerpage> {
               Container(
                 height: 30,
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black,
@@ -228,7 +234,7 @@ class _RegisterpageState extends State<Registerpage> {
                   },
                 ),
               ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 10),
             ElevatedButton(
               child: Text("Register"),
               onPressed: () {
