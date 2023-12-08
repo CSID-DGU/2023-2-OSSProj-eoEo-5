@@ -67,7 +67,17 @@ class _FAQScreenSate extends State<FAQScreen>{
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: TextWriter(width: width, fontSize: 18, contents:"FAQ", fontWeight:FontWeight.bold, textColor: Colors.white),
+            backgroundColor: Colors.blue,
+            title: Text(
+              "FAQ",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            centerTitle: true,
+            elevation: 0.8,
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +88,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 가로로 동일한 간격으로 배치
                   children: <Widget>[
                     ButtonTheme(
-                      minWidth: width * 0.02,
+                      //minWidth: width * 0.02,
                       height: height * 0.00125,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(2),
@@ -96,7 +106,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 17,
                           ),
                         ),
                         onPressed: () {
@@ -105,7 +115,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                     ),
                     ButtonTheme(
-                      minWidth: width * 0.02,
+                      //minWidth: width * 0.02,
                       height: height * 0.00125,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(2),
@@ -123,7 +133,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 17,
                           ),
                         ),
                         onPressed: (){
@@ -132,7 +142,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                     ),
                     ButtonTheme(
-                      minWidth: width * 0.02,
+                      //minWidth: width * 0.02,
                       height: height * 0.00125,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(2),
@@ -150,7 +160,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 17,
                           ),
                         ),
                         onPressed: (){
@@ -159,7 +169,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                       ),
                     ),
                     ButtonTheme(
-                      minWidth: width * 0.02,
+                      // minWidth: width * 0.02,
                       height: height * 0.00125,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(2),
@@ -177,7 +187,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 17,
                           ),
                         ),
                         onPressed: () {
@@ -185,7 +195,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                         },
                       ),
                     ),ButtonTheme(
-                      minWidth: width * 0.02,
+                      // minWidth: width * 0.02,
                       height: height * 0.00125,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(2),
@@ -203,7 +213,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 17,
                           ),
                         ),
                         onPressed: () {

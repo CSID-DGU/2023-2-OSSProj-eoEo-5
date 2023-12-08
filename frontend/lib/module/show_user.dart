@@ -9,6 +9,7 @@ class ShowUser extends StatefulWidget {
 
   @override
   State<ShowUser> createState() => _ShowUserState();
+
 }
 
 class _ShowUserState extends State<ShowUser> {
@@ -31,7 +32,16 @@ class _ShowUserState extends State<ShowUser> {
       return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: TextWriter(width: 0, fontSize: 18, contents:"USER", fontWeight:FontWeight.bold, textColor: Colors.white),
+            title: Text(
+            "USER",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 0.8,
           ),
           body: showUser(),
         ),
@@ -45,6 +55,8 @@ class _ShowUserState extends State<ShowUser> {
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     String? name = user.name;
     String? major = user.major;
+    String? secondmajor = user.secondMajor;
+
 
     Size screenSize = MediaQuery.of(context).size;
     double width = screenSize.width;
@@ -57,5 +69,4 @@ class _ShowUserState extends State<ShowUser> {
             ]
           );
     }
-
 }

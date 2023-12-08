@@ -11,7 +11,8 @@ class SettingsScreen extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
             //fontWeight: FontWeight.bold,
-          ),),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

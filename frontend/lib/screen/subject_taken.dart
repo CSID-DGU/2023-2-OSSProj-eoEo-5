@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
+import 'package:frontend/screen/screen_home.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +51,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   Widget build(BuildContext context) {
     // 위젯 빌드 메서드
     if (isDataLoaded) {
-      print(lectureList); // test log
       return renderScreen();
     } else {
       return Container();
@@ -59,36 +59,49 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
   Widget renderScreen() {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: Text("taken subject", style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold
-            )
+          title: Text(
+            "taken subject",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          // Title을 가운데 정렬
           centerTitle: true,
           elevation: 0.8,
-          // 그림자 조절
-          leading: Container(),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
+          ),
           actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(0.0),
+            Container(
               child: IconButton(
                 icon: Icon(
-                  Icons.add_box_outlined, // 추가 아이콘
-                  color: Colors.white, // 아이콘 색상
+                  Icons.add_box_outlined,
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   showadd();
                 },
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(0.0),
+            SizedBox(width: 0),
+            Container(
               child: IconButton(
                 icon: Icon(
-                  Icons.delete_outline_sharp, // 추가 아이콘
-                  color: Colors.white, // 아이콘 색상
+                  Icons.delete_outline_sharp,
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   delete();
@@ -98,11 +111,12 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           ],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10), // AppBar의 하단 모서리를 둥글게 설정
+              bottom: Radius.circular(10),
             ),
           ),
-        ),
-        body: Container(
+    ),
+
+    body: Container(
             padding: const EdgeInsets.all(16.0),
             child: Column(children: [
               Text("기수강 과목",
@@ -244,26 +258,25 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                             // 데이터 로드
                             setState(() {
                               isDeleteDataLoad = true;
-                            });
-                            // test log
-                            print(isDeleteDataLoad); // false이면 데이터를 못 가져옴
-                            // 데이터가 로딩되면, post api요청
+                              }
+                            );
+                            print(isDeleteDataLoad); // test log: false이면 데이터를 못 가져옴
+                            // 데이터가 로딩되면, delete api요청
                             if (isDeleteDataLoad){
                               try{
+                                // 리스트에서 삭제하는 코드 작성
+                                // 로컬에서 들고 있는 강의 정보 중에서 강의 이름 찾기
+                                for(int i=0; i<lectureList[0].length; i++){
+                                  if(lectureList[0][i]["lectureNumber"] == deleteData["lectureNumber"]){
+                                    deletelectureName = lectureList[0][i]["name"];
+                                  }
+                                }
                                 Request.deleteRequest(
                                     "https://eoeoservice.site/lecture/deletetakenlecture", deleteData, true, true, context
                                 ).then((response) {
                                   if (response?.statusCode == 200) {
                                     Navigator.pop(context);
                                     setState(() {});
-                                    // 리스트에서 삭제하는 코드 작성
-                                    // 로컬에서 들고 있는 강의 정보 중에서 강의 이름 찾기
-                                    for(int i=0; i<lectureList[0].length; i++){
-                                      if(lectureList[0][i]["lectureNumber"] == deleteData["lectureNumber"]){
-                                        deletelectureName = lectureList[0][i]["name"];
-                                      }
-                                    }
-                                    print(deletelectureName);
                                   } else {
                                     setState(() {});
                                   }
@@ -275,15 +288,15 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                             // log test
                             print("Confirmed");
                             print(deleteData);
-                          },
+                            },
                           child: const Text("확인")
                       ),
                     ),
                   ],
                 )
-            ),
-          );
-        }
+              ),
+            );
+          }
         );
       },
     ).then((value) {

@@ -43,13 +43,17 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
   Widget renderScreen() {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: Colors.blue,
           title: Text(
-            '주전공 이수체계도 보기',
+            "주전공 이수체계도",
             style: TextStyle(
               color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
+          centerTitle: true,
+          elevation: 0.8,
         ),
 
 
@@ -57,13 +61,13 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
           padding: const EdgeInsets.all(16.0),
             child: Column
               (children: [
-                Text("전공필수", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text("전공필수", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Column( // 전공필수 강의 위젯 목록 표시
                   children: requiredLectureWidgets,
                   ),
                 Padding(padding: const EdgeInsets.all(20.0), ),
 
-                Text("전공선택", style: TextStyle(fontSize: 24,  fontWeight: FontWeight.bold)),
+                Text("전공선택", style: TextStyle(fontSize: 20,  fontWeight: FontWeight.bold)),
                 Column( // 전공선택 강의 위젯 목록 표시
                   children: selectiveLectureWidgets,
                 )

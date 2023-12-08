@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../module/show_user.dart';
 import '../widget/barchart.dart';
 import 'FAQ.dart';
-import 'login.dart';
 import 'package:frontend/module/Request.dart' as rq;
 import 'subject_taken.dart'; //기수강과목 불러오기
 import 'main_major_course.dart'; //주전공 이수체계도 불러오기
@@ -62,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text("eoEo", style: TextStyle(color: Colors.black)),
+          title: Text("WE   CAN   DO   IT  !", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
           centerTitle: true, // Title을 가운데 정렬
           elevation: 0.8, // 그림자 조절
           leading: Container(),
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.all(8.0), // 오른쪽 패딩 추가
               child: IconButton(
                 icon: Icon(
-                  Icons.logout, // 검색 아이콘
+                  Icons.logout, // 로그 아웃 아이콘
                   color: Colors.black, // 아이콘 색상
                 ),
                 onPressed: () {
@@ -153,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 'subject_takenScreen' 페이지로 이동하는 코드
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => double_major_course()),
+                          MaterialPageRoute(builder: (context) => DoubleMajorCourse()),
                         );
                         // 중앙 버튼을 눌렀을 때 수행할 작업을 여기에 추가
                       },
@@ -195,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container( // 차트 들어갈 공간
               child: ChartWidget(title: '',),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
               children: <Widget>[
@@ -225,8 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Center( // 차트 들어갈 공간
               child: BarChart(title: '',),
             ),
-            // 가로로 배치된 Elevated 버튼
-            Divider(),
+
           // 바텀 버튼
           Container(
             child: Row(
@@ -234,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 IconButton(
                   icon: Icon(
-                    Icons.question_mark_rounded, // 검색 아이콘
+                    Icons.question_mark_rounded,
                     color: Colors.lightBlueAccent,
                     size: 45,
                   ),
