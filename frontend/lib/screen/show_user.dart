@@ -53,7 +53,7 @@ class _ShowUserState extends State<ShowUser> {
 
   Widget showUser(){
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
-    String? name = user.name;
+    String? username = user.username;
     String? major = user.major;
     String? secondmajor = user.secondMajor;
 
@@ -64,8 +64,9 @@ class _ShowUserState extends State<ShowUser> {
 
     return Column(
             children: <Widget>[
-              TextWriter(width:width, fontSize:20, contents: "$name", textColor: Colors.black, fontWeight: FontWeight.bold),
+              TextWriter(width:width, fontSize:20, contents: "$username", textColor: Colors.black, fontWeight: FontWeight.bold),
               TextWriter(width: width, fontSize: 18, contents:"$major", fontWeight:FontWeight.bold, textColor: Colors.black),
+              TextWriter(width: width, fontSize: 18, contents:"$secondmajor", fontWeight:FontWeight.bold, textColor: Colors.black),
             ]
           );
     }

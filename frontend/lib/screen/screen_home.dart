@@ -5,7 +5,7 @@ import 'package:frontend/data/User.dart';
 import 'package:frontend/widget/chartwidget.dart';
 import 'package:frontend/widget/textwriter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../module/show_user.dart';
+import '../screen/show_user.dart';
 import '../widget/barchart.dart';
 import 'FAQ.dart';
 import 'package:frontend/module/Request.dart' as rq;
