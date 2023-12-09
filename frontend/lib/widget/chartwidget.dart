@@ -113,7 +113,7 @@ class _ChartWidget extends State<ChartWidget> {
     List<List> response2 = [];
     http.Response? takenLectures2 = await rq.Request
         .getRequest( // 서버에서 강의 정보 분류 요청
-        "https://eoeoservice.site/lecture/getcorelecturetaken",
+        "https://eoeoservice.site/lecture/getsecondmajorlecturetaken",
         {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
         true,
         true,

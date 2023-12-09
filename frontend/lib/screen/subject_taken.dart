@@ -66,7 +66,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
             "taken subject",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 25,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -120,7 +120,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(children: [
               Text("기수강 과목",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Column(
                 children: takenLectureWidgets,
               )

@@ -41,39 +41,40 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
 
   Widget renderScreen() {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: Text(
-            "복수전공 이수체계도",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text(
+          "주전공 이수체계도",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          centerTitle: true,
-          elevation: 0.8,
         ),
-
-
-        body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column
-              (children: [
+        centerTitle: true,
+        elevation: 0.8,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
               Text("전공필수", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Column( // 전공필수 강의 위젯 목록 표시
+              Column(
+                // 전공필수 강의 위젯 목록 표시
                 children: requiredLectureWidgets,
               ),
-              Padding(padding: const EdgeInsets.all(20.0), ),
+              Padding(padding: const EdgeInsets.all(20.0),),
 
-              Text("전공선택", style: TextStyle(fontSize: 20,  fontWeight: FontWeight.bold)),
-              Column( // 전공선택 강의 위젯 목록 표시
+              Text("전공선택", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Column(
+                // 전공선택 강의 위젯 목록 표시
                 children: selectiveLectureWidgets,
               )
-            ]
-            )
-        )
-
+            ],
+          ),
+        ),
+      ),
     );
   }
 
