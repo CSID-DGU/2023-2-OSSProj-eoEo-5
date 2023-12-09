@@ -44,7 +44,7 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          "복수전공 이수체계도",
+          "주전공 이수체계도",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -84,20 +84,22 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
     // 사용자 데이터
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     // 사용자 데이터: 주전공, 족수전공 id
-    int? requiredCourseId = user.secondRequiredCourseId;
-    int? selectiveCourseId = user.secondSelectiveCourseId;
+    int? secondrequiredCourseId = user.secondRequiredCourseId;
+    int? secondselectiveCourseId = user.secondSelectiveCourseId;
+    print(secondrequiredCourseId);
+    print(secondselectiveCourseId);
 
     // 필수 강의 정보를 가져오는 HTTP 요청
     http.Response? requiredLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
-        {"courseId": "$requiredCourseId"},
+        {"courseId": "$secondrequiredCourseId"},
         true,
         true,
         context);
     // 선택 강의 정보를 가져오는 HTTP 요청
     http.Response? selectiveLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
-        {"courseId": "$selectiveCourseId"},
+        {"courseId": "$secondselectiveCourseId"},
         true,
         true,
         context);
@@ -125,9 +127,11 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
               Container(
                 padding: EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width,
-                child: Text(
-                  lectures[0][i]['lectureName'],
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                child: TextButton(
+                  onPressed: (){},
+                  child: Text(
+                    lectures[0][i]['lectureName'],
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                 ),
               ),
               Divider(),
@@ -144,9 +148,11 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
               Container(
                 padding: EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width,
-                child: Text(
-                  lectures[1][i]['lectureName'],
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                child: TextButton(
+                  onPressed: (){},
+                  child: Text(lectures[1][i]['lectureName'],
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Divider(),

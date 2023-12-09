@@ -55,7 +55,7 @@ class User{
     'name' : name,
     'majorName' : major,
     'secondMajorName' : secondMajor,
-    'secondRequiredCourseId' : secondSelectiveCourseId,
+    'secondRequiredCourseId' : secondRequiredCourseId,
     'secondSelectiveCourseId' : secondSelectiveCourseId,
     'secondSelectiveCourseCredit' : secondSelectiveCourseCredit
   };
