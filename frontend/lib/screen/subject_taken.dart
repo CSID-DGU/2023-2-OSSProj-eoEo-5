@@ -244,12 +244,12 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                     ),
 
                     SizedBox(
-                      height: 5,
+                      height: 30,
                     ),
 
                     SizedBox(
                       width: 60,
-                      height: 30,
+                      height: 40,
                       child: ElevatedButton(
                           onPressed: () async {
                             // 사용자 추가 데이터 불러오기: (비동기)
