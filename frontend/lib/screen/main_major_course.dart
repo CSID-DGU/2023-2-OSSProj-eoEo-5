@@ -121,6 +121,8 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
 
 
     for (int i = 0; i < lectures[0].length; i++) {
+      String? lecturename;
+      lecturename = lectures[1][i]['lectureName'];
       requiredLectureWidgets.add(
         Column(
           children: <Widget>[
@@ -128,9 +130,11 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
               padding: EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: (){},
+                onPressed: (){
+                  showlectureinfo(lecturename!);
+                },
                 child: Text(
-                  lectures[0][i]['lectureName'],
+                  lecturename!,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
               ),
             ),
@@ -142,6 +146,8 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
     }
 
     for (int i = 0; i < lectures[1].length; i++) {
+      String? lecturename;
+      lecturename = lectures[1][i]['lectureName'];
       selectiveLectureWidgets.add(
         Column(
           children: <Widget>[
@@ -149,17 +155,58 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
               padding: EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: (){},
-                child: Text(lectures[1][i]['lectureName'],
+                onPressed: (){
+                  showlectureinfo(lecturename!);
+                },
+                child: Text(lecturename!,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             Divider(),
-
           ],
         )
       );
     }
+  }
+
+  // lectureList에서 lecturename에 해당하는 데이터 반환
+  Future<void> showlectureinfo(String lecturename) async {
+    String? lectureNumber;
+    String? substitutelecture;
+    String? preSubject;
+    int? lectureCredit;
+    int? lectureId; // 선이수 과목 조회할 때 사용되는 parameter
+
+    // 강의 리스트 중 키 값에 맞는 데이터 추출
+    for (int i = 0; i < lectureList[1].length; i++){
+      if(lectureList[1][i]['lectureName'] == lecturename){
+        lectureNumber = lectureList[1][i]['lectureNumber'];
+        lectureId = lectureList[1][i]['lectureId'];
+        lectureCredit = lectureList[1][i]['credit'];
+      }
+    }
+    // 로그 테스트
+    print(lecturename);
+    print(lectureNumber);
+    print(lectureCredit);
+    print(lectureId);
+
+    // 추출한 데이터로 선이수 과목 리스트 불러오는 api요청
+    http.Response? preSubjectList = await Request.getRequest(
+        "https://eoeoservice.site/lecture/getprerequisites",
+        {"courseId": "$lectureId"},
+        true,
+        true,
+        context);
+
+    // 추출한 데이터로 대체가능 과목 리스트 불러오는 api요청
+    http.Response? substitutelectureList = await Request.getRequest(
+        "https://eoeoservice.site/lecture/getsubstitutes",
+        {"courseId": "$lectureId"},
+        true,
+        true,
+        context);
+
   }
 }
