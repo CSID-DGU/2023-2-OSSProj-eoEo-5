@@ -118,6 +118,7 @@ class _ChartWidget extends State<ChartWidget> {
         true,
         true,
         context);
+
     // 기수강 과목 리스트: 복수전공
     List takenLectureList2 = jsonDecode(
         utf8.decode(takenLectures2!.bodyBytes)); // 응답데이터 디코딩
@@ -132,6 +133,7 @@ class _ChartWidget extends State<ChartWidget> {
         true,
         true,
         context);
+
     // 기수강 과목 리스트: 교양
     List takenLectureList3 = jsonDecode(
         utf8.decode(takenLectures3!.bodyBytes)); // 응답데이터 디코딩

@@ -23,6 +23,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   List<Widget> takenLectureWidgets = []; // 컨테이너에 띄울 리스트 위젯
   late List<List> lectureList; // 강의 리스트를 담을 리스트
   TextEditingController tec = TextEditingController();
+  TextEditingController substituteTextFieldController = TextEditingController();
 
   // checkbox
   bool? ismajor = false;
@@ -313,7 +314,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
       // 다이얼로그 배경을 터치했을 때 다이얼로그를 닫을지 말지 결정
       // true = 닫을 수 있음, false = 닫을 수 없음
       barrierDismissible: true,
-
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return Dialog(
@@ -347,8 +347,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
             insetAnimationCurve: Curves.bounceOut,
 
             child: SizedBox(
-                width: 100,
-                height: 200,
+                width: 300,
+                height: 250,
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
@@ -429,8 +429,22 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       ),
                     ),
 
+                    // 새로운 텍스트 필드 추가
+                    if (issub == true)
+                      TextField(
+                        controller: substituteTextFieldController, // 새로 추가한 텍스트 필드의 컨트롤러
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          hintText: "대체과목의 학수번호를 입력해주세요 !",
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+
                     SizedBox(
-                      height: 5,
+                      height: 8,
                     ),
 
                     SizedBox(
@@ -439,7 +453,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                       child: ElevatedButton(
                           onPressed: () async {
                             // 사용자 추가 데이터 불러오기: (비동기)
-                            var addValue = await loadAddLecture(tec.text);
+                            var addValue = await loadAddLecture(tec.text, substituteTextFieldController.text);
                             addData = addValue;
                             // 데이터 로드
                             setState(() {
@@ -527,7 +541,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
 
   // post요청에 보낼 json데이터: user값을 불러와야해서 비동기로 처리
-  Future<Map<String, dynamic>> loadAddLecture(String lectureNumber) async {
+  Future<Map<String, dynamic>> loadAddLecture(String lectureNumber, String originalLectureNumber) async {
     Map<String, dynamic>? addvalue = {};
 
     SharedPreferences? pref = await SharedPreferences.getInstance(); // SharedPreferences 인스턴스 생성
@@ -571,7 +585,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "isSecondMajor": false, // bool
           "isSubstitute": false, // bool
           "lectureNumber": lectureNumber, // string
-          //"originalLectureNumber": originalLectureNumber, // string
+          "originalLectureNumber": originalLectureNumber, // string
         };
       }
       else if (issecond!) {
@@ -581,7 +595,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "isSecondMajor": true, // bool
           "isSubstitute": true, // bool
           "lectureNumber": lectureNumber, // string
-          //"originalLectureNumber": originalLectureNumber, // string
+          "originalLectureNumber": originalLectureNumber, // string
         };
       }
       else if (issub!) {
@@ -591,7 +605,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "isSecondMajor": false, // bool
           "isSubstitute": true, // bool
           "lectureNumber": lectureNumber, // string
-          //"originalLectureNumber": originalLectureNumber, // string
+          "originalLectureNumber": originalLectureNumber, // string
         };
       }
     };
