@@ -51,23 +51,40 @@ class _ShowUserState extends State<ShowUser> {
     }
   }
 
-  Widget showUser(){
+  Widget showUser() {
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     String? username = user.username;
     String? major = user.major;
     String? secondmajor = user.secondMajor;
 
-
-    Size screenSize = MediaQuery.of(context).size;
-    double width = screenSize.width;
-    double height = screenSize.height;
-
-    return Column(
-            children: <Widget>[
-              TextWriter(width:width, fontSize:20, contents: "$username", textColor: Colors.black, fontWeight: FontWeight.bold),
-              TextWriter(width: width, fontSize: 18, contents:"$major", fontWeight:FontWeight.bold, textColor: Colors.black),
-              TextWriter(width: width, fontSize: 18, contents:"$secondmajor", fontWeight:FontWeight.bold, textColor: Colors.black),
-            ]
+    return ListView.builder(
+      itemCount: 3, // Number of items in the list (name, major, second major)
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return ListTile(
+            title: Text(
+              "Name: $username",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           );
-    }
+        } else if (index == 1) {
+          return ListTile(
+            title: Text(
+              "Major: $major",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          );
+        } else if (index == 2) {
+          return ListTile(
+            title: Text(
+              "Second Major: $secondmajor",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          );
+        }
+        return Container(); // Return an empty container for any unexpected index
+      },
+    );
+  }
+
 }

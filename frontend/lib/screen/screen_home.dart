@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text("WE   CAN   DO   IT  !", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+          title: Text("eoEo", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
           centerTitle: true, // Title을 가운데 정렬
           elevation: 0.8, // 그림자 조절
           leading: Container(),

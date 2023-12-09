@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
@@ -59,12 +60,14 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text("전공필수", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text("전공필수", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54)),
+              SizedBox(height: 5,),
               Column(
                 children: requiredLectureWidgets,
               ),
-              Padding(padding: const EdgeInsets.all(20.0),),
-              Text("전공선택", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Padding(padding: const EdgeInsets.all(5.0),),
+              Text("전공선택", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54)),
+              SizedBox(height: 5,),
               Column(
                 children: selectiveLectureWidgets,
               )
@@ -227,94 +230,38 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
     print(lectureId);
     print(LectureInfoList);
 
-    showModalBottomSheet<void>(
+    showCupertinoModalPopup(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(50),
-        ),
-      ),
       builder: (BuildContext context) {
-        return Container(
-          height: 700,
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: Text('과목명: $lecturename', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Text('학수번호: $lectureNumber', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Text('학점: $lectureCredit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          child: Text(
-                            '선이수과목',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          child: Text(
-                            generateSubjectText(LectureInfoList[0], LectureInfoList[1]),
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          child: Text(
-                            '대체과목',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          child: Text(
-                            generateSubjectText(LectureInfoList[2], LectureInfoList[3]),
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 30),
-                ElevatedButton(
-                  child: const Text('확인', style: TextStyle(fontWeight: FontWeight.bold),),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            ),
+        return CupertinoActionSheet(
+          title: Text('과목 정보', style: TextStyle(fontSize: 20, color: Colors.black54),),
+          message: Column(
+            children: <Widget>[
+              Text('과목명: $lecturename', style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),),
+              SizedBox(height: 10),
+              Text('학수번호: $lectureNumber', style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),),
+              SizedBox(height: 10),
+              Text('학점: $lectureCredit', style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),),
+              SizedBox(height: 10),
+              Text(
+                '선이수과목\n${generateSubjectText(LectureInfoList[0], LectureInfoList[1])}',
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),
+              ),
+              SizedBox(height: 10),
+              Text(
+                '대체과목\n${generateSubjectText(LectureInfoList[2], LectureInfoList[3])}',
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Close', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.pop(context),
           ),
         );
       },
     );
+
   }
 
   String generateSubjectText(List<dynamic> names, List<dynamic> numbers) {
