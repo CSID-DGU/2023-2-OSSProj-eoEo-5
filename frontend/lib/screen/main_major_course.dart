@@ -127,9 +127,11 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
             Container(
               padding: EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
-              child: Text(
-                lectures[0][i]['lectureName'],
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              child: TextButton(
+                onPressed: (){},
+                child: Text(
+                  lectures[0][i]['lectureName'],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
               ),
             ),
             Divider(),
@@ -146,9 +148,11 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
             Container(
               padding: EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
-              child: Text(
-                lectures[1][i]['lectureName'],
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              child: TextButton(
+                onPressed: (){},
+                child: Text(lectures[1][i]['lectureName'],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             Divider(),
