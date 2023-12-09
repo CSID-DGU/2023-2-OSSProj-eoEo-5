@@ -11,18 +11,17 @@ class MainMajorCourse extends StatefulWidget {
 }
 
 class _MainMajorCourseState extends State<MainMajorCourse> {
-  bool isDataLoaded = false; // 데이터가 로드되었는지 여부를 나타내는 플래그
-  List<Widget> requiredLectureWidgets = []; // 전공필수 강의 위젯 목록
-  List<Widget> selectiveLectureWidgets = []; // 전공선택 강의 위젯 목록
-
+  bool isDataLoaded = false;
+  List<Widget> requiredLectureWidgets = [];
+  List<Widget> selectiveLectureWidgets = [];
   late List<List> lectureList;
-
+  late List<List> lectureinfo;
 
   @override
-  void initState() { // 초기화 메서드
+  void initState() {
     super.initState();
 
-    loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
+    loadLectures().then((response) {
       lectureList = response;
       renderWidgets(response);
       setState(() {
@@ -62,14 +61,11 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
             children: [
               Text("전공필수", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Column(
-                // 전공필수 강의 위젯 목록 표시
                 children: requiredLectureWidgets,
               ),
               Padding(padding: const EdgeInsets.all(20.0),),
-
               Text("전공선택", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Column(
-                // 전공선택 강의 위젯 목록 표시
                 children: selectiveLectureWidgets,
               )
             ],
@@ -79,24 +75,20 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
     );
   }
 
-
-  Future<List<List>> loadLectures() async { // 강의정보 불러오는 비동기 함수
-    List<List> response = []; // 위젯에 렌더링할 리스트
-    SharedPreferences pref = await SharedPreferences.getInstance(); // shared prefere
-    // 사용자 데이터
+  Future<List<List>> loadLectures() async {
+    List<List> response = [];
+    SharedPreferences pref = await SharedPreferences.getInstance();
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
-    // 사용자 데이터: 주전공, 족수전공 id
     int? requiredCourseId = user.requiredCourseId;
     int? selectiveCourseId = user.selectiveCourseId;
 
-    // 필수 강의 정보를 가져오는 HTTP 요청
     http.Response? requiredLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
         {"courseId": "$requiredCourseId"},
         true,
         true,
         context);
-    // 선택 강의 정보를 가져오는 HTTP 요청
+
     http.Response? selectiveLectures = await Request.getRequest(
         "https://eoeoservice.site/course/getcourselectures",
         {"courseId": "$selectiveCourseId"},
@@ -104,10 +96,8 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         true,
         context);
 
-    List requiredLectureList =
-        jsonDecode(utf8.decode(requiredLectures!.bodyBytes));
-    List selectiveLectureList =
-        jsonDecode(utf8.decode(selectiveLectures!.bodyBytes));
+    List requiredLectureList = jsonDecode(utf8.decode(requiredLectures!.bodyBytes));
+    List selectiveLectureList = jsonDecode(utf8.decode(selectiveLectures!.bodyBytes));
 
     response.add(requiredLectureList);
     response.add(selectiveLectureList);
@@ -119,10 +109,9 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
     requiredLectureWidgets = [];
     selectiveLectureWidgets = [];
 
-
     for (int i = 0; i < lectures[0].length; i++) {
-      String? lecturename;
-      lecturename = lectures[1][i]['lectureName'];
+      String? requiredname;
+      requiredname = lectures[0][i]['lectureName'];
       requiredLectureWidgets.add(
         Column(
           children: <Widget>[
@@ -130,24 +119,24 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
               padding: EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: (){
-                  showlectureinfo(lecturename!);
+                onPressed: () {
+                  lectureinfoList(requiredname!, true);
                 },
                 child: Text(
-                  lecturename!,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  requiredname!,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             Divider(),
           ],
-        )
-
+        ),
       );
     }
 
     for (int i = 0; i < lectures[1].length; i++) {
-      String? lecturename;
-      lecturename = lectures[1][i]['lectureName'];
+      String? selectivename;
+      selectivename = lectures[1][i]['lectureName'];
       selectiveLectureWidgets.add(
         Column(
           children: <Widget>[
@@ -155,58 +144,185 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
               padding: EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: (){
-                  showlectureinfo(lecturename!);
+                onPressed: () {
+                  lectureinfoList(selectivename!, false);
                 },
-                child: Text(lecturename!,
+                child: Text(
+                  selectivename!,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             Divider(),
           ],
-        )
+        ),
       );
     }
   }
 
-  // lectureList에서 lecturename에 해당하는 데이터 반환
-  Future<void> showlectureinfo(String lecturename) async {
+  Future<void> lectureinfoList(String lecturename, bool isrequired) async {
+    List<List> LectureInfoList = [];
     String? lectureNumber;
-    String? substitutelecture;
-    String? preSubject;
+    List? preSubjectName = [];
+    List? preSubjectNumber = [];
+    List? substitutelectureName = [];
+    List? substitutelectureNumber = [];
     int? lectureCredit;
-    int? lectureId; // 선이수 과목 조회할 때 사용되는 parameter
+    int? lectureId;
 
-    // 강의 리스트 중 키 값에 맞는 데이터 추출
-    for (int i = 0; i < lectureList[1].length; i++){
-      if(lectureList[1][i]['lectureName'] == lecturename){
-        lectureNumber = lectureList[1][i]['lectureNumber'];
-        lectureId = lectureList[1][i]['lectureId'];
-        lectureCredit = lectureList[1][i]['credit'];
+    if (isrequired) {
+      for (int i = 0; i < lectureList[0].length; i++) {
+        if (lectureList[0][i]['lectureName'] == lecturename) {
+          lectureNumber = lectureList[0][i]['lectureNumber'];
+          lectureId = lectureList[0][i]['lectureId'];
+          lectureCredit = lectureList[0][i]['credit'];
+        }
+      }
+    } else {
+      for (int i = 0; i < lectureList[1].length; i++) {
+        if (lectureList[1][i]['lectureName'] == lecturename) {
+          lectureNumber = lectureList[1][i]['lectureNumber'];
+          lectureId = lectureList[1][i]['lectureId'];
+          lectureCredit = lectureList[1][i]['credit'];
+        }
       }
     }
+
+    http.Response? preSubjectresponse = await Request.getRequest(
+        "https://eoeoservice.site/lecture/getprerequisites",
+        {"lectureId": "$lectureId"},
+        true,
+        true,
+        context);
+
+    http.Response? substitutelectureresponse = await Request.getRequest(
+        "https://eoeoservice.site/lecture/getsubstitutes",
+        {"lectureId": "$lectureId"},
+        true,
+        true,
+        context);
+
+    List preSubjectList = jsonDecode(utf8.decode(preSubjectresponse!.bodyBytes));
+    List substitutelectureList = jsonDecode(utf8.decode(substitutelectureresponse!.bodyBytes));
+
+    for (int j = 0; j < preSubjectList.length; j++) {
+      preSubjectName.add(preSubjectList[j]["name"]);
+      preSubjectNumber.add(preSubjectList[j]["lectureNumber"]);
+    }
+
+    for (int k = 0; k < substitutelectureList.length; k++) {
+      substitutelectureName.add(substitutelectureList[k]["name"]);
+      substitutelectureNumber.add(substitutelectureList[k]["lectureNumber"]);
+    }
+
+    LectureInfoList.add(preSubjectName);
+    LectureInfoList.add(preSubjectNumber);
+    LectureInfoList.add(substitutelectureName);
+    LectureInfoList.add(substitutelectureNumber);
+
     // 로그 테스트
     print(lecturename);
     print(lectureNumber);
     print(lectureCredit);
     print(lectureId);
+    print(LectureInfoList);
 
-    // 추출한 데이터로 선이수 과목 리스트 불러오는 api요청
-    http.Response? preSubjectList = await Request.getRequest(
-        "https://eoeoservice.site/lecture/getprerequisites",
-        {"courseId": "$lectureId"},
-        true,
-        true,
-        context);
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(50),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          height: 700,
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  child: Text('과목명: $lecturename', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  child: Text('학수번호: $lectureNumber', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  child: Text('학점: $lectureCredit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          child: Text(
+                            '선이수과목',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          child: Text(
+                            generateSubjectText(LectureInfoList[0], LectureInfoList[1]),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          child: Text(
+                            '대체과목',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          child: Text(
+                            generateSubjectText(LectureInfoList[2], LectureInfoList[3]),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30),
+                ElevatedButton(
+                  child: const Text('확인', style: TextStyle(fontWeight: FontWeight.bold),),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-    // 추출한 데이터로 대체가능 과목 리스트 불러오는 api요청
-    http.Response? substitutelectureList = await Request.getRequest(
-        "https://eoeoservice.site/lecture/getsubstitutes",
-        {"courseId": "$lectureId"},
-        true,
-        true,
-        context);
-
+  String generateSubjectText(List<dynamic> names, List<dynamic> numbers) {
+    List<String> subjects = [];
+    for (int i = 0; i < names.length; i++) {
+      subjects.add('[${names[i]}, ${numbers[i]}]\n');
+    }
+    return subjects.join(' ');
   }
 }
+
