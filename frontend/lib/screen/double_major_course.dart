@@ -44,7 +44,7 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          "주전공 이수체계도",
+          "복수전공 이수체계도",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -84,8 +84,8 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
     // 사용자 데이터
     User user = User.fromJson(jsonDecode(pref.getString("user")!));
     // 사용자 데이터: 주전공, 족수전공 id
-    int? requiredCourseId = user.requiredCourseId;
-    int? selectiveCourseId = user.selectiveCourseId;
+    int? requiredCourseId = user.secondRequiredCourseId;
+    int? selectiveCourseId = user.secondSelectiveCourseId;
 
     // 필수 강의 정보를 가져오는 HTTP 요청
     http.Response? requiredLectures = await Request.getRequest(
