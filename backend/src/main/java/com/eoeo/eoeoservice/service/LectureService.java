@@ -175,9 +175,10 @@ public class LectureService {
         List<Prerequisite> prerequisites = prerequisiteRepository.findAllByLectureIdAndIsDeleted(request.getLectureId(), false);
 
         for (Prerequisite prerequisite : prerequisites) {
-            Lecture prerequisiteLecture = prerequisite.getLecture();
+            Lecture prerequisiteLecture = prerequisite.getPrerequisite();
             response.add(GetPrerequisiteResponseDto.builder()
                     .name(prerequisiteLecture.getName())
+                    .lectureId(prerequisiteLecture.getId())
                     .lectureNumber(prerequisiteLecture.getLectureNumber())
                     .credit(prerequisiteLecture.getCredit())
                     .build());
