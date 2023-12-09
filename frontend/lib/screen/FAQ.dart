@@ -277,6 +277,35 @@ class FAQList extends StatelessWidget {
   }
 }
 
+// 토글형식으로 수정
+class FAQItem extends StatelessWidget {
+  final String question;
+  final String answer;
+
+  FAQItem({required this.question, required this.answer});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ExpansionTile(
+          title: Text(
+            'Q: $question',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          children: [
+            SizedBox(height: 8.0),
+            Text('A: $answer'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
 class FAQItem extends StatelessWidget {
   final String question;
   final String answer;
@@ -304,6 +333,8 @@ class FAQItem extends StatelessWidget {
     );
   }
 }
+
+ */
 
 
 
