@@ -193,8 +193,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
               children: <Widget>[
@@ -213,19 +211,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: width * 0.00,
-                top: width * 0.00,
-                left: width * 0.00,
-                right: width * 0.00,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                BarChartWidget(title: ''),
+              ],
             ),
-
-            Center( // 차트 들어갈 공간
-              child: BarChartWidget(title: '',),
-            ),
-
           // 바텀 버튼
           Container(
             child: Row(

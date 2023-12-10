@@ -5,6 +5,11 @@ import '../data/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
 import 'package:fl_chart/fl_chart.dart';
+import 'package:vertical_barchart/extension/expandedSection.dart';
+import 'package:vertical_barchart/vertical-barchart.dart';
+import 'package:vertical_barchart/vertical-barchartmodel.dart';
+import 'package:vertical_barchart/vertical-legend.dart';
+
 
 class BarChartWidget extends StatefulWidget {
   BarChartWidget({Key? key, required this.title}) : super(key: key);
@@ -40,68 +45,39 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     return SafeArea(
       child: Container(
         width: 300,
-        height: 50,
-        child: BarChart(
-          BarChartData(
-            maxY: 100,
-            alignment: BarChartAlignment.start, // 이 부분을 변경
-            titlesData: FlTitlesData(
-              show: true,
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 30,
-                ),
-              ),
-              leftTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-            ),
-
-            borderData: FlBorderData(show: false),
-            barGroups: getChartData(chartData)
-                .asMap()
-                .entries
-                .map(
-                  (entry) {
-                print("BarGroupData: ${entry.value.ratio}");
-                return BarChartGroupData(
-                  x: entry.key,
-                  barRods: [
-                    BarChartRodData(
-                      toY: entry.value.ratio, // 수정
-                      width: 20,
-                      color: Colors.cyan,
-                    ),
-                  ],
-                );
-              },
-            ).toList(),
-
-            gridData: FlGridData(show: false),
-            barTouchData: BarTouchData(
-              touchTooltipData: BarTouchTooltipData(
-                tooltipBgColor: Colors.blueAccent,
-                getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                  return BarTooltipItem(
-                    rod.toY.round().toString(),
-                    TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ),
+        height: 60,
+        child: barchart(datatrans(getChartData(chartData)))
       ),
+    );
+  }
+
+  // 전처리한 데이터를 리스트에 맞는 데이터로 변환
+  List<VBarChartModel> datatrans(List<BARData> getChartData){
+    List<VBarChartModel> bardata = [];
+    double data = getChartData[0].ratio;
+    return(
+        bardata = [
+        VBarChartModel(
+        index: 0,
+        label: "",
+          colors: [Color(0xff00FFFF), Color(0xff00FFFF)],
+          jumlah: data, // 실 수치
+          tooltip: "${data}",  // 수치 레이블
+
+        ),
+      ]
+    );
+  }
+
+  Widget barchart(List<VBarChartModel> datatrans) {
+    return VerticalBarchart(
+      background: Colors.transparent,
+      legendPosition: LegendPosition.TOP,
+      tooltipColor: Color(0xff8e97a0),
+      maxX: 100,
+      data: datatrans,
+      barSize: 20,
+      barStyle: BarStyle.DEFAULT,
     );
   }
 
