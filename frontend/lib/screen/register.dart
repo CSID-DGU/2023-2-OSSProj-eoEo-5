@@ -66,6 +66,11 @@ class _RegisterpageState extends State<Registerpage> {
             Navigator.pop(context);
           },
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10),
+          ),
+        ),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,

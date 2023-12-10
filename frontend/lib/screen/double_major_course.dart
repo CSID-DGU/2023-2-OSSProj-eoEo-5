@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:frontend/data/User.dart';
@@ -53,6 +54,11 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
         ),
         centerTitle: true,
         elevation: 0.8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -236,90 +242,33 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
     print(lectureId);
     print(LectureInfoList);
 
-    showModalBottomSheet<void>(
+    showCupertinoModalPopup(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(50),
-        ),
-      ),
       builder: (BuildContext context) {
-        return Container(
-          height: 700,
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: Text('과목명: $lecturename', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Text('학수번호: $lectureNumber', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Text('학점: $lectureCredit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          child: Text(
-                            '선이수과목',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          child: Text(
-                            generateSubjectText(LectureInfoList[0], LectureInfoList[1]),
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          child: Text(
-                            '대체과목',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          child: Text(
-                            generateSubjectText(LectureInfoList[2], LectureInfoList[3]),
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 30),
-                ElevatedButton(
-                  child: Text('확인', style: TextStyle(fontWeight: FontWeight.bold),),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            ),
+        return CupertinoActionSheet(
+          title: Text('과목 정보', style: TextStyle(fontSize: 20, color: Colors.black54),),
+          message: Column(
+            children: <Widget>[
+              Text('과목명: $lecturename', style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),),
+              SizedBox(height: 10),
+              Text('학수번호: $lectureNumber', style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),),
+              SizedBox(height: 10),
+              Text('학점: $lectureCredit', style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),),
+              SizedBox(height: 10),
+              Text(
+                '선이수과목\n${generateSubjectText(LectureInfoList[0], LectureInfoList[1])}',
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),
+              ),
+              SizedBox(height: 10),
+              Text(
+                '대체과목\n${generateSubjectText(LectureInfoList[2], LectureInfoList[3])}',
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Close', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.pop(context),
           ),
         );
       },

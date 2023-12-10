@@ -1,77 +1,102 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/User.dart';
-import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
+import 'package:fl_chart/fl_chart.dart';
 
-class BarChart extends StatefulWidget {
-  BarChart({Key? key, required this.title}) : super(key: key);
+class BarChartWidget extends StatefulWidget {
+  BarChartWidget({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _BarChart createState() => _BarChart();
+  _BarChartWidgetState createState() => _BarChartWidgetState();
 }
 
-class _BarChart extends State<BarChart> {
+class _BarChartWidgetState extends State<BarChartWidget> {
   bool isBarChartDataLoaded = false;
   List<List> chartData = [];
 
   @override
   void initState() {
     super.initState();
-    loadLectures().then((response){
+    loadLectures().then((response) {
       chartData = response;
       setState(() {
         isBarChartDataLoaded = true;
+        print(chartData);
+        print("toY value: ${getChartData(chartData)[0].ratio}");
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if (!isBarChartDataLoaded){
+    if (!isBarChartDataLoaded) {
       return CircularProgressIndicator();
     }
-    //print(chartData); // test: 여기까지는 데이터가 잘 연동됨
     return SafeArea(
-      child: Center(
-        child: Container(
-          width: 330,
-          height: 60,
-          child: Align(
-            alignment: Alignment.centerLeft, // 왼쪽 정렬을 위해 Alignment.centerLeft 사용
-            child: SfCartesianChart(
-              plotAreaBorderWidth: 0,
-              series: <ChartSeries>[
-                BarSeries<BARData, String>(
-                  name: '',
-                  dataSource: getChartData(chartData),
-                  xValueMapper: (BARData data, _) => data.mydata,
-                  yValueMapper: (BARData data, _) => data.ratio,
-                  pointColorMapper: (BARData, _) {
-                    if (BARData.mydata == "달성도") {
-                      return Colors.blue;
-                    }
-                  },
-                  dataLabelSettings: DataLabelSettings(isVisible: true),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                )
-              ],
-              primaryXAxis:
-              CategoryAxis(
-                  majorGridLines: const MajorGridLines(width: 0,  color: Colors.white),
-                  minorGridLines: const MinorGridLines(width: 0, color: Colors.white),
-                  isVisible: false,
+      child: Container(
+        width: 300,
+        height: 50,
+        child: BarChart(
+          BarChartData(
+            maxY: 100,
+            alignment: BarChartAlignment.start, // 이 부분을 변경
+            titlesData: FlTitlesData(
+              show: true,
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 30,
+                ),
               ),
-              primaryYAxis: NumericAxis(
-                // 최대값을 100으로 설정
-                maximum: 100,
-                isVisible: false,
+              leftTitles: const AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              topTitles: const AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              rightTitles: const AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+            ),
+
+            borderData: FlBorderData(show: false),
+            barGroups: getChartData(chartData)
+                .asMap()
+                .entries
+                .map(
+                  (entry) {
+                print("BarGroupData: ${entry.value.ratio}");
+                return BarChartGroupData(
+                  x: entry.key,
+                  barRods: [
+                    BarChartRodData(
+                      toY: entry.value.ratio, // 수정
+                      width: 20,
+                      color: Colors.cyan,
+                    ),
+                  ],
+                );
+              },
+            ).toList(),
+
+            gridData: FlGridData(show: false),
+            barTouchData: BarTouchData(
+              touchTooltipData: BarTouchTooltipData(
+                tooltipBgColor: Colors.blueAccent,
+                getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                  return BarTooltipItem(
+                    rod.toY.round().toString(),
+                    TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -82,33 +107,33 @@ class _BarChart extends State<BarChart> {
 
   List<BARData> getChartData(List<List> lectures) {
     double major = 0;
-    for (int i = 0; i < lectures[0].length; i++) { // 리스트 테이블
+    for (int i = 0; i < lectures[0].length; i++) {
       major += lectures[0][i]['credit'];
     }
-    major = ((major/130) * 100).floorToDouble();
+    major = ((major / 130) * 100).floorToDouble();
     final List<BARData> chartData = [
       BARData('major', major),
     ];
     return chartData;
   }
 
-  // 강의 정보를 불러오는 비동기 함수
   Future<List<List>> loadLectures() async {
     List<List> response = [];
-    SharedPreferences pref = await SharedPreferences
-        .getInstance(); // SharedPreferences 인스턴스 생성
-    User user = User.fromJson(jsonDecode(pref.getString("user")!)); // 사용자 정보
-    int? takenCourseId = user.id; // 사용자의 기수강 ID
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    User user = User.fromJson(jsonDecode(pref.getString("user")!));
+    int? takenCourseId = user.id;
 
-    http.Response? takenLectures = await rq.Request.getRequest( // 서버에서 강의 정보 요청
-        "https://eoeoservice.site/lecture/getlecturetaken",
-        {"userId": "$takenCourseId"}, // 기수강 ID를 파라미터로 전달
-        true,
-        true,
-        context);
-    List takenLectureList = jsonDecode(
-        utf8.decode(takenLectures!.bodyBytes)); // 응답데이터 디코딩
+    http.Response? takenLectures = await rq.Request.getRequest(
+      "https://eoeoservice.site/lecture/getlecturetaken",
+      {"userId": "$takenCourseId"},
+      true,
+      true,
+      context,
+    );
+    List takenLectureList =
+    jsonDecode(utf8.decode(takenLectures!.bodyBytes));
     response.add(takenLectureList);
+
     return response;
   }
 }
@@ -118,3 +143,6 @@ class BARData {
   final String mydata;
   final double ratio;
 }
+
+
+
