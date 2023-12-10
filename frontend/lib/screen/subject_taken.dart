@@ -118,15 +118,17 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     ),
 
     body: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(children: [
-              Text("기수강 과목",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Column(
-                children: takenLectureWidgets,
-              )
-            ]
-            )
+            child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(children: [
+                  Text("기수강 과목",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Column(
+                    children: takenLectureWidgets,
+                  )
+                ]
+                )
+            ),
         )
     );
   }
