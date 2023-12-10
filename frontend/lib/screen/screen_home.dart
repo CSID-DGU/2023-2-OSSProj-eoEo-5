@@ -75,11 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onPressed: () {
                   rq.Request.logout(context, pref);
-                  /*SharedPreferences.getInstance().then((response){
-                    response.clear();
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
-                  });*/
-
                 },
               ),
             ),
@@ -191,9 +186,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            Container( // 차트 들어갈 공간
-              child: ChartWidget(title: '',),
+            Padding(
+              padding: EdgeInsets.all(20.0), // 패딩 값은 필요에 따라 조절하세요
+              child: Container(
+                child: ChartWidget(title: ''),
+              ),
             ),
+
+
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
@@ -223,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             Center( // 차트 들어갈 공간
-              child: BarChart(title: '',),
+              child: BarChartWidget(title: '',),
             ),
 
           // 바텀 버튼

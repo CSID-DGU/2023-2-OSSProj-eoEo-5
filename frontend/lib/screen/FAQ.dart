@@ -78,6 +78,11 @@ class _FAQScreenSate extends State<FAQScreen>{
             ),
             centerTitle: true,
             elevation: 0.8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(10),
+              ),
+            ),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

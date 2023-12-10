@@ -54,6 +54,11 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
         ),
         centerTitle: true,
         elevation: 0.8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

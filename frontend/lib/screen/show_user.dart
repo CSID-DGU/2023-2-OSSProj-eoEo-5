@@ -42,6 +42,11 @@ class _ShowUserState extends State<ShowUser> {
           ),
           centerTitle: true,
           elevation: 0.8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(10),
+              ),
+            ),
           ),
           body: showUser(),
         ),
