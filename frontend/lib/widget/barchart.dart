@@ -76,7 +76,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       tooltipColor: Color(0xff8e97a0),
       maxX: 100,
       data: datatrans,
-      barSize: 20,
+      barSize: 28,
       barStyle: BarStyle.DEFAULT,
     );
   }
