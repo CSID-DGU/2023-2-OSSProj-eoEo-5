@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../widget/textwriter.dart';
 
 class ShowUser extends StatefulWidget {
 
@@ -69,21 +68,21 @@ class _ShowUserState extends State<ShowUser> {
           return ListTile(
             title: Text(
               "Name: $username",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           );
         } else if (index == 1) {
           return ListTile(
             title: Text(
               "Major: $major",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           );
         } else if (index == 2) {
           return ListTile(
             title: Text(
               "Second Major: $secondmajor",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           );
         }
