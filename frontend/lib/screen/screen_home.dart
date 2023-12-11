@@ -228,12 +228,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
                   },
                   child: Ink(
-                    width: 70,
-                    height: 25,
+                    width: 80 * 0.8,
+                    height: 30 * 0.8,
                     child: Image.asset(
                       "assets/images/FAQ.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
-                      height: 100.0, // 필요에 따라 높이 조절
-                      width: 150,
+                      height: 100.0 * 0.8, // 필요에 따라 높이 조절
+                      width: 150 * 0.8,
                       fit: BoxFit.cover,
                       ),
                     ),
@@ -244,12 +244,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
                   },
                   child: Ink(
-                    width: 80,
-                    height: 25,
+                    width: 100 * 0.8,
+                    height: 30 * 0.8,
                     child: Image.asset(
                       "assets/images/USER.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
-                      height: 100.0, // 필요에 따라 높이 조절
-                      width: 150,
+                      height: 100.0 * 0.8, // 필요에 따라 높이 조절
+                      width: 150 * 0.8,
                       fit: BoxFit.cover,
                     ),
                   ),

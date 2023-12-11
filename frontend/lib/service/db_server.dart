@@ -4,7 +4,7 @@ import 'package:frontend/screen/login.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 
-import '../module/user_model.dart';
+import '../data/user_model.dart';
 import 'package:http/http.dart' as http;
 
 // 서버로 데이터를 보내는 서비스
