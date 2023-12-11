@@ -7,7 +7,10 @@ import 'package:frontend/module/Request.dart' as rq;
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 
-
+/*
+Copyright (c) 2021, nizarhdt
+All rights reserved.
+ */
 class BarChartWidget extends StatefulWidget {
   BarChartWidget({Key? key, required this.title}) : super(key: key);
 
