@@ -294,66 +294,67 @@ public class LectureService {
     }
 
     private boolean checkLectureInCourse(Account account, Lecture lecture, AddTakenLectureRequestDto request){
-        if(request.getIsSecondMajor()){
-            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
-            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
-            if(checkList(lecture,requiredCourseLecturesList)){
-                return true;
-            }else if(checkList(lecture,selectiveCourseLecturesList)){
-                return true;
-            }else{
-                return false;
-            }
-        }else if(request.getIsCoreLecture()){
-            return true;
-        }else{
-            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
-            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
-            if(checkList(lecture,requiredCourseLecturesList)){
-                return true;
-            }else if(checkList(lecture,selectiveCourseLecturesList)){
-                return true;
-            }else{
-                return false;
-            }
-        }
-
-    }
-
-    private boolean checkLectureInCourse(Account account, Lecture lecture, LectureTakenDto request){
+        boolean checker = false;
         if(request.getIsSecondMajor()){
             List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
             List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getSelectiveCourse(), false);
             if(checkList(lecture,requiredCourseLecturesList)){
-                return true;
-            }else if(checkList(lecture,selectiveCourseLecturesList)){
-                return true;
-            }else{
-                return false;
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
             }
         }else if(request.getIsCoreLecture()){
-            return true;
+            checker = true;
         }else{
             List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
             List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getSelectiveCourse(), false);
             if(checkList(lecture,requiredCourseLecturesList)){
-                return true;
-            }else if(checkList(lecture,selectiveCourseLecturesList)){
-                return true;
-            }else{
-                return false;
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
             }
         }
+        return checker;
 
     }
 
-    private Boolean checkList(Lecture lecture, List<CourseLectures> courseLectureList){
-        for(CourseLectures courseLectures : courseLectureList){
-            if(courseLectures.getLecture() == lecture){
-                return true;
+    private boolean checkLectureInCourse(Account account, Lecture lecture, LectureTakenDto request){
+        boolean checker = false;
+        if(request.getIsSecondMajor()){
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getSelectiveCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
+            }
+        }else if(request.getIsCoreLecture()){
+            checker = true;
+        }else{
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getSelectiveCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
             }
         }
-        return false;
+        return checker;
+    }
+
+    private Boolean checkList(Lecture lecture, List<CourseLectures> courseLectureList){
+        boolean checker = false;
+        for(CourseLectures courseLectures : courseLectureList){
+            if(courseLectures.getLecture().getId().equals(lecture.getId())){
+                checker = true;
+                break;
+            }
+        }
+        return checker;
     }
 
 }
