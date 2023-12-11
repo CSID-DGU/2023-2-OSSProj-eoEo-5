@@ -151,7 +151,7 @@ class Request{
 
     var newTokenData = handleResponseMap(tokenRefreshResponse);
 
-    if(tokenRefreshResponse.statusCode != 200 || newTokenData!["validated"] == false){
+    if(tokenRefreshResponse.statusCode == 401 || newTokenData!["validated"] == false){
       logout(context, pref);
       return null;
     }
@@ -167,7 +167,7 @@ class Request{
 
     var response = await http.get(Uri.parse(url), headers: headers);
 
-    if(response.statusCode != 200){
+    if(response.statusCode == 401){
       logout(context, pref);
       return null;
     }
@@ -193,7 +193,7 @@ class Request{
 
     var newTokenData = handleResponseMap(tokenRefreshResponse);
 
-    if(tokenRefreshResponse.statusCode != 200 || newTokenData!['validation'] == false){
+    if(tokenRefreshResponse.statusCode == 401 || newTokenData!['validation'] == false){
       logout(context, pref);
       return null;
     }
@@ -209,7 +209,7 @@ class Request{
 
     var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(data));
 
-    if(response.statusCode != 200){
+    if(response.statusCode == 401){
       logout(context, pref);
       return null;
     }
@@ -237,7 +237,7 @@ class Request{
 
     var newTokenData = handleResponseMap(tokenRefreshResponse);
 
-    if(tokenRefreshResponse.statusCode != 200 || newTokenData!["validated"] == false){
+    if(tokenRefreshResponse.statusCode == 401 || newTokenData!["validated"] == false){
       logout(context, pref);
       return null;
     }
@@ -253,7 +253,7 @@ class Request{
 
     var response = await http.delete(Uri.parse(url), headers: headers);
 
-    if(response.statusCode != 200){
+    if(response.statusCode == 401){
       logout(context, pref);
       return null;
     }
