@@ -45,7 +45,7 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          "주전공 이수체계도",
+          "주전공 강의리스트",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

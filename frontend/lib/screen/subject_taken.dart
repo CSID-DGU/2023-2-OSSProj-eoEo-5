@@ -175,7 +175,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              Divider(),
+              SizedBox(height: 10,)
             ],
           )
       );
@@ -274,12 +274,23 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     deletelectureName = lectureList[0][i]["name"];
                                   }
                                 }
+                                // 들고 있는 리스트에서의 해당 과목의 리스트 찾기
+                                int cnt = 0;
+
+                                for(int i=0; i<lectureList[0].length; i++){
+                                  if(lectureList[0][i]["name"] == deletelectureName){
+                                    break;
+                                  }
+                                  cnt ++;
+                                }
+                                print(deletelectureName); // 삭제 데이터 잘 들고 옴
                                 Request.deleteRequest(
                                     "https://eoeoservice.site/lecture/deletetakenlecture", deleteData, true, true, context
                                 ).then((response) {
                                   if (response?.statusCode == 200) {
                                     Navigator.pop(context);
                                     setState(() {});
+                                    takenLectureWidgets.removeAt(cnt);
                                   } else {
                                     setState(() {});
                                   }
@@ -470,7 +481,6 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     "https://eoeoservice.site/lecture/addlecturetaken", addData, true, context
                                 ).then((response) {
                                   if (response?.statusCode == 200) {
-
                                     Map<String, dynamic> responseData = jsonDecode(utf8.decode(response?.bodyBytes as List<int>));
                                     addlectureName = responseData["lectureName"];
                                     Navigator.pop(context);
@@ -491,12 +501,11 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                               ),
                                             ),
-                                            Divider(),
                                           ],
                                         )
                                     );
-                                  } else {
-                                    setState(() {});
+                                  } else if(response?.statusCode != 200){
+                                    setState((){});
                                   }
                                 });
                               } catch(error){
@@ -550,8 +559,9 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     User user = User.fromJson(jsonDecode(pref?.getString("user") ?? "{}")!); // 사용자 정보
     int? accountId = user.id;
 
+    // 잘목된 체크 값일 경우 null 값 반환
     if (issub! == false) {
-      if (ismajor!) {
+      if (ismajor! && !issecond! && !iscore!) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
@@ -560,7 +570,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "lectureNumber": lectureNumber, // string
         };
       }
-      else if (issecond!) {
+      else if (issecond! && !ismajor! && !iscore!) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
@@ -569,7 +579,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "lectureNumber": lectureNumber, // string
         };
       }
-      else if (iscore! == true) {
+      else if (iscore! && !ismajor! && !issecond!) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": true, // bool
@@ -577,10 +587,13 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "isSubstitute": false, // bool
           "lectureNumber": lectureNumber, // string
         };
+      }
+      else{
+        addvalue = {};
       }
     }
-    else if (issub!) {
-      if (ismajor!) {
+    else if (issub!) { // ismajor, issecond, issub
+      if (ismajor! && !issecond! && !iscore!) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
@@ -590,7 +603,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "originalLectureNumber": originalLectureNumber, // string
         };
       }
-      else if (issecond!) {
+      else if (issecond! && !ismajor! && !iscore!) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": false, // bool
@@ -600,7 +613,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "originalLectureNumber": originalLectureNumber, // string
         };
       }
-      else if (issub!) {
+      else if (iscore! && !ismajor! && !issecond!) {
         addvalue = {
           "accountId": accountId, // int
           "isCoreLecture": true, // bool
@@ -609,6 +622,9 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
           "lectureNumber": lectureNumber, // string
           "originalLectureNumber": originalLectureNumber, // string
         };
+      }
+      else{
+        addvalue = {};
       }
     };
     return addvalue;

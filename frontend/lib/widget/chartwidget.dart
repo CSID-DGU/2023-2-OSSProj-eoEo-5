@@ -60,7 +60,6 @@ class _ChartWidget extends State<ChartWidget> {
       default:
         text = '';
     }
-
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 4,
@@ -75,9 +74,7 @@ class _ChartWidget extends State<ChartWidget> {
         width: 380,
         height: 350,
         child: BarChart(
-
           BarChartData(
-
             maxY: 100,
             barTouchData: BarTouchData(
               touchTooltipData: BarTouchTooltipData(
@@ -91,16 +88,16 @@ class _ChartWidget extends State<ChartWidget> {
                     int rodIndex,
                     ) {
                   return BarTooltipItem(
-                    rod.toY.round().toString(),
+                    rod.toY.round().toString()+'%',
                     const TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   );
                 },
               ),
             ),
-
             titlesData: FlTitlesData(
               show: true,
               bottomTitles: AxisTitles(
@@ -113,14 +110,12 @@ class _ChartWidget extends State<ChartWidget> {
               leftTitles: const AxisTitles(
                 sideTitles: SideTitles(showTitles: false),
               ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
+              topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false),
               ),
               rightTitles: const AxisTitles(
                 sideTitles: SideTitles(showTitles: false),
               ),
             ),
-
             borderData: FlBorderData(
               show: false,
             ),
