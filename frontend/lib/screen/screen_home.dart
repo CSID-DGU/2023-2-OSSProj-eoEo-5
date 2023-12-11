@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           title: Text("eoEo", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
           centerTitle: true, // Title을 가운데 정렬
-          elevation: 0.8, // 그림자 조절
+          elevation: 1, // 그림자 조절
           leading: Container(),
           actions: <Widget>[
             Padding(
@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 BarChartWidget(title: ''),
               ],
             ),
-          SizedBox(height: 10,),
+          SizedBox(height: 15,),
           // 바텀 버튼
           Container(
             child: Row(

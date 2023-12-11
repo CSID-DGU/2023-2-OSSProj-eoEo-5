@@ -4,11 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
-import 'package:fl_chart/fl_chart.dart';
-import 'package:vertical_barchart/extension/expandedSection.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
-import 'package:vertical_barchart/vertical-legend.dart';
 
 
 class BarChartWidget extends StatefulWidget {
@@ -63,7 +60,6 @@ class _BarChartWidgetState extends State<BarChartWidget> {
           colors: [Color(0xff00FFFF), Color(0xff00FFFF)],
           jumlah: data, // 실 수치
           tooltip: "${data}",  // 수치 레이블
-
         ),
       ]
     );
@@ -106,6 +102,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       true,
       context,
     );
+
     List takenLectureList =
     jsonDecode(utf8.decode(takenLectures!.bodyBytes));
     response.add(takenLectureList);
