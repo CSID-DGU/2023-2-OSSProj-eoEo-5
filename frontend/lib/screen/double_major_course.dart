@@ -45,7 +45,7 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          "복수전공 이수체계도",
+          "복수전공 강의리스트",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

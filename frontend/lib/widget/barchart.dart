@@ -57,9 +57,10 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         VBarChartModel(
         index: 0,
         label: "",
-          colors: [Color(0xff00FFFF), Color(0xff00FFFF)],
-          jumlah: data, // 실 수치
-          tooltip: "${data}",  // 수치 레이블
+        colors: [Color(0xff00FFFF), Color(0xff00FFFF)],
+        jumlah: data, // 실 수치
+        tooltip: "${data}%"
+        // 수치 레이블
         ),
       ]
     );
@@ -69,7 +70,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     return VerticalBarchart(
       background: Colors.transparent,
       legendPosition: LegendPosition.TOP,
-      tooltipColor: Color(0xff8e97a0),
+      tooltipColor: Color(0xff8e97a1),
       maxX: 100,
       data: datatrans,
       barSize: 28,
