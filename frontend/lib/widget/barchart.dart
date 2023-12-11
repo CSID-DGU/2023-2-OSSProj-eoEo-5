@@ -18,20 +18,25 @@ class BarChartWidget extends StatefulWidget {
 }
 
 class _BarChartWidgetState extends State<BarChartWidget> {
+  late User user;
   bool isBarChartDataLoaded = false;
   List<List> chartData = [];
 
   @override
   void initState() {
     super.initState();
-    loadLectures().then((response) {
-      chartData = response;
-      setState(() {
-        isBarChartDataLoaded = true;
-        print(chartData);
-        print("toY value: ${getChartData(chartData)[0].ratio}");
+    SharedPreferences.getInstance().then((response){
+      user = User.fromJson(jsonDecode(response.getString("user")!));
+      loadLectures().then((response) {
+        chartData = response;
+        setState(() {
+          isBarChartDataLoaded = true;
+          print(chartData);
+          print("toY value: ${getChartData(chartData)[0].ratio}");
+        });
       });
-    });
+    }
+    );
   }
 
   @override
@@ -74,8 +79,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         label: "",
         colors: [Color(0xff00FFFF), Color(0xff00FFFF)],
         jumlah: data, // 실 수치
-        tooltip: "${data}%"
-        // 수치 레이블
+        tooltip: "${data}%" // 수치 레이블
         ),
       ]
     );
@@ -94,11 +98,12 @@ class _BarChartWidgetState extends State<BarChartWidget> {
   }
 
   List<BARData> getChartData(List<List> lectures) {
+
     double major = 0;
     for (int i = 0; i < lectures[0].length; i++) {
       major += lectures[0][i]['credit'];
     }
-    major = ((major / 130) * 100).floorToDouble();
+    major = ((major / user.totalCredit) * 100).floorToDouble();
     final List<BARData> chartData = [
       BARData('major', major),
     ];
@@ -107,8 +112,6 @@ class _BarChartWidgetState extends State<BarChartWidget> {
 
   Future<List<List>> loadLectures() async {
     List<List> response = [];
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    User user = User.fromJson(jsonDecode(pref.getString("user")!));
     int? takenCourseId = user.id;
 
     http.Response? takenLectures = await rq.Request.getRequest(

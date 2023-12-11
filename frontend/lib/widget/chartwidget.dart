@@ -17,9 +17,11 @@ class ChartWidget extends StatefulWidget {
 }
 
 class _ChartWidget extends State<ChartWidget> {
+  late User user;
   bool isChartDataLoaded = false;
   Map<String, List<List>> chartData = {};
 
+/*
   @override
   void initState() {
     super.initState();
@@ -29,6 +31,23 @@ class _ChartWidget extends State<ChartWidget> {
         isChartDataLoaded = true;
       });
     });
+  }
+
+ */
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((response){
+      user = User.fromJson(jsonDecode(response.getString("user")!));
+      takenload().then((lectures) {
+        chartData = lectures;
+        setState(() {
+          isChartDataLoaded = true;
+        });
+      });
+    }
+    );
   }
 
   @override
@@ -171,8 +190,8 @@ class _ChartWidget extends State<ChartWidget> {
   }
 
   Future<Map<String, List<List>>> takenload() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    User user = User.fromJson(jsonDecode(pref.getString("user")!));
+    //SharedPreferences pref = await SharedPreferences.getInstance();
+    //User user = User.fromJson(jsonDecode(pref.getString("user")!));
     int? takenCourseId = user.id;
 
     List<List> response1 = [];
