@@ -122,7 +122,7 @@ public class AuthService {
                 .requiredCourseId(account.getMajor().getRequiredCourse().getId())
                 .selectiveCourseId(account.getMajor().getSelectiveCourse().getId())
                 .selectiveCredit(account.getMajor().getSelectiveCourseCredit())
-                .totalCredit(coreCourseCredit + firstMajorRequiredCredit + account.getMajor().getSelectiveCourseCredit())
+                .totalCredit(account.getMajor().getTotalCredit())
                 .totalFirstMajorCredit(firstMajorRequiredCredit + account.getMajor().getSelectiveCourseCredit())
                 .totalCoreLectureCredit(coreCourseCredit)
                 .accessToken(jwtProvider.createAccessToken(account.getUsername()))

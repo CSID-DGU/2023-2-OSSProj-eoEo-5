@@ -63,7 +63,6 @@ public class UserLoginResponseDto {
         secondSelectiveCourseId = major.getSelectiveCourse().getId();
         secondSelectiveCourseCredit = major.getSelectiveCourseCredit();
         totalSecondMajorCredit = major.getSelectiveCourseCredit() + secondMajorRequiredCredit;
-        totalCredit = totalCredit + major.getSelectiveCourseCredit() + secondMajorRequiredCredit;
     }
 
 

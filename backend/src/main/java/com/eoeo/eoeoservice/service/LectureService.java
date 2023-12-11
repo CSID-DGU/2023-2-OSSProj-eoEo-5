@@ -323,7 +323,7 @@ public class LectureService {
     private boolean checkLectureInCourse(Account account, Lecture lecture, LectureTakenDto request){
         if(request.getIsSecondMajor()){
             List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
-            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getSelectiveCourse(), false);
             if(checkList(lecture,requiredCourseLecturesList)){
                 return true;
             }else if(checkList(lecture,selectiveCourseLecturesList)){
@@ -335,7 +335,7 @@ public class LectureService {
             return true;
         }else{
             List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
-            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getSelectiveCourse(), false);
             if(checkList(lecture,requiredCourseLecturesList)){
                 return true;
             }else if(checkList(lecture,selectiveCourseLecturesList)){

@@ -53,4 +53,7 @@ public class Major extends BaseEntity {
     @Column(nullable = false)
     private Long selectiveCourseCredit;
 
+    @Column(nullable = false)
+    private Long totalCredit;
+
 }
