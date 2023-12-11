@@ -80,7 +80,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.pop(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
               );
