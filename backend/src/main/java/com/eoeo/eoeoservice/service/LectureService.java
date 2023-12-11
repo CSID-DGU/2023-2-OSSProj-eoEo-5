@@ -2,6 +2,8 @@ package com.eoeo.eoeoservice.service;
 
 import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.domain.account.AccountRepository;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLectures;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLecturesRepository;
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
 import com.eoeo.eoeoservice.domain.lecture.LectureRepository;
 import com.eoeo.eoeoservice.domain.lecture_taken.LectureTaken;
@@ -29,6 +31,8 @@ public class LectureService {
     private final PrerequisiteRepository prerequisiteRepository;
     private final SubstituteLectureRepository substituteLectureRepository;
     private final LectureTakenRepository lectureTakenRepository;
+    private final CourseLecturesRepository courseLecturesRepositroy;
+
 
 
     @Transactional
@@ -56,6 +60,11 @@ public class LectureService {
                 SubstituteLecture substituteLecture = substituteLectureRepository.findByOriginalLectureAndSubstituteLectureAndIsDeleted(originalLecture, lecture, false)
                         .orElseThrow(() -> new NoSuchElementException("No such substitute"));
 
+                if(!checkLectureInCourse(account, originalLecture, request)){
+                    throw new NoSuchElementException("Lecture not in course");
+                }
+
+
                 lectureTaken = LectureTaken.builder()
                         .account(account)
                         .lecture(lecture)
@@ -65,6 +74,11 @@ public class LectureService {
                         .substituteLecture(substituteLecture)
                         .build();
             } else {
+
+                if(!checkLectureInCourse(account, lecture, request)){
+                    throw new NoSuchElementException("Lecture not in course");
+                }
+
                 lectureTaken = LectureTaken.builder()
                         .account(account)
                         .lecture(lecture)
@@ -72,6 +86,7 @@ public class LectureService {
                         .isSecondMajor(request.getIsSecondMajor())
                         .isSubstitute(false)
                         .build();
+
             }
 
             lectureTakenRepository.save(lectureTaken);
@@ -94,6 +109,10 @@ public class LectureService {
             if (lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false).isPresent()) {
                 continue;
             }
+
+            if(!dto.getIsSubstitute() && !checkLectureInCourse(account, lecture, dto)){
+                throw new NoSuchElementException("Lecture not in course");
+            }
             LectureTaken lectureTaken = LectureTaken.builder()
                     .account(account)
                     .lecture(lecture)
@@ -107,6 +126,9 @@ public class LectureService {
                         .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
                 SubstituteLecture substituteLecture = substituteLectureRepository.findByOriginalLectureAndSubstituteLectureAndIsDeleted(originalLecture, lecture, false)
                                 .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
+                if(!checkLectureInCourse(account, originalLecture, dto)){
+                    throw new NoSuchElementException("Lecture not in course");
+                }
                 lectureTaken.setSubstitute(substituteLecture);
             }
 
@@ -269,6 +291,69 @@ public class LectureService {
 
         lectureTakenRepository.delete(takenLecture);
         return true;
+    }
+
+    private boolean checkLectureInCourse(Account account, Lecture lecture, AddTakenLectureRequestDto request){
+        if(request.getIsSecondMajor()){
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                return true;
+            }else if(checkList(lecture,selectiveCourseLecturesList)){
+                return true;
+            }else{
+                return false;
+            }
+        }else if(request.getIsCoreLecture()){
+            return true;
+        }else{
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                return true;
+            }else if(checkList(lecture,selectiveCourseLecturesList)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+    }
+
+    private boolean checkLectureInCourse(Account account, Lecture lecture, LectureTakenDto request){
+        if(request.getIsSecondMajor()){
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                return true;
+            }else if(checkList(lecture,selectiveCourseLecturesList)){
+                return true;
+            }else{
+                return false;
+            }
+        }else if(request.getIsCoreLecture()){
+            return true;
+        }else{
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                return true;
+            }else if(checkList(lecture,selectiveCourseLecturesList)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+    }
+
+    private Boolean checkList(Lecture lecture, List<CourseLectures> courseLectureList){
+        for(CourseLectures courseLectures : courseLectureList){
+            if(courseLectures.getLecture() == lecture){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
