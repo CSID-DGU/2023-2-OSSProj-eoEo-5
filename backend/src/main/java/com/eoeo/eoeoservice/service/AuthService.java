@@ -3,6 +3,10 @@ package com.eoeo.eoeoservice.service;
 import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.domain.account.AccountRepository;
 import com.eoeo.eoeoservice.domain.account.AccountRole;
+import com.eoeo.eoeoservice.domain.core_course_credit.CoreCourseCredit;
+import com.eoeo.eoeoservice.domain.core_course_credit.CoreCourseCreditRepository;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLectures;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLecturesRepository;
 import com.eoeo.eoeoservice.domain.major.Major;
 import com.eoeo.eoeoservice.domain.major.MajorRepository;
 import com.eoeo.eoeoservice.dto.account.LogoutRequestDto;
@@ -25,6 +29,8 @@ import java.util.Random;
 public class AuthService {
 
     private final AccountRepository accountRepository;
+    private final CourseLecturesRepository courseLecturesRepository;
+    private final CoreCourseCreditRepository coreCourseCreditRepository;
     private final MajorRepository majorRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -79,6 +85,18 @@ public class AuthService {
     @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto request) {
         Account account = accountRepository.findByUsernameAndIsDeleted(request.getUsername(), false).orElseThrow(() -> new IllegalArgumentException("No such Username"));
+        List<CourseLectures> firstMajorRequiredLectureList = courseLecturesRepository.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+        List<CoreCourseCredit> coreCourseCreditList = coreCourseCreditRepository.findAllByCoreCourseAndIsDeleted(account.getMajor().getCoreCourse(), false);
+        long firstMajorRequiredCredit = 0;
+        long coreCourseCredit = 0;
+
+        for(CourseLectures courseLecture : firstMajorRequiredLectureList){
+            firstMajorRequiredCredit = firstMajorRequiredCredit + courseLecture.getLecture().getCredit();
+        }
+
+        for(CoreCourseCredit coreCredit : coreCourseCreditList){
+            coreCourseCredit = coreCourseCredit + coreCredit.getCredit();
+        }
 
 
         if(!passwordEncoder.matches(account.getSalt()+request.getPassword(), account.getPassword())){
@@ -100,12 +118,20 @@ public class AuthService {
                 .requiredCourseId(account.getMajor().getRequiredCourse().getId())
                 .selectiveCourseId(account.getMajor().getSelectiveCourse().getId())
                 .selectiveCredit(account.getMajor().getSelectiveCourseCredit())
+                .totalCredit(coreCourseCredit + firstMajorRequiredCredit + account.getMajor().getSelectiveCourseCredit())
+                .totalFirstMajorCredit(firstMajorRequiredCredit + account.getMajor().getSelectiveCourseCredit())
+                .totalCoreLectureCredit(coreCourseCredit)
                 .accessToken(jwtProvider.createAccessToken(account.getUsername()))
                 .refreshToken(jwtProvider.createRefreshToken(account.getUsername(), validationToken))
                 .build();
 
         if(account.getIsSecondMajor()){
-            userLoginResponseDto.setSecondMajor(account.getSecondMajor());
+            List<CourseLectures> secondMajorRequiredLectureList = courseLecturesRepository.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            long secondMajorRequiredCredit = 0;
+            for(CourseLectures courseLecture : secondMajorRequiredLectureList){
+                secondMajorRequiredCredit = secondMajorRequiredCredit + courseLecture.getLecture().getCredit();
+            }
+            userLoginResponseDto.setSecondMajor(account.getSecondMajor(), secondMajorRequiredCredit);
         }
 
         return userLoginResponseDto;
