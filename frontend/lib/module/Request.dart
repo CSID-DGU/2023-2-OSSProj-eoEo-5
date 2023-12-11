@@ -48,10 +48,8 @@ class Request{
     } else if(isAuthRequired){
       // 인증이 필요하면 리프레쉬 토큰 발급
       return getWithRefreshToken(url, data, isThereParameter, context);
-    } else{ // 데이터를 못 받아올 시, 로그아웃
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      //logout(context, pref);
-      return null;
+    } else{
+      return response;
     }
   }
 
@@ -77,9 +75,7 @@ class Request{
     } else if(isAuthRequired){
       return postWithRefreshTokenWithBody(url, data, context);
     } else{
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      //logout(context, pref);
-      return null;
+      return response;
     }
   }
 
@@ -124,9 +120,7 @@ class Request{
       // 인증이 필요하면 리프레쉬 토큰 발급
       return deleteWithRefreshToken(url, data, isThereParameter, context);
     } else{ // 데이터를 못 받아올 시, 로그아웃
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      //logout(context, pref);
-      return null;
+      return response;
     }
   }
 
@@ -136,7 +130,7 @@ class Request{
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     if(!pref.containsKey("refreshToken")){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -152,7 +146,7 @@ class Request{
     var newTokenData = handleResponseMap(tokenRefreshResponse);
 
     if(tokenRefreshResponse.statusCode == 401 || newTokenData!["validated"] == false){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -168,7 +162,7 @@ class Request{
     var response = await http.get(Uri.parse(url), headers: headers);
 
     if(response.statusCode == 401){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -178,7 +172,7 @@ class Request{
   static Future<http.Response?> postWithRefreshTokenWithBody(String url, Map<String, dynamic> data, BuildContext context) async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     if(!pref.containsKey("refreshToken")){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -194,7 +188,7 @@ class Request{
     var newTokenData = handleResponseMap(tokenRefreshResponse);
 
     if(tokenRefreshResponse.statusCode == 401 || newTokenData!['validation'] == false){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -210,7 +204,7 @@ class Request{
     var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(data));
 
     if(response.statusCode == 401){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -222,7 +216,7 @@ class Request{
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     if(!pref.containsKey("refreshToken")){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -238,7 +232,7 @@ class Request{
     var newTokenData = handleResponseMap(tokenRefreshResponse);
 
     if(tokenRefreshResponse.statusCode == 401 || newTokenData!["validated"] == false){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
@@ -254,7 +248,7 @@ class Request{
     var response = await http.delete(Uri.parse(url), headers: headers);
 
     if(response.statusCode == 401){
-      //logout(context, pref);
+      logout(context, pref);
       return null;
     }
 
