@@ -142,7 +142,6 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                 ),
               ),
-              Divider(),
             ],
           )
 
@@ -167,8 +166,6 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
                   ),
                 ),
               ),
-              Divider(),
-
             ],
           )
       );

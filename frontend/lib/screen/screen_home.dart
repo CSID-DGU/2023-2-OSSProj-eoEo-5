@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           title: Text("eoEo", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
           centerTitle: true, // Title을 가운데 정렬
-          elevation: 0.8, // 그림자 조절
+          elevation: 1, // 그림자 조절
           leading: Container(),
           actions: <Widget>[
             Padding(
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
                       ),
                       child: Text(
-                        '주전공 이수체계도',
+                        '주전공 강의정보',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
                       ),
                       child: Text(
-                        '복수전공 이수체계도',
+                        '복수전공 강의정보',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -193,8 +193,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
               children: <Widget>[
@@ -213,43 +211,49 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: width * 0.00,
-                top: width * 0.00,
-                left: width * 0.00,
-                right: width * 0.00,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                BarChartWidget(title: ''),
+              ],
             ),
-
-            Center( // 차트 들어갈 공간
-              child: BarChartWidget(title: '',),
-            ),
-
+          SizedBox(height: 15,),
           // 바텀 버튼
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.question_mark_rounded,
-                    color: Colors.lightBlueAccent,
-                    size: 45,
-                  ),
-                  onPressed: () {
+                Center(child: InkWell(
+                  onTap:(){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
                   },
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.person, // 환경설정 아이콘
-                    color: Colors.lightBlueAccent,
-                    size: 45,
+                  child: Ink(
+                    width: 80 * 0.8,
+                    height: 30 * 0.8,
+                    child: Image.asset(
+                      "assets/images/FAQ.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
+                      height: 100.0 * 0.8, // 필요에 따라 높이 조절
+                      width: 150 * 0.8,
+                      fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                  onPressed: () {
+                ),
+                Center(child: InkWell(
+                  onTap:(){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
                   },
+                  child: Ink(
+                    width: 100 * 0.8,
+                    height: 30 * 0.8,
+                    child: Image.asset(
+                      "assets/images/USER.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
+                      height: 100.0 * 0.8, // 필요에 따라 높이 조절
+                      width: 150 * 0.8,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                 ),
                 ),
               ],
             ),

@@ -60,7 +60,7 @@ class _ChartWidget extends State<ChartWidget> {
       default:
         text = '';
     }
-    print(text);
+
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 4,
@@ -133,7 +133,7 @@ class _ChartWidget extends State<ChartWidget> {
                 barsSpace: 4,
                 barRods: [
                   BarChartRodData(
-                    width: 30,
+                    width: 35,
                     toY: entry.value.credit,
                     color: getBarColor(entry.key), // 각 막대의 색상을 함수로 지정
                   ),

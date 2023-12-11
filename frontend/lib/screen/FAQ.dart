@@ -107,7 +107,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           ),
                         ),
                         child: Text(
-                          'support',
+                          'apply',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -161,7 +161,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           ),
                         ),
                         child: Text(
-                          'job',
+                          'credit',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -188,7 +188,7 @@ class _FAQScreenSate extends State<FAQScreen>{
                           ),
                         ),
                         child: Text(
-                          'credit',
+                          'job',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

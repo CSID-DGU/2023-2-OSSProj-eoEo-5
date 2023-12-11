@@ -128,13 +128,6 @@
             </list>
           </value>
         </entry>
-        <entry key="intl">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/intl-0.17.0/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="lints">
           <value>
             <list>
@@ -289,20 +282,6 @@
             </list>
           </value>
         </entry>
-        <entry key="syncfusion_flutter_charts">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/syncfusion_flutter_charts-19.4.56/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_core">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/syncfusion_flutter_core-19.4.56/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="term_glyph">
           <value>
             <list>
@@ -328,6 +307,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/vector_math-2.1.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="vertical_barchart">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/vertical_barchart-2.0.0+2/lib" />
             </list>
           </value>
         </entry>
@@ -370,7 +356,6 @@
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/get-4.6.6/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/http-1.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/http_parser-4.0.2/lib" />
-      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/intl-0.17.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/lints-2.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/matcher-0.12.16/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/material_color_utilities-0.5.0/lib" />
@@ -392,12 +377,11 @@
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/stack_trace-1.11.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/stream_channel-2.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/string_scanner-1.2.0/lib" />
-      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/syncfusion_flutter_charts-19.4.56/lib" />
-      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/syncfusion_flutter_core-19.4.56/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/term_glyph-1.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/test_api-0.6.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/typed_data-1.3.2/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/vector_math-2.1.4/lib" />
+      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/vertical_barchart-2.0.0+2/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/web-0.1.4-beta/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/win32-5.0.9/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/xdg_directories-1.0.3/lib" />

@@ -136,7 +136,6 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
                 ),
               ),
             ),
-            Divider(),
           ],
         ),
       );
@@ -161,7 +160,6 @@ class _MainMajorCourseState extends State<MainMajorCourse> {
                 ),
               ),
             ),
-            Divider(),
           ],
         ),
       );
