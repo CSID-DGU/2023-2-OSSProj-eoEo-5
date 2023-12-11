@@ -70,6 +70,10 @@ public class AuthService {
             secondMajor = majorRepository.findByIdAndIsDeleted(request.getSecondMajorId(), false)
                     .orElseThrow(() -> new NoSuchElementException("No such major"));
 
+            if(request.getMajorId().equals(request.getSecondMajorId())){
+                throw new IllegalArgumentException("First Major and Second Major cannot be same");
+            }
+
             account.setSecondMajor(secondMajor);
         }
 
