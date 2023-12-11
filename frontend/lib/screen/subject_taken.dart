@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
-import 'package:frontend/screen/screen_home.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,10 +79,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-              );
+              Navigator.pop(context);
             },
           ),
           actions: <Widget>[

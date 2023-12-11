@@ -35,6 +35,21 @@ class _BarChartWidgetState extends State<BarChartWidget> {
   }
 
   @override
+  void didUpdateWidget(BarChartWidget oldWidget){
+    super.didUpdateWidget(oldWidget);
+    isBarChartDataLoaded = false;
+    loadLectures().then((response) {
+      chartData = response;
+      setState(() {
+        isBarChartDataLoaded = true;
+        print(chartData);
+        print("toY value: ${getChartData(chartData)[0].ratio}");
+      });
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!isBarChartDataLoaded) {
       return CircularProgressIndicator();

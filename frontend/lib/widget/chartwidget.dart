@@ -40,6 +40,17 @@ class _ChartWidget extends State<ChartWidget> {
     }
   }
 
+  @override
+  void didUpdateWidget(ChartWidget oldWidget){
+    super.didUpdateWidget(oldWidget);
+    takenload().then((lectures) {
+      chartData = lectures;
+      setState(() {
+        isChartDataLoaded = true;
+      });
+    });
+  }
+
   Widget getTitles(double value, TitleMeta meta) {
     final style = TextStyle(
       color: Colors.black54,
