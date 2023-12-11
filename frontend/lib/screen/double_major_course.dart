@@ -166,7 +166,6 @@ class _DoubleMajorCourseState extends State<DoubleMajorCourse>{
                   ),
                 ),
               ),
-
             ],
           )
       );
