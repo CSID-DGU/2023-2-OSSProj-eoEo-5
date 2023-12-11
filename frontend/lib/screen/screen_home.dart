@@ -13,10 +13,8 @@ import 'main_major_course.dart'; //주전공 이수체계도 불러오기
 import 'double_major_course.dart'; //주전공 이수체계도 불러오기
 
 class HomeScreen extends StatefulWidget {
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
-
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -25,8 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // request module 사용하기 위해 필요한 함수
   @override
-  void initState(){
-    SharedPreferences.getInstance().then((response){
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((response) {
       pref = response;
       setState(() {
         isUserDataLoaded = true;
@@ -36,16 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(isUserDataLoaded){
+    if (isUserDataLoaded) {
       return homeScreen();
-    } else{
+    } else {
       return Container();
     }
-
   }
 
-  Widget homeScreen(){
+  Widget homeScreen() {
     Size screenSize = MediaQuery.of(context).size;
     double width = screenSize.width;
     double height = screenSize.height;
@@ -57,12 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text("eoEo", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
-          centerTitle: true, // Title을 가운데 정렬
-          elevation: 1, // 그림자 조절
+          title: Text("eoEo",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25)),
+          centerTitle: true,
+          // Title을 가운데 정렬
+          elevation: 1,
+          // 그림자 조절
           leading: Container(),
           actions: <Widget>[
             Padding(
@@ -84,18 +86,27 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextWriter(width:width, fontSize:20, contents: "$name님은", textColor: Colors.black, fontWeight: FontWeight.bold),
-            TextWriter(width: width, fontSize: 18, contents:"$major 전공입니다.", fontWeight:FontWeight.bold, textColor: Colors.black),
+            TextWriter(
+                width: width,
+                fontSize: 20,
+                contents: "$name님은",
+                textColor: Colors.black,
+                fontWeight: FontWeight.bold),
+            TextWriter(
+                width: width,
+                fontSize: 18,
+                contents: "$major 전공입니다.",
+                fontWeight: FontWeight.bold,
+                textColor: Colors.black),
             Container(
               padding: EdgeInsets.only(bottom: width * 0.001),
-
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 가로로 동일한 간격으로 배치
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // 가로로 동일한 간격으로 배치
                 children: <Widget>[
                   ButtonTheme(
                     minWidth: width * 0.02,
@@ -105,7 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.lightBlueAccent),
                       ),
                       child: Text(
                         '주전공 강의정보',
@@ -119,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 'Main_major_course' 페이지로 이동하는 코드
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MainMajorCourse()),
+                          MaterialPageRoute(
+                              builder: (context) => MainMajorCourse()),
                         );
                       },
                     ),
@@ -132,7 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.lightBlueAccent),
                       ),
                       child: Text(
                         '복수전공 강의정보',
@@ -146,7 +160,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 'subject_takenScreen' 페이지로 이동하는 코드
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DoubleMajorCourse()),
+                          MaterialPageRoute(
+                              builder: (context) => DoubleMajorCourse()),
                         );
                         // 중앙 버튼을 눌렀을 때 수행할 작업을 여기에 추가
                       },
@@ -160,7 +175,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.lightBlueAccent),
                       ),
                       child: Text(
                         '학업 현황',
@@ -174,11 +190,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 'subject_takenScreen' 페이지로 이동하는 코드
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Subject_takenScreen()),
-                        );
+                          MaterialPageRoute(
+                              builder: (context) => Subject_takenScreen()),
+                        ).then((response){
+                          print("on pop working");
+                          setState((){});
+                        });
                         // 중앙 버튼을 눌렀을 때 수행할 작업을 여기에 추가
                       },
-
                     ),
                   ),
                 ],
@@ -216,47 +235,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 BarChartWidget(title: ''),
               ],
             ),
-          SizedBox(height: 15,),
-          // 바텀 버튼
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Center(child: InkWell(
-                  onTap:(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()));
-                  },
-                  child: Ink(
-                    width: 80 * 0.7,
-                    height: 30 * 0.7,
-                    child: Image.asset(
-                      "assets/images/FAQ.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
-                      height: 100.0 * 0.7, // 필요에 따라 높이 조절
-                      width: 150 * 0.7,
-                      fit: BoxFit.cover,
+            SizedBox(
+              height: 15,
+            ),
+            // 바텀 버튼
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FAQScreen()));
+                      },
+                      child: Ink(
+                        width: 80 * 0.7,
+                        height: 30 * 0.7,
+                        child: Image.asset(
+                          "assets/images/FAQ.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
+                          height: 100.0 * 0.7, // 필요에 따라 높이 조절
+                          width: 150 * 0.7,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Center(child: InkWell(
-                  onTap:(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUser()));
-                  },
-                  child: Ink(
-                    width: 100 * 0.7,
-                    height: 30 * 0.7,
-                    child: Image.asset(
-                      "assets/images/USER.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
-                      height: 100.0 * 0.7, // 필요에 따라 높이 조절
-                      width: 150 * 0.7,
-                      fit: BoxFit.cover,
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowUser()));
+                      },
+                      child: Ink(
+                        width: 100 * 0.7,
+                        height: 30 * 0.7,
+                        child: Image.asset(
+                          "assets/images/USER.png", // 여기에 실제 이미지 파일 경로를 넣어주세요
+                          height: 100.0 * 0.7, // 필요에 따라 높이 조절
+                          width: 150 * 0.7,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                 ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
           ],
         ),
       ),

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/data/User.dart';
 import 'package:frontend/module/Request.dart';
-import 'package:frontend/screen/screen_home.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +30,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   bool? issecond = false;
   bool? iscore = false;
   bool? issub = false;
+  bool? isExist = false;
   bool isAddDataLoad = false;
   bool isDeleteDataLoad = false;
   String? addlectureName;
@@ -80,10 +80,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-              );
+              Navigator.pop(context);
             },
           ),
           actions: <Widget>[
@@ -186,6 +183,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   // 삭제 기능 메서드
   void delete(){
     Map<String, dynamic> deleteData = {};
+    deletetec = TextEditingController();
     showDialog<String>(
       context: context,
       // 다이얼로그 배경을 터치했을 때 다이얼로그를 닫을지 말지 결정
@@ -288,7 +286,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     "https://eoeoservice.site/lecture/deletetakenlecture", deleteData, true, true, context
                                 ).then((response) {
                                   if (response?.statusCode == 200) {
-                                    takenLectureWidgets.removeAt(cnt);
+                                    lectureList[0].removeAt(cnt); // 데이터 삭제
+                                    takenLectureWidgets.removeAt(cnt); // 위젯 삭제
                                     Navigator.pop(context);
                                     setState(() {});
                                   } else {
@@ -320,6 +319,8 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
 
   // 추가 기능 메서드
   void showadd() {
+    addtec = TextEditingController();
+    substituteTextFieldController = TextEditingController();
     Map<String, dynamic> addData = {};
 
     showDialog<String>(
@@ -342,12 +343,12 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
             // 다이얼로그의 위치 설정, 기본값은 center
             alignment: Alignment.bottomCenter,
             /*
-          Dialog의 padding 값입니다..
-          sizedBox의 가로세로 값읠 infinity로 설정해놓고
-          가로패딩 50, 세로 패딩 200을 줬습니다.
-          이렇게 하면 좌우 50, 위아래 200만큼의 패딩이 생기고 배경이 나오게 됩니다.
-          여기서 vertical의 값을 많이 주면,
-          키보드가 올라왔을 때 공간이 부족해서 overflow가 발생할 수 있습니다.
+            Dialog의 padding 값입니다..
+            sizedBox의 가로세로 값읠 infinity로 설정해놓고
+            가로패딩 50, 세로 패딩 200을 줬습니다.
+            이렇게 하면 좌우 50, 위아래 200만큼의 패딩이 생기고 배경이 나오게 됩니다.
+            여기서 vertical의 값을 많이 주면,
+            키보드가 올라왔을 때 공간이 부족해서 overflow가 발생할 수 있습니다.
            */
             insetPadding: const EdgeInsets.symmetric(
               horizontal: 50,
@@ -486,23 +487,34 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     print(addlectureName); // 새로 추가한 과목의 이름
 
                                     // 리스트 위젯에 추가
-                                    takenLectureWidgets.add(
-                                        Column(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.all(8.0),
-                                              width: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width,
-                                              child: Text(
-                                                addlectureName!,
-                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    // add 중복확인 // 처음 입력시 false, 두번째 입력시 ture
+                                    for(int i=0; i<lectureList[0].length; i++){
+                                      if(lectureList[0][i]["name"] == addlectureName){
+                                        isExist = true;
+                                        break;
+                                      }
+                                    }
+                                    if(!isExist!){
+                                      lectureList[0].add({"name":addlectureName, "lectureNumber": addtec.text});
+                                      takenLectureWidgets.add(
+                                          Column(
+                                            children: <Widget>[
+                                              Container(
+                                                padding: EdgeInsets.all(8.0),
+                                                width: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width,
+                                                child: Text(
+                                                  addlectureName!,
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        )
-                                    );
+                                            ],
+                                          )
+                                      );
+                                    }
+                                    isExist = false;
                                     Navigator.pop(context);
                                     setState(() {});
                                   } else if(response?.statusCode != 200){

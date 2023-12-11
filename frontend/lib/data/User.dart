@@ -11,6 +11,7 @@ class User{
   late int secondRequiredCourseId;
   late int secondSelectiveCourseId;
   late int secondSelectiveCourseCredit;
+  late int totalCredit;
   late String username;
   late String name;
   late String major;
@@ -27,6 +28,7 @@ class User{
     username = userData['username'];
     name = userData['name'];
     major = userData['majorName'];
+    totalCredit = userData['totalCredit'];
 
     if(userData['secondMajorId'] != 0){
       secondMajor = userData['secondMajorName'];
@@ -57,7 +59,8 @@ class User{
     'secondMajorName' : secondMajor,
     'secondRequiredCourseId' : secondRequiredCourseId,
     'secondSelectiveCourseId' : secondSelectiveCourseId,
-    'secondSelectiveCourseCredit' : secondSelectiveCourseCredit
+    'secondSelectiveCourseCredit' : secondSelectiveCourseCredit,
+    'totalCredit' : totalCredit
   };
 
   User.fromJson(Map<String, dynamic> json)
@@ -74,6 +77,6 @@ class User{
         secondMajor = json["secondMajorName"],
         secondRequiredCourseId = json["secondRequiredCourseId"],
         secondSelectiveCourseId = json["secondSelectiveCourseId"],
-        secondSelectiveCourseCredit = json ["secondSelectiveCourseCredit"];
-
+        secondSelectiveCourseCredit = json ["secondSelectiveCourseCredit"],
+        totalCredit = json ["totalCredit"];
 }
