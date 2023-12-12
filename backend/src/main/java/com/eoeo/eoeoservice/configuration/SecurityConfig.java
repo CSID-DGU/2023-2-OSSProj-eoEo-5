@@ -55,7 +55,9 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/"),
                         new AntPathRequestMatcher("/flutter.js"),
                         new AntPathRequestMatcher("/favicon.png"),
-                        new AntPathRequestMatcher("/manifest.json")).permitAll()
+                        new AntPathRequestMatcher("/manifest.json"),
+                        new AntPathRequestMatcher("/main.dart.js"),
+                        new AntPathRequestMatcher("/icons/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/management/**")).hasRole(AccountRole.ADMIN.getName())
                 .anyRequest().authenticated()
                 .and().sessionManagement(SessionManagementConfigurer::disable)
