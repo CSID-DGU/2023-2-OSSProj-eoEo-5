@@ -64,7 +64,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     }
     return SafeArea(
       child: Container(
-        width: 300,
+        width: 350,
         height: 60,
         child: barchart(datatrans(getChartData(chartData)))
       ),
