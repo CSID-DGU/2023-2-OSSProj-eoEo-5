@@ -129,6 +129,7 @@ class _RegisterpageState extends State<Registerpage> {
               child: TextField(
                 controller: passwordTextController,
                 keyboardType: TextInputType.text,
+                obscureText: true,
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700), // 폰트 크기 수정
                 decoration: InputDecoration(
                   filled: true,
