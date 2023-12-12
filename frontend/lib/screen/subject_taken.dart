@@ -50,13 +50,16 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
   }
 
   void refresh(){
-    loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
-      lectureList = response; // 불러온 강의 정보를 lectureList에 저장
-      renderWidgets(response); // 강의 정보를 위젯으로 렌더링
-      setState(() {
-        isDataLoaded = true; // 데이터가 로드되었음을 표시
+    Future.delayed(const Duration(milliseconds: 500), () {
+      loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
+        lectureList = response; // 불러온 강의 정보를 lectureList에 저장
+        renderWidgets(response); // 강의 정보를 위젯으로 렌더링
+        setState(() {
+          isDataLoaded = true; // 데이터가 로드되었음을 표시
+        });
       });
     });
+
   }
 
   @override
