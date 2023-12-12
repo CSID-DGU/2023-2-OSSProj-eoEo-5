@@ -23,4 +23,6 @@ public class AddMajorRequestDto {
 
     private Long selectiveCourseCredit;
 
+    private Long totalCredit;
+
 }
