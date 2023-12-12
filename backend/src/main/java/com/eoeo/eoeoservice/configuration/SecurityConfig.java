@@ -49,7 +49,8 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/webjars/**"),
                         new AntPathRequestMatcher("/swagger-ui/**"),
                         new AntPathRequestMatcher("/h2-console/**"),
-                        new AntPathRequestMatcher("/healthcheck", "GET")).permitAll()
+                        new AntPathRequestMatcher("/healthcheck", "GET"),
+                        new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/management/**")).hasRole(AccountRole.ADMIN.getName())
                 .anyRequest().authenticated()
                 .and().sessionManagement(SessionManagementConfigurer::disable)
