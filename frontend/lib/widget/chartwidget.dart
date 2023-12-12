@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:frontend/module/Request.dart' as rq;
 import 'package:fl_chart/fl_chart.dart';
 
+
 import '../data/User.dart';
 
 class ChartWidget extends StatefulWidget {
@@ -105,6 +106,7 @@ class _ChartWidget extends State<ChartWidget> {
         height: 350,
         child: BarChart(
           BarChartData(
+            // max 값
             maxY: 100,
             barTouchData: BarTouchData(
               touchTooltipData: BarTouchTooltipData(
@@ -189,6 +191,8 @@ class _ChartWidget extends State<ChartWidget> {
     }
   }
 
+
+
   Future<Map<String, List<List>>> takenload() async {
     //SharedPreferences pref = await SharedPreferences.getInstance();
     //User user = User.fromJson(jsonDecode(pref.getString("user")!));
@@ -244,17 +248,17 @@ class _ChartWidget extends State<ChartWidget> {
     for (int i = 0; i < lectures['firstmajor']![0].length; i++) {
       major += lectures['firstmajor']![0][i]['credit'];
     }
-    major = ((major / 54) * 100).floorToDouble();
+    major = ((major / user.totalFirstMajorCredit) * 100).floorToDouble();
 
     for (int i = 0; i < lectures['secondmajor']![0].length; i++) {
       doublemajor += lectures['secondmajor']![0][i]['credit'];
     }
-    doublemajor = ((doublemajor / 36) * 100).floorToDouble();
+    doublemajor = ((doublemajor / user.totalSecondMajorCredit) * 100).floorToDouble();
 
     for (int i = 0; i < lectures['corelecture']![0].length; i++) {
       liberalarts += lectures['corelecture']![0][i]['credit'];
     }
-    liberalarts = ((liberalarts / 36) * 100).floorToDouble();
+    liberalarts = ((liberalarts / user.totalCoreLectureCredit) * 100).floorToDouble();
 
     final List<Data> chartData = [
       Data('Major', major),
