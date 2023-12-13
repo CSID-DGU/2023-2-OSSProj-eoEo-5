@@ -49,6 +49,19 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
     });
   }
 
+  void refresh(){
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      loadLectures().then((response) { // 강의 정보를 불러오는 비동기 함수 호출
+        lectureList = response; // 불러온 강의 정보를 lectureList에 저장
+        renderWidgets(response); // 강의 정보를 위젯으로 렌더링
+        setState(() {
+          isDataLoaded = true; // 데이터가 로드되었음을 표시
+        });
+      });
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     // 위젯 빌드 메서드
@@ -289,7 +302,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     lectureList[0].removeAt(cnt); // 데이터 삭제
                                     takenLectureWidgets.removeAt(cnt); // 위젯 삭제
                                     Navigator.pop(context);
-                                    setState(() {});
+                                    refresh();
                                   } else {
                                     setState(() {});
                                   }
@@ -517,6 +530,7 @@ class _Subject_takenScreen extends State<Subject_takenScreen> {
                                     isExist = false;
                                     Navigator.pop(context);
                                     setState(() {});
+                                    refresh();
                                   } else if(response?.statusCode != 200){
                                     setState((){});
                                   }
