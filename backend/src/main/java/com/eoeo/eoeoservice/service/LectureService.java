@@ -305,7 +305,9 @@ public class LectureService {
                 checker = true;
             }
         }else if(request.getIsCoreLecture()){
-            checker = true;
+            if(lecture.isCoreLecture()){
+                checker = true;
+            }
         }else{
             List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
             List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getSelectiveCourse(), false);
