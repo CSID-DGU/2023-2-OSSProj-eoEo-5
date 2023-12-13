@@ -73,6 +73,7 @@ public class CoreManagementService {
                 .requiredCourse(requiredCourse)
                 .selectiveCourse(selectiveCourse)
                 .selectiveCourseCredit(request.getSelectiveCourseCredit())
+                .totalCredit(request.getTotalCredit())
                 .build();
 
         majorRepository.save(major);

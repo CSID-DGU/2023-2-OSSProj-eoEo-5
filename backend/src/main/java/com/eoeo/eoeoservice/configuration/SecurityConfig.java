@@ -20,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -49,7 +51,14 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/webjars/**"),
                         new AntPathRequestMatcher("/swagger-ui/**"),
                         new AntPathRequestMatcher("/h2-console/**"),
-                        new AntPathRequestMatcher("/healthcheck", "GET")).permitAll()
+                        new AntPathRequestMatcher("/healthcheck", "GET"),
+                        new AntPathRequestMatcher("/"),
+                        new AntPathRequestMatcher("/flutter.js"),
+                        new AntPathRequestMatcher("/favicon.png"),
+                        new AntPathRequestMatcher("/manifest.json"),
+                        new AntPathRequestMatcher("/main.dart.js"),
+                        new AntPathRequestMatcher("/icons/**"),
+                        new AntPathRequestMatcher("/assets/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/management/**")).hasRole(AccountRole.ADMIN.getName())
                 .anyRequest().authenticated()
                 .and().sessionManagement(SessionManagementConfigurer::disable)
@@ -70,6 +79,13 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(this.passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public HttpFirewall allowUrlEncodedPercentHttpFirewall(){
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedPercent(true);
+        return firewall;
     }
 
 }

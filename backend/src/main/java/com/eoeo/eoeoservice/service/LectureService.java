@@ -2,6 +2,8 @@ package com.eoeo.eoeoservice.service;
 
 import com.eoeo.eoeoservice.domain.account.Account;
 import com.eoeo.eoeoservice.domain.account.AccountRepository;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLectures;
+import com.eoeo.eoeoservice.domain.course_lectures.CourseLecturesRepository;
 import com.eoeo.eoeoservice.domain.lecture.Lecture;
 import com.eoeo.eoeoservice.domain.lecture.LectureRepository;
 import com.eoeo.eoeoservice.domain.lecture_taken.LectureTaken;
@@ -29,10 +31,12 @@ public class LectureService {
     private final PrerequisiteRepository prerequisiteRepository;
     private final SubstituteLectureRepository substituteLectureRepository;
     private final LectureTakenRepository lectureTakenRepository;
+    private final CourseLecturesRepository courseLecturesRepositroy;
+
 
 
     @Transactional
-    public Long addTakenLecture(AddTakenLectureRequestDto request) {
+    public AddTakenLectureResponseDto addTakenLecture(AddTakenLectureRequestDto request) {
 
         LectureTaken lectureTaken;
 
@@ -56,6 +60,11 @@ public class LectureService {
                 SubstituteLecture substituteLecture = substituteLectureRepository.findByOriginalLectureAndSubstituteLectureAndIsDeleted(originalLecture, lecture, false)
                         .orElseThrow(() -> new NoSuchElementException("No such substitute"));
 
+                if(!checkLectureInCourse(account, originalLecture, request)){
+                    throw new NoSuchElementException("Lecture not in course");
+                }
+
+
                 lectureTaken = LectureTaken.builder()
                         .account(account)
                         .lecture(lecture)
@@ -65,6 +74,11 @@ public class LectureService {
                         .substituteLecture(substituteLecture)
                         .build();
             } else {
+
+                if(!checkLectureInCourse(account, lecture, request)){
+                    throw new NoSuchElementException("Lecture not in course");
+                }
+
                 lectureTaken = LectureTaken.builder()
                         .account(account)
                         .lecture(lecture)
@@ -72,13 +86,17 @@ public class LectureService {
                         .isSecondMajor(request.getIsSecondMajor())
                         .isSubstitute(false)
                         .build();
+
             }
 
             lectureTakenRepository.save(lectureTaken);
 
         }
 
-        return lectureTaken.getId();
+        return AddTakenLectureResponseDto.builder()
+                .id(lectureTaken.getId())
+                .lectureName(lectureTaken.getLecture().getName())
+                .build();
     }
 
     @Transactional
@@ -90,6 +108,10 @@ public class LectureService {
             Lecture lecture = lectureRepository.findByLectureNumberAndIsDeleted(dto.getLectureNumber(), false).orElseThrow(() -> new NoSuchElementException("No such lecture"));
             if (lectureTakenRepository.findByAccountAndLectureAndIsDeleted(account, lecture, false).isPresent()) {
                 continue;
+            }
+
+            if(!dto.getIsSubstitute() && !checkLectureInCourse(account, lecture, dto)){
+                throw new NoSuchElementException("Lecture not in course");
             }
             LectureTaken lectureTaken = LectureTaken.builder()
                     .account(account)
@@ -104,6 +126,9 @@ public class LectureService {
                         .orElseThrow(() -> new NoSuchElementException("No such Lecture"));
                 SubstituteLecture substituteLecture = substituteLectureRepository.findByOriginalLectureAndSubstituteLectureAndIsDeleted(originalLecture, lecture, false)
                                 .orElseThrow(() -> new NoSuchElementException("No such substitute lecture"));
+                if(!checkLectureInCourse(account, originalLecture, dto)){
+                    throw new NoSuchElementException("Lecture not in course");
+                }
                 lectureTaken.setSubstitute(substituteLecture);
             }
 
@@ -172,9 +197,10 @@ public class LectureService {
         List<Prerequisite> prerequisites = prerequisiteRepository.findAllByLectureIdAndIsDeleted(request.getLectureId(), false);
 
         for (Prerequisite prerequisite : prerequisites) {
-            Lecture prerequisiteLecture = prerequisite.getLecture();
+            Lecture prerequisiteLecture = prerequisite.getPrerequisite();
             response.add(GetPrerequisiteResponseDto.builder()
                     .name(prerequisiteLecture.getName())
+                    .lectureId(prerequisiteLecture.getId())
                     .lectureNumber(prerequisiteLecture.getLectureNumber())
                     .credit(prerequisiteLecture.getCredit())
                     .build());
@@ -265,6 +291,70 @@ public class LectureService {
 
         lectureTakenRepository.delete(takenLecture);
         return true;
+    }
+
+    private boolean checkLectureInCourse(Account account, Lecture lecture, AddTakenLectureRequestDto request){
+        boolean checker = false;
+        if(request.getIsSecondMajor()){
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getSelectiveCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
+            }
+        }else if(request.getIsCoreLecture()){
+            checker = true;
+        }else{
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getSelectiveCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
+            }
+        }
+        return checker;
+
+    }
+
+    private boolean checkLectureInCourse(Account account, Lecture lecture, LectureTakenDto request){
+        boolean checker = false;
+        if(request.getIsSecondMajor()){
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getSecondMajor().getSelectiveCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
+            }
+        }else if(request.getIsCoreLecture()){
+            checker = true;
+        }else{
+            List<CourseLectures> requiredCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getRequiredCourse(), false);
+            List<CourseLectures> selectiveCourseLecturesList = courseLecturesRepositroy.findAllByCourseTypeAndIsDeleted(account.getMajor().getSelectiveCourse(), false);
+            if(checkList(lecture,requiredCourseLecturesList)){
+                checker = true;
+            }
+            if(checkList(lecture,selectiveCourseLecturesList)){
+                checker = true;
+            }
+        }
+        return checker;
+    }
+
+    private Boolean checkList(Lecture lecture, List<CourseLectures> courseLectureList){
+        boolean checker = false;
+        for(CourseLectures courseLectures : courseLectureList){
+            if(courseLectures.getLecture().getId().equals(lecture.getId())){
+                checker = true;
+                break;
+            }
+        }
+        return checker;
     }
 
 }

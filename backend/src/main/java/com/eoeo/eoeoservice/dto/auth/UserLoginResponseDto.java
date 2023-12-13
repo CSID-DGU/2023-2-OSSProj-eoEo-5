@@ -44,16 +44,25 @@ public class UserLoginResponseDto {
 
     private long secondSelectiveCourseCredit;
 
+    private long totalCredit;
+
+    private long totalFirstMajorCredit;
+
+    private long totalSecondMajorCredit;
+
+    private long totalCoreLectureCredit;
+
     private String accessToken;
 
     private String refreshToken;
 
-    public void setSecondMajor(Major major){
+    public void setSecondMajor(Major major, Long secondMajorRequiredCredit){
         secondMajorId = major.getId();
         secondMajorName = major.getName();
         secondRequiredCourseId = major.getRequiredCourse().getId();
         secondSelectiveCourseId = major.getSelectiveCourse().getId();
         secondSelectiveCourseCredit = major.getSelectiveCourseCredit();
+        totalSecondMajorCredit = major.getSelectiveCourseCredit() + secondMajorRequiredCredit;
     }
 
 
